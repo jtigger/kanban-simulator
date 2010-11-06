@@ -13,7 +13,16 @@ class TestSimulator < Test::Unit::TestCase
   end
 
   def test_init
-    @simulator.create_initial_backlog(20)
+    @simulator.add_to_backlog(20)
     assert_equal(20, @simulator.story_cards.size)
+  end
+  
+  def test_different_size_backlogs
+    @simulator.add_to_backlog(10)
+    assert_equal(10, @simulator.story_cards.size)
+   
+    @simulator.reset
+    @simulator.add_to_backlog(30)
+    assert_equal(30, @simulator.story_cards.size)
   end
 end

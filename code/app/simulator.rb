@@ -8,17 +8,22 @@ class Simulator
   attr_accessor :story_cards
   
   def initialize
+    reset
+  end
+  
+  def reset
     @story_cards = []
   end
   
-  def create_initial_backlog(num_of_story_cards)
+  # Adds so many additional stories to the backlog.
+  def add_to_backlog(num_of_story_cards)
     (1..num_of_story_cards).each {
       @story_cards << StoryCard.new()
     }
   end
   
   def cleanup
-    @story_cards = nil
+    reset
   end
   
 end
