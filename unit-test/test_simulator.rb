@@ -35,7 +35,7 @@ class TestSimulator < Test::Unit::TestCase
   def test_generate_story1_backlog
     @simulator.add_to_backlog(20) do |story_card, idx|
       story_card.priority = idx
-      story_card.estimated_points = rand(5)
+      story_card.estimated_points = StoryCard::Acceptable_Point_Values[rand(5)]
     end
     
     expected_priority = 1
@@ -46,7 +46,7 @@ class TestSimulator < Test::Unit::TestCase
       expected_priority += 1
     }
     
-    # TODO: come up with a reasonably good value for asserting "random"
-    assert(estimations.standard_deviation > 5.0)
+    # assert that estimations are basically "random"
+    assert(estimations.standard_deviation > 10.0)
   end  
 end
