@@ -1,0 +1,3 @@
+class StoryCard
+  
+end
