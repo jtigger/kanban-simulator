@@ -3,4 +3,6 @@
 #
 # Author:: John S. Ryan (jtigger@infosysengr.com)
 class StoryCard
+  attr_accessor :estimated_points
+  attr_accessor :priority
 end

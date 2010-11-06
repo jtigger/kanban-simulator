@@ -16,9 +16,11 @@ class Simulator
   end
   
   # Adds so many additional stories to the backlog.
-  def add_to_backlog(num_of_story_cards)
-    (1..num_of_story_cards).each {
-      @story_cards << StoryCard.new()
+  def add_to_backlog(num_of_story_cards) # :yield: initialization logic
+    (1..num_of_story_cards).each { |idx|
+      story_card = StoryCard.new
+      yield story_card, idx if block_given?
+      @story_cards << story_card
     }
   end
   
