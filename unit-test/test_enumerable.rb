@@ -7,8 +7,8 @@ class TestEnumerable < Test::Unit::TestCase
     nums = []
     assert_equal(0, nums.sum)
     assert_equal(0, nums.average)
-    assert_equal(0, nums.population_variance)
-    assert_equal(0, nums.population_standard_deviation)
+    assert_equal(0, nums.sample_variance)
+    assert_equal(0, nums.standard_deviation)
   end
   
   def test_list_of_one
@@ -16,8 +16,8 @@ class TestEnumerable < Test::Unit::TestCase
     
     assert_equal(1, nums.sum)
     assert_equal(1, nums.average)
-    assert_equal(0, nums.population_variance)
-    assert_equal(0, nums.population_standard_deviation)
+    assert_equal(0, nums.sample_variance)
+    assert_equal(0, nums.standard_deviation)
   end
   
   def test_list_of_many
@@ -25,7 +25,7 @@ class TestEnumerable < Test::Unit::TestCase
 
     assert_equal(45, nums.sum)
     assert_equal(5, nums.average)
-    assert_equal(60, nums.population_variance)
-    assert_in_delta(7.7459, nums.population_standard_deviation, 0.0001)
+    assert_equal(60, nums.sample_variance)
+    assert_in_delta(7.7459, nums.standard_deviation, 0.0001)
   end
 end

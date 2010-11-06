@@ -16,13 +16,13 @@ module Enumerable
   end
   
   # http://en.wikipedia.org/wiki/Variance
-  def population_variance
+  def sample_variance
     avg = average
     sum_of_diffs_squared = self.inject(0) { |sum, value| sum + (value - avg)**2}
   end
   
   # http://en.wikipedia.org/wiki/Population_standard_deviation
-  def population_standard_deviation
-    Math.sqrt(population_variance)
+  def standard_deviation
+    Math.sqrt(sample_variance)
   end
 end
