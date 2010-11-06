@@ -2,6 +2,7 @@ require "test/unit"
 
 require File.dirname(__FILE__) + "/../code/model/story_card.rb"
 
+# Author:: John S. Ryan (jtigger@infosysengr.com)
 class TestStoryCard < Test::Unit::TestCase
   
   def test_only_accepts_estimates_in_fibonacci_sequence_upto_21

@@ -2,6 +2,7 @@ require "test/unit"
 
 require File.dirname(__FILE__) + "/../code/lang/enumerable.rb"
 
+# Author:: John S. Ryan (jtigger@infosysengr.com)
 class TestEnumerable < Test::Unit::TestCase
   def test_empty_list
     nums = []
