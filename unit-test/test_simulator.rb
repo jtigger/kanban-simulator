@@ -2,6 +2,7 @@ require "test/unit"
 
 require File.dirname(__FILE__) + "/../code/app/simulator.rb"
 
+# Author:: John S. Ryan (jtigger@infosysengr.com)
 class TestSimulator < Test::Unit::TestCase
   def setup
     @simulator = Simulator.new()
