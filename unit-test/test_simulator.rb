@@ -35,7 +35,7 @@ class TestSimulator < Test::Unit::TestCase
   def test_generate_story1_backlog
     @simulator.add_to_backlog(20) do |story_card, idx|
       story_card.priority = idx
-      story_card.estimated_points = StoryCard::Acceptable_Point_Values[rand(5)]
+      story_card.estimated_points = StoryCard::Acceptable_Point_Values[rand(StoryCard::Acceptable_Point_Values.length)]
     end
     
     expected_priority = 1
