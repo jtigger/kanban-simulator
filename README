@@ -6,8 +6,8 @@ To execute, run:
 
    $ ruby code/app/kanban_simulator.rb <number of stories to create>
 
-for example, to create a backlog of 50 stories, 
+for example, to create a backlog of 20 stories, 
 
-   $ ruby code/app/kanban_simulator.rb 50
+   $ ruby code/app/kanban_simulator.rb 20
 
 
