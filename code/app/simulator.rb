@@ -5,6 +5,7 @@ require File.dirname(__FILE__) + "/../model/story_card.rb"
 # Author:: John S. Ryan (jtigger@infosysengr.com)
 class Simulator
   attr_accessor :story_cards
+  attr_accessor :workflow
   
   def initialize
     reset
