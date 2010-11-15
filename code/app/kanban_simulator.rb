@@ -1,5 +1,5 @@
 require File.dirname(__FILE__) + "/./simulator.rb"
-
+require File.dirname(__FILE__) + "/../model/kanban_process_step.rb"
 
 # Executable for running Kanban simulations
 #
@@ -73,6 +73,18 @@ class KanbanSimulator
       end
       @simulator.story_cards.each_with_index { |story_card, idx|
         @ui.info("Story card \##{idx}: priority = #{story_card.priority}; estimate = #{story_card.estimated_points}")  
+      }
+      
+      workflow = []
+      workflow << KanbanProcessStep.new("In Analysis", 3)
+      workflow << KanbanProcessStep.new("In Dev", 3)
+      workflow << KanbanProcessStep.new("In Test", 3)
+      workflow << KanbanProcessStep.new("Done", nil)
+      @simulator.workflow = workflow
+      
+      @ui.info("Workflow definition:")
+      @simulator.workflow.each_with_index { |step, idx|
+        @ui.info("Step #{idx} = #{step.name} (WIP Limit = #{step.wip_limit})")
       }
   end
 end
