@@ -24,6 +24,10 @@ class Simulation
     }
   end
   
+  def configure(config_plan)
+    config_plan.each { |config_step| config_step.configure self };
+  end
+  
   def cleanup
     reset
   end
