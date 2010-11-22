@@ -1,34 +1,69 @@
 require "test/unit"
 
-require File.dirname(__FILE__) + "/../code/app/simulation.rb"
 require File.dirname(__FILE__) + "/../code/model/config/configuration_parser.rb"
 
 
 # Author:: John S. Ryan (jtigger@infosysengr.com)
 class TestConfiguration < Test::Unit::TestCase
-  def test_parse_config_line_with_just_sdlc_specified
-    parser = ConfigurationParser.new
-    config_line = 'We are using the "Kanban" SDLC.'
-
-    config_plan = parser.parse config_line
-    
-    assert_equal(1, config_plan.size)
-    assert(config_plan[0].kind_of?(EstablishWorkflow))
-  end
-
-  # Future tests:
-  # test_parse_config_line_with_sdlc_and_wip_limits
   
-  def test_configure_simulation
-    simulation = Simulation.new
-    parser = ConfigurationParser.new
-    
-    config_line = 'We are using the "Kanban" SDLC where the "WIP limit" for "In Analysis" is 3; and the "WIP limit" for "In Dev" is 4; and the "WIP limit" for "In Test" is 2.'
+  def setup
+    @parser = ConfigurationParser.new
+  end
+  
+  def test_parser_properly_identifies_configuration_command
+    config_line = 'We are using the "Kanban" SDLC\n' +
+                  'where the "WIP limit" for "In Analysis" is "3"\n'+
+                  ' and the "WIP limit" for "In Dev" is "4"\n'+
+                  ' and the "WIP limit" for "In Test" is "2".'
 
-    # 1. fetch SDLC (name => "Kanban")
-    # 2. configure step (name => "In Analysis", property => {"WIP Limit" => "3"})
-    config_plan = parser.parse config_line
+    config_plan = @parser.parse config_line
+    assert_equal(4, config_plan.size)
+    assert(config_plan[0].kind_of?(EstablishWorkflow))
+    assert(config_plan[1].kind_of?(ModifyStep))
+    assert(config_plan[2].kind_of?(ModifyStep))
+    assert(config_plan[3].kind_of?(ModifyStep))
+  end
+  
+  def test_parser_correctly_captures_workflow_name
+    # Strings that must match:
+    assert_equal('Kanban', @parser.parse('Using the "Kanban" SDLC.')[0].workflow_name)
+    assert_equal('Kanban', @parser.parse('Employing the "Kanban" SDLC,')[0].workflow_name)
+    assert_equal('Kanban', @parser.parse('Using the "Kanban" process')[0].workflow_name)
+    assert_equal('Scrum', @parser.parse('Using "Scrum"')[0].workflow_name)
+    assert_equal('Scrum', @parser.parse('Utilizing "Scrum"')[0].workflow_name)
+    assert_equal('Scrum', @parser.parse('With "Scrum"')[0].workflow_name)
     
-    simulation.configure config_plan
+    # Strings that must NOT match...
+    assert_equal(0, @parser.parse('Using the Kanban SDLC.').size)  # missing quotes
+    assert_equal(0, @parser.parse('"Using the Kanban SDLC."').size)  # misplaced quotes
+  end
+  
+  def test_parser_correctly_captures_step_configuration
+    config_line = 'where the "WIP limit" for "In Analysis" is "3"\n'
+
+    assert_equal('In Analysis', @parser.parse(config_line)[0].step_name)
+    assert_equal('WIP limit', @parser.parse(config_line)[0].step_property.keys[0])
+    assert_equal('3', @parser.parse(config_line)[0].step_property.values[0])
+  end
+  
+  def test_parser_ignores_comment_lines
+    config_line = '#We are using the "Kanban" SDLC\n' +
+                  '#where the "WIP limit" for "In Analysis" is "3"\n'+
+                  '# and the "WIP limit" for "In Dev" is "4"\n'+
+                  '# and the "WIP limit" for "In Test" is "2".'
+                  
+    assert_equal(0, @parser.parse(config_line).size)
+    
+    config_line = 'We are using the "Kanban" SDLC\n' +
+                  '#where the "WIP limit" for "In Analysis" is "3"\n'+
+                  '# and the "WIP limit" for "In Dev" is "4"\n'+
+                  '# and the "WIP limit" for "In Test" is "2".'    
+    assert_equal(1, @parser.parse(config_line).size)
+    
+    config_line = 'We are using the "Kanban" SDLC\n' +
+                  '#where the "WIP limit" for "In Analysis" is "3"\n'+
+                  ' and the "WIP limit" for "In Dev" is "4"\n'+
+                  '# and the "WIP limit" for "In Test" is "2".'    
+    assert_equal(2, @parser.parse(config_line).size)
   end
 end
