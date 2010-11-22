@@ -1,4 +1,4 @@
-require File.dirname(__FILE__) + "/./simulator.rb"
+require File.dirname(__FILE__) + "/./simulation.rb"
 require File.dirname(__FILE__) + "/../model/kanban_process_step.rb"
 
 # Executable for running Kanban simulations
@@ -37,7 +37,7 @@ class KanbanSimulator
 
   def initialize
     @ui = TextUi.new
-    @simulator = Simulator.new
+    @simulation = Simulation.new
   end
   
   def usage
@@ -67,11 +67,11 @@ class KanbanSimulator
         return -1
       end
       @ui.info("Initializing backlog...")
-      @simulator.add_to_backlog(@num_of_stories) do |story_card, idx|
+      @simulation.add_to_backlog(@num_of_stories) do |story_card, idx|
         story_card.priority = idx
         story_card.estimated_points = StoryCard::Acceptable_Point_Values[rand(5)]
       end
-      @simulator.story_cards.each_with_index { |story_card, idx|
+      @simulation.story_cards.each_with_index { |story_card, idx|
         @ui.info("Story card \##{idx}: priority = #{story_card.priority}; estimate = #{story_card.estimated_points}")  
       }
       
@@ -80,10 +80,10 @@ class KanbanSimulator
       workflow << KanbanProcessStep.new("In Dev", 3)
       workflow << KanbanProcessStep.new("In Test", 3)
       workflow << KanbanProcessStep.new("Done", nil)
-      @simulator.workflow = workflow
+      @simulation.workflow = workflow
       
       @ui.info("Workflow definition:")
-      @simulator.workflow.each_with_index { |step, idx|
+      @simulation.workflow.each_with_index { |step, idx|
         @ui.info("Step #{idx} = #{step.name} (WIP Limit = #{step.wip_limit})")
       }
   end

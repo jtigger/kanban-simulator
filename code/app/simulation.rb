@@ -3,7 +3,7 @@ require File.dirname(__FILE__) + "/../model/story_card.rb"
 # Driver for executing a workflow simulation.
 #
 # Author:: John S. Ryan (jtigger@infosysengr.com)
-class Simulator
+class Simulation
   attr_accessor :story_cards
   attr_accessor :workflow
   
