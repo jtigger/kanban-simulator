@@ -4,7 +4,7 @@ require File.dirname(__FILE__) + "/../code/model/config/configuration_parser.rb"
 
 
 # Author:: John S. Ryan (jtigger@infosysengr.com)
-class TestConfiguration < Test::Unit::TestCase
+class TestConfigurationParser < Test::Unit::TestCase
   
   def setup
     @parser = ConfigurationParser.new
