@@ -50,13 +50,4 @@ class TestSimulation < Test::Unit::TestCase
     # assert that estimations are basically "random"
     assert(estimations.standard_deviation > 10.0)
   end
-  
-  def test_generate_story2_workflow
-     workflow = []
-     workflow << KanbanProcessStep.new("In Analysis", 3)
-     workflow << KanbanProcessStep.new("In Dev", 3)
-     workflow << KanbanProcessStep.new("In Test", 3)
-     workflow << KanbanProcessStep.new("Done", nil)
-     @simulation.workflow = workflow
-  end
 end
