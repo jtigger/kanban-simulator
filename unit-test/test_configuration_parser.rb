@@ -10,6 +10,10 @@ class TestConfigurationParser < Test::Unit::TestCase
     @parser = ConfigurationParser.new
   end
   
+  def teardown
+    @parser = nil
+  end
+  
   def test_parser_properly_identifies_configuration_command
     config_line = 'We are using the "Kanban" SDLC\n' +
                   'where the "WIP limit" for "In Analysis" is "3"\n'+
