@@ -1,3 +1,4 @@
+require File.dirname(__FILE__) + "/../sdlc.rb"
 
 # Natural language parser for configuration of the simulation.
 # This parser understands the following sentences:
@@ -45,6 +46,22 @@ class ConfigurationParser
   end
 end
 
+# Thrown when a configuration step cannot be properly executed on the simulation.
+class ConfigurationException < Exception
+  def initialize(offending_config_command, problem, hint)
+    @config_command = offending_config_command
+    @problem = problem
+    @hint = hint
+    
+    self
+  end
+
+  def message
+    "An error occurred while trying to configure the simulation.  #{@problem} (#{@hint}). [#{@config_command.line_no}: '#{@config_command.original_text}']"
+  end
+  
+end
+
 class ConfigurationCommand
   attr_accessor :original_text
   attr_accessor :line_no
@@ -54,11 +71,17 @@ class EstablishWorkflow < ConfigurationCommand
   attr_accessor :workflow_name
   
   def initialize(workflow_name)
-    self.workflow_name = workflow_name
+    @workflow_name = workflow_name
   end
   
   def configure(simulation)
+    if !SDLC.respond_to?(workflow_name) 
+      raise ConfigurationException.new(self,
+        "Unable to establish the base SDLC; #{workflow_name} is not a recognized SDLC.",
+        "(refer to the SDLC class for all pre-defined SDLCs).")
+    end
     
+    simulation.workflow = SDLC.send(workflow_name)
   end
 end
 
@@ -75,3 +98,4 @@ class ModifyStep <  ConfigurationCommand
     
   end
 end
+
