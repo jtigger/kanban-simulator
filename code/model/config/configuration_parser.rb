@@ -37,7 +37,7 @@ class ConfigurationParser
       end
       if !config_step.nil?
         config_step.original_text = line
-        config_step.line_no = line_no
+        config_step.line_no = line_no + 1
         config_plan << config_step        
       end
     end
