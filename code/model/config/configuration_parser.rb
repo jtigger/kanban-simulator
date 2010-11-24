@@ -78,7 +78,7 @@ class EstablishWorkflow < ConfigurationCommand
     if !SDLC.respond_to?(workflow_name) 
       raise ConfigurationException.new(self,
         "Unable to establish the base SDLC; #{workflow_name} is not a recognized SDLC.",
-        "(refer to the SDLC class for all pre-defined SDLCs).")
+        "refer to the SDLC class for all pre-defined SDLCs.")
     end
     
     simulation.workflow = SDLC.send(workflow_name)
