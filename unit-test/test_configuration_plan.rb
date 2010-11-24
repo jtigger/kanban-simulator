@@ -4,30 +4,19 @@ require File.dirname(__FILE__) + "/../code/model/config/configuration_parser.rb"
 require File.dirname(__FILE__) + "/../code/model/simulation.rb"
 require File.dirname(__FILE__) + "/../code/model/workflow.rb"
 
-class Workflow
-  def Workflow.TestWorkflow
-    workflow = Workflow.new("TestWorkflow")
-    
-    workflow.steps << WorkflowStep.new("In Analysis", 3)
-    workflow.steps << WorkflowStep.new("In Dev", 3)
-    workflow.steps << WorkflowStep.new("In Test", 3)
-    workflow.steps << WorkflowStep.new("Done", nil)
-    
-    workflow
-  end
-end
-
 # Author:: John S. Ryan (jtigger@infosysengr.com)
 class TestConfigurationPlan < Test::Unit::TestCase
 
   def setup
     @parser = ConfigurationParser.new
     @simulation = Simulation.new
+    add_testworkflow_to_workflow_class
   end
   
   def teardown
     @parser = nil
     @simulation = nil
+    remove_testworkflow_from_workflow_class
   end
 
   def test_plan_correctly_seeds_workflow
@@ -51,5 +40,26 @@ class TestConfigurationPlan < Test::Unit::TestCase
     @simulation.configure(config_plan)
     
     assert_equal(6, @simulation.workflow.steps[1].wip_limit)
+  end
+  
+  def add_testworkflow_to_workflow_class
+    class << Workflow
+      def Workflow.TestWorkflow
+        workflow = Workflow.new("TestWorkflow")
+
+        workflow.steps << WorkflowStep.new("In Analysis", 3)
+        workflow.steps << WorkflowStep.new("In Dev", 3)
+        workflow.steps << WorkflowStep.new("In Test", 3)
+        workflow.steps << WorkflowStep.new("Done", nil)
+
+        workflow
+      end
+    end    
+  end
+  
+  def remove_testworkflow_from_workflow_class
+    class << Workflow
+      remove_method(:TestWorkflow)
+    end
   end
 end
