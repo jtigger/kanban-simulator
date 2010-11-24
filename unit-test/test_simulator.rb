@@ -1,6 +1,6 @@
 require "test/unit"
 
-require File.dirname(__FILE__) + "/../code/app/simulation.rb"
+require File.dirname(__FILE__) + "/../code/model/simulation.rb"
 require File.dirname(__FILE__) + "/../code/lang/enumerable.rb"
 require File.dirname(__FILE__) + "/../code/model/workflow_step.rb"
 
