@@ -6,8 +6,8 @@ class WorkflowStep
   attr_accessor :name
   attr_accessor :wip_limit
   
-  def initialize(new_name, new_wip_limit)
-    @name = new_name
-    @wip_limit = new_wip_limit
+  def initialize(name, wip_limit)
+    @name = name
+    @wip_limit = wip_limit
   end
 end
