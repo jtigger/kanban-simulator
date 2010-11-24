@@ -1,10 +1,10 @@
 require File.dirname(__FILE__) + "/./kanban_process_step.rb"
 
 # Author:: John S. Ryan (jtigger@infosysengr.com)
-class SDLC
+class Workflow
 
   # Creates a fresh Kanban workflow
-  def SDLC.Kanban
+  def Workflow.Kanban
     workflow = []
     workflow << KanbanProcessStep.new("In Analysis", 3)
     workflow << KanbanProcessStep.new("In Dev", 3)

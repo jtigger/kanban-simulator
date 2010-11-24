@@ -1,9 +1,9 @@
-require File.dirname(__FILE__) + "/../sdlc.rb"
+require File.dirname(__FILE__) + "/../workflow.rb"
 
 # Natural language parser for configuration of the simulation.
 # This parser understands the following sentences:
-#  'Using/Employing/With/Utilizing "(process-name)"' -- to identify the base SDLC to be used in the simulation (quotes are required).
-#  'where/and the "(property)" for "(workflow-step)" is "(value)" -- to configure a specific property of a particular step in the SDLC.
+#  'Using/Employing/With/Utilizing "(process-name)"' -- to identify the base Workflow to be used in the simulation (quotes are required).
+#  'where/and the "(property)" for "(workflow-step)" is "(value)" -- to configure a specific property of a particular step in the Workflow.
 #
 # You can comment any line by starting it with a hash character:
 #  '# this is just a comment'
@@ -75,13 +75,13 @@ class EstablishWorkflow < ConfigurationCommand
   end
   
   def configure(simulation)
-    if !SDLC.respond_to?(workflow_name) 
+    if !Workflow.respond_to?(workflow_name) 
       raise ConfigurationException.new(self,
-        "Unable to establish the base SDLC; #{workflow_name} is not a recognized SDLC.",
-        "refer to the SDLC class for all pre-defined SDLCs.")
+        "Unable to establish the base Workflow; #{workflow_name} is not a recognized Workflow.",
+        "refer to the Workflow class for all pre-defined Workflow.")
     end
     
-    simulation.workflow = SDLC.send(workflow_name)
+    simulation.workflow = Workflow.send(workflow_name)
   end
 end
 
@@ -99,7 +99,7 @@ class ModifyStep <  ConfigurationCommand
     if step == nil
       raise ConfigurationException.new(self,
         "Unable to configure workflow step #{step_name}; No such step with that name.",
-        "Do you have a properly configured SDLC?  Does that SDLC have a step named #{step_name}?")
+        "Do you have a properly configured Workflow?  Does that Workflow have a step named #{step_name}?")
     end
     
     step_property.each do |property, value|

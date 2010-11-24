@@ -2,10 +2,10 @@ require "test/unit"
 
 require File.dirname(__FILE__) + "/../code/app/simulation.rb"
 require File.dirname(__FILE__) + "/../code/model/config/configuration_parser.rb"
-require File.dirname(__FILE__) + "/../code/model/sdlc.rb"
+require File.dirname(__FILE__) + "/../code/model/workflow.rb"
 
-class SDLC
-  def SDLC.TestSDLC
+class Workflow
+  def Workflow.TestWorkflow
     workflow = []
     workflow << KanbanProcessStep.new("In Analysis", 3)
     workflow << KanbanProcessStep.new("In Dev", 3)
@@ -33,7 +33,7 @@ class TestConfigurationPlan < Test::Unit::TestCase
     config_plan = @parser.parse('Using the "TestSDLC" SDLC.')
     @simulation.configure(config_plan)
     
-    assert_equal(SDLC.TestSDLC.size, @simulation.workflow.size)
+    assert_equal(Workflow.TestWorkflow.size, @simulation.workflow.size)
   end
 
   def test_plan_correctly_errors_on_unknown_workflow
@@ -43,7 +43,7 @@ class TestConfigurationPlan < Test::Unit::TestCase
   end
   
   def test_plan_correctly_configures_workflow_step
-    @simulation.workflow = SDLC.TestSDLC
+    @simulation.workflow = Workflow.TestWorkflow
 
     config_plan = [ModifyStep.new("In Dev", {"WIP limit" => 6})]
     

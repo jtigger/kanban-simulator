@@ -31,7 +31,7 @@ class TestConfigurationParser < Test::Unit::TestCase
   def test_parser_correctly_captures_workflow_name
     # Strings that must match:
     assert_equal('Kanban', @parser.parse('Using the "Kanban" SDLC.')[0].workflow_name)
-    assert_equal('Kanban', @parser.parse('Employing the "Kanban" SDLC,')[0].workflow_name)
+    assert_equal('Kanban', @parser.parse('Employing the "Kanban" Workflow,')[0].workflow_name)
     assert_equal('Kanban', @parser.parse('Using the "Kanban" process')[0].workflow_name)
     assert_equal('Scrum', @parser.parse('Using "Scrum"')[0].workflow_name)
     assert_equal('Scrum', @parser.parse('Utilizing "Scrum"')[0].workflow_name)
@@ -39,7 +39,7 @@ class TestConfigurationParser < Test::Unit::TestCase
     
     # Strings that must NOT match...
     assert_equal(0, @parser.parse('Using the Kanban SDLC.').size)  # missing quotes
-    assert_equal(0, @parser.parse('"Using the Kanban SDLC."').size)  # misplaced quotes
+    assert_equal(0, @parser.parse('"Using the Kanban Workflow."').size)  # misplaced quotes
   end
   
   def test_parser_correctly_captures_step_configuration
