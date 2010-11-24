@@ -1,7 +1,7 @@
 require "test/unit"
 
-require File.dirname(__FILE__) + "/../code/app/simulation.rb"
 require File.dirname(__FILE__) + "/../code/model/config/configuration_parser.rb"
+require File.dirname(__FILE__) + "/../code/model/simulation.rb"
 require File.dirname(__FILE__) + "/../code/model/workflow.rb"
 
 class Workflow
@@ -31,10 +31,10 @@ class TestConfigurationPlan < Test::Unit::TestCase
   end
 
   def test_plan_correctly_seeds_workflow
-    config_plan = @parser.parse('Using the "TestSDLC" SDLC.')
+    config_plan = @parser.parse('Using the "TestWorkflow" SDLC.')
     @simulation.configure(config_plan)
     
-    assert_equal(Workflow.TestWorkflow, @simulation.workflow)
+    assert_equal(Workflow.TestWorkflow.name, @simulation.workflow.name)
   end
 
   def test_plan_correctly_errors_on_unknown_workflow
@@ -52,5 +52,4 @@ class TestConfigurationPlan < Test::Unit::TestCase
     
     assert_equal(6, @simulation.workflow.steps[1].wip_limit)
   end
-
 end

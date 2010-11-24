@@ -6,7 +6,7 @@ class Workflow
   attr_accessor :steps
 
   def initialize(name)
-    steps = []
+    @steps = []
     @name = name
   end
 

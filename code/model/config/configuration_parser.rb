@@ -95,7 +95,7 @@ class ModifyStep <  ConfigurationCommand
   end
   
   def configure(simulation)
-    step = simulation.workflow.find { |step| step.name == step_name }
+    step = simulation.workflow.steps.find { |step| step.name == step_name }
     if step == nil
       raise ConfigurationException.new(self,
         "Unable to configure workflow step #{step_name}; No such step with that name.",
