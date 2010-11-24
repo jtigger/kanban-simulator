@@ -2,7 +2,7 @@
 # A step in a Kanban-style workflow.
 #
 # Author:: John S. Ryan (jtigger@infosysengr.com)
-class KanbanProcessStep
+class WorkflowStep
   attr_accessor :name
   attr_accessor :wip_limit
   

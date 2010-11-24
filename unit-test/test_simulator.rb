@@ -2,7 +2,7 @@ require "test/unit"
 
 require File.dirname(__FILE__) + "/../code/app/simulation.rb"
 require File.dirname(__FILE__) + "/../code/lang/enumerable.rb"
-require File.dirname(__FILE__) + "/../code/model/kanban_process_step.rb"
+require File.dirname(__FILE__) + "/../code/model/workflow_step.rb"
 
 
 # Author:: John S. Ryan (jtigger@infosysengr.com)

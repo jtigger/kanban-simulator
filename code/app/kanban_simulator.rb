@@ -76,10 +76,10 @@ class KanbanSimulator
       }
       
       workflow = []
-      workflow << KanbanProcessStep.new("In Analysis", 3)
-      workflow << KanbanProcessStep.new("In Dev", 3)
-      workflow << KanbanProcessStep.new("In Test", 3)
-      workflow << KanbanProcessStep.new("Done", nil)
+      workflow << WorkflowStep.new("In Analysis", 3)
+      workflow << WorkflowStep.new("In Dev", 3)
+      workflow << WorkflowStep.new("In Test", 3)
+      workflow << WorkflowStep.new("Done", nil)
       @simulation.workflow = workflow
       
       @ui.info("Workflow definition:")
