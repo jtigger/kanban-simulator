@@ -41,5 +41,15 @@ class TestConfigurationPlan < Test::Unit::TestCase
 
     assert_raise(ConfigurationException) { @simulation.configure(config_plan) }
   end
+  
+  def test_plan_correctly_configures_workflow_step
+    @simulation.workflow = SDLC.TestSDLC
+
+    config_plan = [ModifyStep.new("In Dev", {"WIP limit" => 6})]
+    
+    @simulation.configure(config_plan)
+    
+    assert_equal(6, @simulation.workflow[1].wip_limit)
+  end
 
 end
