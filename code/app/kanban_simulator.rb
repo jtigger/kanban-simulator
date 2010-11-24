@@ -75,12 +75,7 @@ class KanbanSimulator
         @ui.info("Story card \##{idx}: priority = #{story_card.priority}; estimate = #{story_card.estimated_points}")  
       }
       
-      workflow = []
-      workflow << WorkflowStep.new("In Analysis", 3)
-      workflow << WorkflowStep.new("In Dev", 3)
-      workflow << WorkflowStep.new("In Test", 3)
-      workflow << WorkflowStep.new("Done", nil)
-      @simulation.workflow = workflow
+      @simulation.workflow = Workflow.Kanban
       
       @ui.info("Workflow definition:")
       @simulation.workflow.each_with_index { |step, idx|

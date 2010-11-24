@@ -6,11 +6,12 @@ require File.dirname(__FILE__) + "/../code/model/workflow.rb"
 
 class Workflow
   def Workflow.TestWorkflow
-    workflow = []
-    workflow << WorkflowStep.new("In Analysis", 3)
-    workflow << WorkflowStep.new("In Dev", 3)
-    workflow << WorkflowStep.new("In Test", 3)
-    workflow << WorkflowStep.new("Done", nil)
+    workflow = Workflow.new("TestWorkflow")
+    
+    workflow.steps << WorkflowStep.new("In Analysis", 3)
+    workflow.steps << WorkflowStep.new("In Dev", 3)
+    workflow.steps << WorkflowStep.new("In Test", 3)
+    workflow.steps << WorkflowStep.new("Done", nil)
     
     workflow
   end
@@ -33,7 +34,7 @@ class TestConfigurationPlan < Test::Unit::TestCase
     config_plan = @parser.parse('Using the "TestSDLC" SDLC.')
     @simulation.configure(config_plan)
     
-    assert_equal(Workflow.TestWorkflow.size, @simulation.workflow.size)
+    assert_equal(Workflow.TestWorkflow, @simulation.workflow)
   end
 
   def test_plan_correctly_errors_on_unknown_workflow
@@ -49,7 +50,7 @@ class TestConfigurationPlan < Test::Unit::TestCase
     
     @simulation.configure(config_plan)
     
-    assert_equal(6, @simulation.workflow[1].wip_limit)
+    assert_equal(6, @simulation.workflow.steps[1].wip_limit)
   end
 
 end

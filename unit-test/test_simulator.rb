@@ -1,12 +1,12 @@
 require "test/unit"
 
-require File.dirname(__FILE__) + "/../code/model/simulation.rb"
 require File.dirname(__FILE__) + "/../code/lang/enumerable.rb"
+require File.dirname(__FILE__) + "/../code/model/simulation.rb"
 require File.dirname(__FILE__) + "/../code/model/workflow_step.rb"
-
 
 # Author:: John S. Ryan (jtigger@infosysengr.com)
 class TestSimulation < Test::Unit::TestCase
+  
   def setup
     @simulation = Simulation.new()
   end
