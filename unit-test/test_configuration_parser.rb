@@ -16,9 +16,9 @@ class TestConfigurationParser < Test::Unit::TestCase
   
   def test_parser_properly_identifies_configuration_command
     config_line = 'We are using the "Kanban" SDLC\n' +
-                  'where the "WIP limit" for "In Analysis" is "3"\n'+
-                  ' and the "WIP limit" for "In Dev" is "4"\n'+
-                  ' and the "WIP limit" for "In Test" is "2".'
+                  'where the "WIP limit" for "In Analysis" is 3\n'+
+                  ' and the "WIP limit" for "In Dev" is 4\n'+
+                  ' and the "WIP limit" for "In Test" is 2.'
 
     config_plan = @parser.parse config_line
     assert_equal(4, config_plan.size)
@@ -43,11 +43,27 @@ class TestConfigurationParser < Test::Unit::TestCase
   end
   
   def test_parser_correctly_captures_step_configuration
-    config_line = 'where the "WIP limit" for "In Analysis" is "3"\n'
+    config_line = 'where the "WIP limit" for "In Analysis" is 3.\n'
 
     assert_equal('In Analysis', @parser.parse(config_line)[0].step_name)
     assert_equal('WIP limit', @parser.parse(config_line)[0].step_property.keys[0])
-    assert_equal('3', @parser.parse(config_line)[0].step_property.values[0])
+    assert_equal(3, @parser.parse(config_line)[0].step_property.values[0])
+  end
+  
+  def test_parser_correctly_identifies_fixnum_value_for_step_configuration
+    config_line = 'where the "WIP limit" for "In Analysis" is 3.\n'
+
+    assert_equal('In Analysis', @parser.parse(config_line)[0].step_name)
+    assert_equal('WIP limit', @parser.parse(config_line)[0].step_property.keys[0])
+    assert_equal(3, @parser.parse(config_line)[0].step_property.values[0])    
+  end
+
+  def test_parser_correctly_identifies_string_value_for_step_configuration
+    config_line = 'where the "WIP limit" for "In Analysis" is "3".\n'
+
+    assert_equal('In Analysis', @parser.parse(config_line)[0].step_name)
+    assert_equal('WIP limit', @parser.parse(config_line)[0].step_property.keys[0])
+    assert_equal("3", @parser.parse(config_line)[0].step_property.values[0])    
   end
   
   def test_parser_ignores_comment_lines

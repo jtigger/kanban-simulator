@@ -12,7 +12,10 @@ require File.dirname(__FILE__) + "/../workflow.rb"
 # Author:: John S. Ryan (jtigger@infosysengr.com)
 class ConfigurationParser
   Establish_Workflow_Pattern = /.*(using|employing|with|utilizing) (the )?"(.*)"/i
-  Modify_Step_Pattern = /(where|and) the "(.*)" for "(.*)" is "(.*)"/i
+  Modify_Step_Pattern = /(where|and) the "(.*)" for "(.*)" is (.*)\.?/i
+  Ends_With_A_Period = /(.*)\.\Z/
+  Value_Is_Quoted = /^"(.*)"$/
+  Value_Is_A_Fixnum = /^[[:digit:]]*$/
   
   # Parses a natural language configuration, building up a configuration plan
   # that can be applied to a Simulation.
@@ -34,6 +37,13 @@ class ConfigurationParser
         property_name = match_groups[2]
         step_name = match_groups[3]
         property_value = match_groups[4]
+        property_value.sub!(Ends_With_A_Period, '\1')
+
+        if property_value =~ Value_Is_A_Fixnum
+          property_value = property_value.to_i
+        end
+        property_value.sub!(Value_Is_Quoted, '\1') if property_value.kind_of? String
+        
         config_step = ModifyStep.new(step_name, { property_name => property_value })
       end
       if !config_step.nil?
