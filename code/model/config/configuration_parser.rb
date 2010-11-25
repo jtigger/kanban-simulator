@@ -1,4 +1,8 @@
 require File.dirname(__FILE__) + "/../workflow.rb"
+require File.dirname(__FILE__) + "/configuration_command.rb"
+require File.dirname(__FILE__) + "/establish_workflow.rb"
+require File.dirname(__FILE__) + "/modify_step.rb"
+
 
 # Natural language parser for configuration of the simulation.
 # This parser understands the following sentences:
@@ -55,75 +59,3 @@ class ConfigurationParser
     return config_plan
   end
 end
-
-# Thrown when a configuration step cannot be properly executed on the simulation.
-class ConfigurationException < Exception
-  def initialize(offending_config_command, problem, hint)
-    @config_command = offending_config_command
-    @problem = problem
-    @hint = hint
-    
-    self
-  end
-
-  def message
-    "An error occurred while trying to configure the simulation.  #{@problem} (#{@hint}). [#{@config_command.line_no}: '#{@config_command.original_text}']"
-  end
-  
-end
-
-class ConfigurationCommand
-  attr_accessor :original_text
-  attr_accessor :line_no
-end
-
-class EstablishWorkflow < ConfigurationCommand
-  attr_accessor :workflow_name
-  
-  def initialize(workflow_name)
-    @workflow_name = workflow_name
-  end
-  
-  def configure(simulation)
-    if !Workflow.respond_to?(workflow_name) 
-      raise ConfigurationException.new(self,
-        "Unable to establish the base Workflow; #{workflow_name} is not a recognized Workflow.",
-        "refer to the Workflow class for all pre-defined Workflow.")
-    end
-    
-    simulation.workflow = Workflow.send(workflow_name)
-  end
-end
-
-class ModifyStep <  ConfigurationCommand
-  attr_accessor :step_name
-  attr_accessor :step_property
-  
-  def initialize(step_name, step_property)
-    self.step_name = step_name
-    self.step_property = step_property
-  end
-  
-  def configure(simulation)
-    step = simulation.workflow.steps.find { |step| step.name == step_name }
-    if step == nil
-      raise ConfigurationException.new(self,
-        "Unable to configure workflow step #{step_name}; No such step with that name.",
-        "Do you have a properly configured Workflow?  Does that Workflow have a step named #{step_name}?")
-    end
-    
-    step_property.each do |property, value|
-      property_name = calc_property_name(property)
-      step.send(property_name+"=", value)
-    end
-  end
-
-private
-  # converts a name of a property (expressed in "natural language") into a valid Ruby setter
-  # for that same name.
-  def calc_property_name(natural_language_property_name)
-    identifier = natural_language_property_name.dup  # natural_language_property_name is frozen
-    identifier.tr!(' ', '_').downcase!
-  end
-end
-
