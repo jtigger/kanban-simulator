@@ -10,4 +10,5 @@ for example, to create a backlog of 20 stories,
 
    $ ruby code/app/kanban_simulator.rb 20
 
-
+You can configure the simulation by editing the configuration file:
+   $ $EDITOR code/app/simulation_config.txt
