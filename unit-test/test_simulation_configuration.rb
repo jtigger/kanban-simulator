@@ -7,7 +7,7 @@ require File.dirname(__FILE__) + "/../code/model/workflow_step.rb"
 
 
 # Author:: John S. Ryan (jtigger@infosysengr.com)
-class TestSimulation < Test::Unit::TestCase
+class TestSimulationConfiguration < Test::Unit::TestCase
   
   def setup
     @simulation = Simulation.new()
