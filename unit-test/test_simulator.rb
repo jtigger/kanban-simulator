@@ -1,8 +1,10 @@
 require "test/unit"
+require "Tempfile"
 
 require File.dirname(__FILE__) + "/../code/lang/enumerable.rb"
 require File.dirname(__FILE__) + "/../code/model/simulation.rb"
 require File.dirname(__FILE__) + "/../code/model/workflow_step.rb"
+
 
 # Author:: John S. Ryan (jtigger@infosysengr.com)
 class TestSimulation < Test::Unit::TestCase
@@ -49,5 +51,19 @@ class TestSimulation < Test::Unit::TestCase
     
     # assert that estimations are basically "random"
     assert(estimations.standard_deviation > 10.0)
+  end
+  
+  def test_load_config_from_file
+    config = Tempfile.new("test-config")
+    config.puts('Using "Kanban".')
+    config.puts('where the "WIP limit" of "In Analysis" is 4')
+    config.puts('where the "WIP limit" of "In Dev" is 4')
+    config.puts('where the "WIP limit" of "In Test" is 4')
+    config.close
+    
+    @simulation.configure(config.path)
+    
+    assert_equal(4, @simulation.workflow.steps[1].wip_limit)
+
   end
 end

@@ -1,5 +1,4 @@
-require File.dirname(__FILE__) + "/./simulation.rb"
-require File.dirname(__FILE__) + "/../model/kanban_process_step.rb"
+require File.dirname(__FILE__) + "/../model/simulation.rb"
 
 # Executable for running Kanban simulations
 #
@@ -66,6 +65,15 @@ class KanbanSimulator
         usage
         return -1
       end
+      @ui.info("Configuring the workflow...")
+      
+      @simulation.configure(File.dirname(__FILE__) + "/simulation_config.txt")
+      
+      @ui.info("Workflow definition:")
+      @simulation.workflow.steps.each_with_index { |step, idx|
+        @ui.info("Step #{idx} = #{step.name} (WIP Limit = #{step.wip_limit})")
+      }
+
       @ui.info("Initializing backlog...")
       @simulation.add_to_backlog(@num_of_stories) do |story_card, idx|
         story_card.priority = idx
@@ -73,13 +81,6 @@ class KanbanSimulator
       end
       @simulation.story_cards.each_with_index { |story_card, idx|
         @ui.info("Story card \##{idx}: priority = #{story_card.priority}; estimate = #{story_card.estimated_points}")  
-      }
-      
-      @simulation.workflow = Workflow.Kanban
-      
-      @ui.info("Workflow definition:")
-      @simulation.workflow.each_with_index { |step, idx|
-        @ui.info("Step #{idx} = #{step.name} (WIP Limit = #{step.wip_limit})")
       }
   end
 end
