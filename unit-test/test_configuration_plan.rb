@@ -47,10 +47,10 @@ class TestConfigurationPlan < Test::Unit::TestCase
       def Workflow.TestWorkflow
         workflow = Workflow.new("TestWorkflow")
 
-        workflow.steps << WorkflowStep.new("In Analysis", 3)
-        workflow.steps << WorkflowStep.new("In Dev", 3)
-        workflow.steps << WorkflowStep.new("In Test", 3)
-        workflow.steps << WorkflowStep.new("Done", nil)
+        workflow.steps << WorkflowStep.new("In Analysis") { |step| step.wip_limit = 3 }
+        workflow.steps << WorkflowStep.new("In Dev") { |step| step.wip_limit = 3 }
+        workflow.steps << WorkflowStep.new("In Test") { |step| step.wip_limit = 3 }
+        workflow.steps << WorkflowStep.new("Done") { |step| step.wip_limit = nil }
 
         workflow
       end
