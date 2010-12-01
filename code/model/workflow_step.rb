@@ -38,6 +38,7 @@ class WorkflowStep
   
 private
   def add_property(name)
+    # see also: https://github.com/jtigger/kanban-simulator/wiki/idiom%3A-Singleton-Class
     (class << self; self; end).class_eval do  # add to this instance
       attr_accessor name.to_sym
     end
