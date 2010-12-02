@@ -48,4 +48,13 @@ class TestSimulationExecution < Test::Unit::TestCase
     assert(@simulation_observer.received_event( { :action => :push, :object => StoryCard.new() {|c| c.id = "card-2" } } ))
     assert(@simulation_observer.received_event( { :action => :push, :object => StoryCard.new() {|c| c.id = "card-3" } } ))
   end
+  
+  def test_notified_when_simulation_ticks
+    @simulation.step
+    assert(@simulation_observer.received_event( { :action => :cycle_start, :time => 0} ))
+    assert(@simulation_observer.received_event( { :action => :cycle_end, :time => 0} ))
+    @simulation.step
+    assert(@simulation_observer.received_event( { :action => :cycle_start, :time => 1} ))
+    assert(@simulation_observer.received_event( { :action => :cycle_end, :time => 1} ))
+  end
 end

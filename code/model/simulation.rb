@@ -10,6 +10,7 @@ class Simulation
   include Observable
   attr_accessor :story_cards  
   attr_accessor :workflow     # setter is redefined below
+  attr_reader   :cycle
   
   # sets the simulation's workflow by copying the definition supplied;
   # while doing so, signaling to observers of the change.
@@ -28,8 +29,13 @@ class Simulation
   end
   
   def reset
+    @cycle = -1
     @story_cards = [].make_observable
     @story_cards.add_observer(self)
+  end
+  
+  def cleanup
+    reset
   end
   
   # Adds so many additional stories to the backlog.
@@ -62,11 +68,17 @@ class Simulation
     config_plan.each { |config_step| config_step.configure self };
   end
   
-  def cleanup
-    reset
+  def step
+    @cycle += 1
+    changed
+    notify_observers({ :action => :cycle_start, :time => self.cycle })
+    changed
+    notify_observers({ :action => :cycle_end, :time => self.cycle })
   end
+  
+  
 
-  # Being an "Observer" of Workflows, propagate any events to listeners of 
+  # Being an "Observer" of Workflows and Story Cards, propagate any events to listeners of 
   # this simulation.
   def update(event)
     changed
