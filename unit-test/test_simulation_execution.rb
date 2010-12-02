@@ -20,10 +20,10 @@ class TestSimulationExecution < Test::Unit::TestCase
 
   def test_notified_when_steps_are_added
     @simulation.workflow = Workflow.TestWorkflow
-    assert(@simulation_observer.received_event( { :action => "add", :object => WorkflowStep.new("In Analysis") } ))
-    assert(@simulation_observer.received_event( { :action => "add", :object => WorkflowStep.new("In Dev") } ))
-    assert(@simulation_observer.received_event( { :action => "add", :object => WorkflowStep.new("In Test") } ))
-    assert(@simulation_observer.received_event( { :action => "add", :object => WorkflowStep.new("Done") } ))
+    assert(@simulation_observer.received_event( { :action => :push, :object => WorkflowStep.new("In Analysis") } ))
+    assert(@simulation_observer.received_event( { :action => :push, :object => WorkflowStep.new("In Dev") } ))
+    assert(@simulation_observer.received_event( { :action => :push, :object => WorkflowStep.new("In Test") } ))
+    assert(@simulation_observer.received_event( { :action => :push, :object => WorkflowStep.new("Done") } ))
   end
   
 end
@@ -39,12 +39,22 @@ class MockSimulationObserver
   end
   
   def received_event(required_event)
-    found = @events.find do |event|
+    event = @events.find do |event|
       found = true
-      found = found and required_event[:action] == event[:action]
-      found = found and required_event[:object].name == event[:object].name
+      found = found && required_event[:action] == event[:action]
+      found = found && event[:object].kind_of?(required_event[:object].class)
+      found = found && instance_variables_are_equal(required_event[:object], event[:object])
       found
     end      
-    return found != nil && found
+    !event.nil?
+  end
+  
+private
+  def instance_variables_are_equal(source_obj, target_obj)
+    source_obj.instance_variables.each do |ivar_name|
+      return false if (!target_obj.instance_variables.include?(ivar_name))
+      return false if (source_obj.instance_variable_get(ivar_name) != target_obj.instance_variable_get(ivar_name))
+    end
+    return true
   end
 end
