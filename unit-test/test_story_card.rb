@@ -9,7 +9,7 @@ class TestStoryCard < Test::Unit::TestCase
     story_card = StoryCard.new
     
     story_card.estimated_points = 1
-    assert_raise( RuntimeError ) { story_card.estimated_points = 2 }
+    story_card.estimated_points = 2
     story_card.estimated_points = 3
     assert_raise( RuntimeError ) { story_card.estimated_points = 4 }
     story_card.estimated_points = 5

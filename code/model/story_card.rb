@@ -3,10 +3,17 @@
 #
 # Author:: John S. Ryan (jtigger@infosysengr.com)
 class StoryCard
+  attr_accessor :id
+  attr_accessor :name
   attr_accessor :estimated_points
   attr_accessor :priority
   
-  Acceptable_Point_Values = [1,3,5,8,13,21]
+  def initialize() # :yield: (passed a ref to "self"); initialization logic.
+    yield self if block_given?
+  end
+  
+  
+  Acceptable_Point_Values = [1,2,3,5,8,13,21]
   def estimated_points=(value)
     if Acceptable_Point_Values.member? value
       @estimated_points = value

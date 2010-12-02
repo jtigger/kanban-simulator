@@ -1,7 +1,7 @@
 require "observer"
 require File.dirname(__FILE__) + "/story_card.rb"
 require File.dirname(__FILE__) + "/config/configuration_parser.rb"
-
+require File.dirname(__FILE__) + "/../lang/array.rb"
 
 # Driver for executing a workflow simulation.
 #
@@ -28,7 +28,8 @@ class Simulation
   end
   
   def reset
-    @story_cards = []
+    @story_cards = [].make_observable
+    @story_cards.add_observer(self)
   end
   
   # Adds so many additional stories to the backlog.
