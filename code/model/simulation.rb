@@ -88,9 +88,7 @@ class Simulation
   
 private  
   def promote
-    puts "> promote" #debug
     @workflow.steps.each do |step|
-      puts "#{@workflow.steps.index(step)+1} =? #{@workflow.steps.size}" #debug
       break if @workflow.steps.index(step)+1 == @workflow.steps.size  # can't promote past the penultimate step
 
       next_step = @workflow.steps[@workflow.steps.index(step)+1] 
@@ -104,7 +102,6 @@ private
         end
       end
     end
-    puts "< promote" #debug
   end
 
   def pull
