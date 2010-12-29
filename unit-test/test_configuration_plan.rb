@@ -41,7 +41,7 @@ class TestConfigurationPlan < Test::Unit::TestCase
     
     @simulation.configure(config_plan)
     
-    assert_equal(6, @simulation.workflow.steps[1].wip_limit)
+    assert_equal(6, @simulation.workflow.steps[2].wip_limit)
   end
   
 end
