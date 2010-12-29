@@ -41,7 +41,9 @@ class TestConfigurationPlan < Test::Unit::TestCase
     
     @simulation.configure(config_plan)
     
-    assert_equal(6, @simulation.workflow.steps[2].wip_limit)
+    in_dev_step = @simulation.workflow.steps.find { |step| step.name == "In Dev" }
+    
+    assert_equal(6, in_dev_step.wip_limit)
   end
   
 end
