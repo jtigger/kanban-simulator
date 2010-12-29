@@ -1,6 +1,7 @@
 # Author:: John S. Ryan (jtigger@infosysengr.com)
 class MockSimulationObserver
-
+  attr_accessor :events
+  
   def initialize
     @events = []
   end

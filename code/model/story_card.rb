@@ -12,6 +12,19 @@ class StoryCard
     yield self if block_given?
   end
   
+  def start_work(cycles_required)
+    @cycles_left = cycles_required
+  end
+  
+  def work
+    if !completed_current_step?
+      @cycles_left -= 1
+    end
+  end
+  
+  def completed_current_step?
+    @cycles_left == 0
+  end
   
   Acceptable_Point_Values = [1,2,3,5,8,13,21]
   def estimated_points=(value)

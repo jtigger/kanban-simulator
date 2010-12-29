@@ -16,6 +16,7 @@ class Workflow
     @steps.add_observer(self)
 
     add_observer(observer) if observer != nil
+
   end
 
   # Creates a fresh Kanban workflow

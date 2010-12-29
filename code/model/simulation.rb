@@ -70,13 +70,14 @@ class Simulation
   
   def step
     @cycle += 1
-    changed
-    notify_observers({ :action => :cycle_start, :time => self.cycle })
-    changed
-    notify_observers({ :action => :cycle_end, :time => self.cycle })
+    update({ :action => :cycle_start, :time => self.cycle })
+    
+    promote
+    pull
+    work
+    
+    update({ :action => :cycle_end, :time => self.cycle })
   end
-  
-  
 
   # Being an "Observer" of Workflows and Story Cards, propagate any events to listeners of 
   # this simulation.
@@ -84,4 +85,40 @@ class Simulation
     changed
     notify_observers(event)
   end
+  
+private  
+  def promote
+    puts "> promote" #debug
+    @workflow.steps.each do |step|
+      puts "#{@workflow.steps.index(step)+1} =? #{@workflow.steps.size}" #debug
+      break if @workflow.steps.index(step)+1 == @workflow.steps.size  # can't promote past the penultimate step
+
+      next_step = @workflow.steps[@workflow.steps.index(step)+1] 
+      step.wip.each do |story_card|
+        if story_card.completed_current_step?
+          step.wip.delete(story_card)
+          next_step.queue << story_card
+          update({     :action => :promote, 
+                   :story_card => story_card.dup,
+                         :step => step.dup })
+        end
+      end
+    end
+    puts "< promote" #debug
+  end
+
+  def pull
+
+  end
+  
+  def work
+    @workflow.steps.each do |step|
+      break if @workflow.steps.index(step) == @workflow.steps.size  # can't work what's in the last step
+
+      step.wip.each do |story_card|
+        story_card.work
+      end
+    end
+  end
+
 end

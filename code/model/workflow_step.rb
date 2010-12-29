@@ -15,10 +15,14 @@
 # Author:: John S. Ryan (jtigger@infosysengr.com)
 class WorkflowStep
   attr_accessor :name
+  attr_accessor :queue
+  attr_accessor :wip
   
   # Initializes a workflow step
   def initialize(name) # :yield: (passed a ref to "self"); initialization logic.
     @name = name
+    @queue = []
+    @wip = []
     yield self if block_given?
   end
 

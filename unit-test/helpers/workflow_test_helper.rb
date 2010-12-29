@@ -10,7 +10,6 @@ class WorkflowTestHelper
         workflow.steps << WorkflowStep.new("In Analysis") { |step| step.wip_limit = 3 }
         workflow.steps << WorkflowStep.new("In Dev") { |step| step.wip_limit = 3 }
         workflow.steps << WorkflowStep.new("In Test") { |step| step.wip_limit = 3 }
-        workflow.steps << WorkflowStep.new("Done") { |step| step.wip_limit = nil }
 
         workflow
       end
