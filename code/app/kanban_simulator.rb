@@ -75,7 +75,7 @@ class KanbanSimulator
       }
 
       @ui.info("Initializing backlog...")
-      @simulation.add_to_backlog(@num_of_stories) do |story_card, idx|
+      @simulation.generate_to_backlog(@num_of_stories) do |story_card, idx|
         story_card.priority = idx
         story_card.estimated_points = StoryCard::Acceptable_Point_Values[rand(5)]
       end

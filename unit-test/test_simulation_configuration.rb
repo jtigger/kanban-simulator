@@ -18,16 +18,16 @@ class TestSimulationConfiguration < Test::Unit::TestCase
   end
 
   def test_init
-    @simulation.add_to_backlog(20)
+    @simulation.generate_to_backlog(20)
     assert_equal(20, @simulation.story_cards.size)
   end
   
   def test_different_size_backlogs
-    @simulation.add_to_backlog(10)
+    @simulation.generate_to_backlog(10)
     assert_equal(10, @simulation.story_cards.size)
    
     @simulation.reset
-    @simulation.add_to_backlog(30)
+    @simulation.generate_to_backlog(30)
     assert_equal(30, @simulation.story_cards.size)
   end
   
@@ -36,7 +36,7 @@ class TestSimulationConfiguration < Test::Unit::TestCase
   # 2. After the backlog is created I should be able to see the list of story cards created in priority 
   # order along with the randomly generated Size Estimate.
   def test_generate_story1_backlog
-    @simulation.add_to_backlog(20) do |story_card, idx|
+    @simulation.generate_to_backlog(20) do |story_card, idx|
       story_card.priority = idx
       story_card.estimated_points = StoryCard::Acceptable_Point_Values[rand(StoryCard::Acceptable_Point_Values.length)]
     end
