@@ -4,17 +4,21 @@ require "Tempfile"
 require File.dirname(__FILE__) + "/../code/lang/enumerable.rb"
 require File.dirname(__FILE__) + "/../code/model/simulation.rb"
 require File.dirname(__FILE__) + "/../code/model/workflow_step.rb"
+require File.dirname(__FILE__) + "/helpers/workflow_test_helper.rb"
 
 
 # Author:: John S. Ryan (jtigger@infosysengr.com)
 class TestSimulationConfiguration < Test::Unit::TestCase
   
   def setup
+    WorkflowTestHelper.add_testworkflow_to_workflow_class    
     @simulation = Simulation.new()
+    @simulation.workflow = Workflow.TestWorkflow
   end
   
   def teardown
     @simulation.cleanup()
+    WorkflowTestHelper.remove_testworkflow_from_workflow_class
   end
 
   def test_init
@@ -64,6 +68,10 @@ class TestSimulationConfiguration < Test::Unit::TestCase
     @simulation.configure(config.path)
     
     assert_equal(4, @simulation.workflow.steps[1].wip_limit)
-
+  end
+  
+  def test_changing_workflow_after_adding_cards_fails
+    @simulation.generate_to_backlog(1)
+    assert_raises (RuntimeError) { @simulation.workflow = Workflow.new("test") }
   end
 end

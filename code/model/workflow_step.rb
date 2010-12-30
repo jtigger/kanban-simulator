@@ -25,6 +25,11 @@ class WorkflowStep
     @wip = []
     yield self if block_given?
   end
+  
+  # whether or not another story card can be pulled from queue into wip
+  def can_pull?
+    true
+  end
 
   Ends_With_Equal_Sign = /(.*)=$/
   # when a setter is called (i.e. a method ending with an '=' character),

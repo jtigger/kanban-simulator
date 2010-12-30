@@ -15,6 +15,10 @@ class Simulation
   # sets the simulation's workflow by copying the definition supplied;
   # while doing so, signaling to observers of the change.
   def workflow=(workflow)
+    if !@story_cards.empty?
+      raise "Can not reset the workflow once story cards have been added to the simulation."
+    end
+    
     # TODO: remove each step in the existing workflow to generate the appropriate events.
     @workflow = Workflow.new(workflow.name, self)
     workflow.steps.each { |step|
@@ -43,8 +47,16 @@ class Simulation
     (1..num_of_story_cards).each { |idx|
       story_card = StoryCard.new
       yield story_card, idx if block_given?
-      @story_cards << story_card
+      add_to_backlog(story_card)
     }
+  end
+  
+  def add_to_backlog(story_card)
+    @story_cards << story_card
+    
+    # first step is assumed to be a "backlog"
+    workflow.steps[0].wip << story_card
+    story_card.start_work(0)
   end
   
   # :config_plan: is one of the following:
@@ -96,15 +108,20 @@ private
         if story_card.completed_current_step?
           step.wip.delete(story_card)
           next_step.queue << story_card
-          update({     :action => :promote, 
-                   :story_card => story_card.dup,
-                         :step => step.dup })
+          update({:action => :promote, :story_card => story_card.dup, :step => step.dup })
         end
       end
     end
   end
 
   def pull
+    @workflow.steps.each do |step|
+      while !step.queue.empty? && step.can_pull?
+        story_card = step.queue.pop
+        step.wip.push(story_card)
+        update({ :action => :pull, :story_card => story_card.dup, :step => step.dup })
+      end
+    end
 
   end
   

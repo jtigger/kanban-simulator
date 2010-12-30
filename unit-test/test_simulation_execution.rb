@@ -28,21 +28,21 @@ class TestSimulationExecution < Test::Unit::TestCase
   end
   
   def test_notified_when_story_cards_are_added
-    @simulation.story_cards << StoryCard.new() { |card| 
+    @simulation.add_to_backlog( StoryCard.new() { |card| 
       card.id = "card-1"
       card.name = "As a Simulation Administrator, I want to..."
       card.estimated_points = 2
-    }
-    @simulation.story_cards << StoryCard.new() { |card| 
+    } )
+    @simulation.add_to_backlog( StoryCard.new() { |card| 
       card.id = "card-2"
       card.name = "As a Simulation Administrator, I want to..."
       card.estimated_points = 3
-    }
-    @simulation.story_cards << StoryCard.new() { |card| 
+    } )
+    @simulation.add_to_backlog( StoryCard.new() { |card| 
       card.id = "card-3"
       card.name = "As a Simulation Administrator, I want to..."
       card.estimated_points = 1
-    }
+    } )
     
     assert(@simulation_observer.received_event( { :action => :push, :object => StoryCard.new() {|c| c.id = "card-1" } } ))
     assert(@simulation_observer.received_event( { :action => :push, :object => StoryCard.new() {|c| c.id = "card-2" } } ))
@@ -59,22 +59,20 @@ class TestSimulationExecution < Test::Unit::TestCase
   end
   
   def test_story_card_advances_through_steps
-    @simulation.story_cards << StoryCard.new() { |card| 
+    @simulation.add_to_backlog( StoryCard.new() { |card| 
       card.id = "card-1"
       card.name = "As a Simulation Administrator, I want to..."
       card.estimated_points = 1
-    }
+    } )
     
     @simulation.workflow.steps.size.times { @simulation.step }
         
     story1 = StoryCard.new() {|c| c.id = "card-1" }
-
-# pp @simulation_observer.events  #debug
-    
-    # @simulation.workflow.steps.each do |step|
-    #   assert(@simulation_observer.received_event( { :action => :promote, :story_card => story1, :step => step } ))
-    #   assert(@simulation_observer.received_event( { :action => :pull, :story_card => story1, :step => step } ))
-    # end  
+      
+    @simulation.workflow.steps.each do |step|
+      assert(@simulation_observer.received_event( { :action => :promote, :story_card => story1, :step => step } ))
+      assert(@simulation_observer.received_event( { :action => :pull, :story_card => story1, :step => step } ))
+    end  
   
   end
 end
