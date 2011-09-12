@@ -1,5 +1,5 @@
 require "observer"
-require File.dirname(__FILE__) + "/story_card.rb"
+require File.dirname(__FILE__) + "/work_item.rb"
 require File.dirname(__FILE__) + "/config/configuration_parser.rb"
 require File.dirname(__FILE__) + "/../lang/array.rb"
 
@@ -8,14 +8,14 @@ require File.dirname(__FILE__) + "/../lang/array.rb"
 # Author:: John S. Ryan (jtigger@infosysengr.com)
 class Simulation
   include Observable
-  attr_accessor :story_cards  
+  attr_accessor :work_items  
   attr_accessor :workflow     # setter is redefined below
   attr_reader   :cycle
   
   # sets the simulation's workflow by copying the definition supplied;
   # while doing so, signaling to observers of the change.
   def workflow=(workflow)
-    if !@story_cards.empty?
+    if !@work_items.empty?
       raise "Can not reset the workflow once story cards have been added to the simulation."
     end
     
@@ -34,8 +34,8 @@ class Simulation
   
   def reset
     @cycle = -1
-    @story_cards = [].make_observable
-    @story_cards.add_observer(self)
+    @work_items = [].make_observable
+    @work_items.add_observer(self)
   end
   
   def cleanup
@@ -43,20 +43,20 @@ class Simulation
   end
   
   # Adds so many additional stories to the backlog.
-  def generate_to_backlog(num_of_story_cards) # :yield: initialization logic
-    (1..num_of_story_cards).each { |idx|
-      story_card = StoryCard.new
-      yield story_card, idx if block_given?
-      add_to_backlog(story_card)
+  def generate_to_backlog(num_of_work_items) # :yield: initialization logic
+    (1..num_of_work_items).each { |idx|
+      work_item = WorkItem.new
+      yield work_item, idx if block_given?
+      add_to_backlog(work_item)
     }
   end
   
-  def add_to_backlog(story_card)
-    @story_cards << story_card
+  def add_to_backlog(work_item)
+    @work_items << work_item
     
     # first step is assumed to be a "backlog"
-    workflow.steps[0].wip << story_card
-    story_card.start_work(0)
+    workflow.steps[0].wip << work_item
+    work_item.start_work(0)
   end
   
   # :config_plan: is one of the following:
@@ -104,11 +104,11 @@ private
       break if @workflow.steps.index(step)+1 == @workflow.steps.size  # can't promote past the penultimate step
 
       next_step = @workflow.steps[@workflow.steps.index(step)+1] 
-      step.wip.each do |story_card|
-        if story_card.completed_current_step?
-          step.wip.delete(story_card)
-          next_step.queue << story_card
-          update({:action => :promote, :story_card => story_card.dup, :step => step.dup })
+      step.wip.each do |work_item|
+        if work_item.completed_current_step?
+          step.wip.delete(work_item)
+          next_step.queue << work_item
+          update({:action => :promote, :work_item => work_item.dup, :step => step.dup })
         end
       end
     end
@@ -117,9 +117,9 @@ private
   def pull
     @workflow.steps.each do |step|
       while !step.queue.empty? && step.can_pull?
-        story_card = step.queue.pop
-        step.wip.push(story_card)
-        update({ :action => :pull, :story_card => story_card.dup, :step => step.dup })
+        work_item = step.queue.pop
+        step.wip.push(work_item)
+        update({ :action => :pull, :work_item => work_item.dup, :step => step.dup })
       end
     end
 
@@ -129,8 +129,8 @@ private
     @workflow.steps.each do |step|
       break if @workflow.steps.index(step) == @workflow.steps.size  # can't work what's in the last step
 
-      step.wip.each do |story_card|
-        story_card.work
+      step.wip.each do |work_item|
+        work_item.work
       end
     end
   end

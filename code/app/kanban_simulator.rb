@@ -75,12 +75,12 @@ class KanbanSimulator
       }
 
       @ui.info("Initializing backlog...")
-      @simulation.generate_to_backlog(@num_of_stories) do |story_card, idx|
-        story_card.priority = idx
-        story_card.estimated_points = StoryCard::Acceptable_Point_Values[rand(5)]
+      @simulation.generate_to_backlog(@num_of_stories) do |work_item, idx|
+        work_item.priority = idx
+        work_item.estimated_points = WorkItem::Acceptable_Point_Values[rand(5)]
       end
-      @simulation.story_cards.each_with_index { |story_card, idx|
-        @ui.info("Story card \##{idx}: priority = #{story_card.priority}; estimate = #{story_card.estimated_points}")  
+      @simulation.work_items.each_with_index { |work_item, idx|
+        @ui.info("Story card \##{idx}: priority = #{work_item.priority}; estimate = #{work_item.estimated_points}")  
       }
   end
 end

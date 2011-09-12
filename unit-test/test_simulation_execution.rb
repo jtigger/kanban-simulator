@@ -27,26 +27,26 @@ class TestSimulationExecution < Test::Unit::TestCase
     assert(@simulation_observer.received_event( { :action => :push, :object => WorkflowStep.new("Done") } ))
   end
   
-  def test_notified_when_story_cards_are_added
-    @simulation.add_to_backlog( StoryCard.new() { |card| 
+  def test_notified_when_work_items_are_added
+    @simulation.add_to_backlog( WorkItem.new() { |card| 
       card.id = "card-1"
       card.name = "As a Simulation Administrator, I want to..."
       card.estimated_points = 2
     } )
-    @simulation.add_to_backlog( StoryCard.new() { |card| 
+    @simulation.add_to_backlog( WorkItem.new() { |card| 
       card.id = "card-2"
       card.name = "As a Simulation Administrator, I want to..."
       card.estimated_points = 3
     } )
-    @simulation.add_to_backlog( StoryCard.new() { |card| 
+    @simulation.add_to_backlog( WorkItem.new() { |card| 
       card.id = "card-3"
       card.name = "As a Simulation Administrator, I want to..."
       card.estimated_points = 1
     } )
     
-    assert(@simulation_observer.received_event( { :action => :push, :object => StoryCard.new() {|c| c.id = "card-1" } } ))
-    assert(@simulation_observer.received_event( { :action => :push, :object => StoryCard.new() {|c| c.id = "card-2" } } ))
-    assert(@simulation_observer.received_event( { :action => :push, :object => StoryCard.new() {|c| c.id = "card-3" } } ))
+    assert(@simulation_observer.received_event( { :action => :push, :object => WorkItem.new() {|c| c.id = "card-1" } } ))
+    assert(@simulation_observer.received_event( { :action => :push, :object => WorkItem.new() {|c| c.id = "card-2" } } ))
+    assert(@simulation_observer.received_event( { :action => :push, :object => WorkItem.new() {|c| c.id = "card-3" } } ))
   end
   
   def test_notified_when_simulation_ticks
@@ -58,8 +58,8 @@ class TestSimulationExecution < Test::Unit::TestCase
     assert(@simulation_observer.received_event( { :action => :cycle_end, :time => 1} ))
   end
   
-  def test_story_card_advances_through_steps
-    @simulation.add_to_backlog( StoryCard.new() { |card| 
+  def test_work_item_advances_through_steps
+    @simulation.add_to_backlog( WorkItem.new() { |card| 
       card.id = "card-1"
       card.name = "As a Simulation Administrator, I want to..."
       card.estimated_points = 1
@@ -67,11 +67,11 @@ class TestSimulationExecution < Test::Unit::TestCase
     
     @simulation.workflow.steps.size.times { @simulation.step }
         
-    story1 = StoryCard.new() {|c| c.id = "card-1" }
+    story1 = WorkItem.new() {|c| c.id = "card-1" }
       
     @simulation.workflow.steps.each do |step|
-      assert(@simulation_observer.received_event( { :action => :promote, :story_card => story1, :step => step } ))
-      assert(@simulation_observer.received_event( { :action => :pull, :story_card => story1, :step => step } ))
+      assert(@simulation_observer.received_event( { :action => :promote, :work_item => story1, :step => step } ))
+      assert(@simulation_observer.received_event( { :action => :pull, :work_item => story1, :step => step } ))
     end  
   
   end

@@ -2,7 +2,7 @@
 # Embodies the essential aspects of a single requirement of the system.
 #
 # Author:: John S. Ryan (jtigger@infosysengr.com)
-class StoryCard
+class WorkItem
   attr_accessor :id
   attr_accessor :name
   attr_accessor :estimated_points
