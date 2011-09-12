@@ -3,16 +3,14 @@ To Do:
 [ ] WorkflowStep
     [x] has_completed_work_items()
     [x] pop_next_completed_work_item()
-    [ ] each_step |step, previous_step|
+    [x] each_step |step, previous_step|
 [ ] Simulation
     [ ] properly work items (right now, everything is getting worked on).
 
 Refactoring:
-[ ] pull in step enumeration logic into Workflow.
+[x] pull in step enumeration logic into Workflow.
 
 
 [ ] extend "Configuration Command" to include a "add workflow step" to allow Tom to write any workflow he wants.
 
-
-[ ] 
 [x] Rename "StoryCard" to "WorkItem"
