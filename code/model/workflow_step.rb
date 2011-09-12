@@ -15,13 +15,11 @@
 # Author:: John S. Ryan (jtigger@infosysengr.com)
 class WorkflowStep
   attr_accessor :name
-  attr_accessor :queue
   attr_accessor :wip
   
   # Initializes a workflow step
   def initialize(name) # :yield: (passed a ref to "self"); initialization logic.
     @name = name
-    @queue = []
     @wip = []
     yield self if block_given?
   end
@@ -42,6 +40,24 @@ class WorkflowStep
       self.send(symbol, *args)
     else
       super.method_missing(symbol, args)
+    end
+  end
+  
+  def has_completed_work_items?
+    @wip.each do |work_item|
+      if work_item.completed_current_step?
+        return true
+      end
+    end
+    return false
+  end
+  
+  def pop_next_completed_work_item
+    @wip.each do |work_item|
+      if work_item.completed_current_step?
+        @wip.delete(work_item)
+        return work_item
+      end
     end
   end
   

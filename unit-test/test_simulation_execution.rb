@@ -70,7 +70,6 @@ class TestSimulationExecution < Test::Unit::TestCase
     story1 = WorkItem.new() {|c| c.id = "card-1" }
       
     @simulation.workflow.steps.each do |step|
-      assert(@simulation_observer.received_event( { :action => :promote, :work_item => story1, :step => step } ))
       assert(@simulation_observer.received_event( { :action => :pull, :work_item => story1, :step => step } ))
     end  
   

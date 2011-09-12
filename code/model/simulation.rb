@@ -84,7 +84,6 @@ class Simulation
     @cycle += 1
     update({ :action => :cycle_start, :time => self.cycle })
     
-    promote
     pull
     work
     
@@ -99,36 +98,24 @@ class Simulation
   end
   
 private  
-  def promote
-    @workflow.steps.each do |step|
-      break if @workflow.steps.index(step)+1 == @workflow.steps.size  # can't promote past the penultimate step
-
-      next_step = @workflow.steps[@workflow.steps.index(step)+1] 
-      step.wip.each do |work_item|
-        if work_item.completed_current_step?
-          step.wip.delete(work_item)
-          next_step.queue << work_item
-          update({:action => :promote, :work_item => work_item.dup, :step => step.dup })
-        end
-      end
-    end
-  end
-
   def pull
-    @workflow.steps.each do |step|
-      while !step.queue.empty? && step.can_pull?
-        work_item = step.queue.pop
-        step.wip.push(work_item)
+    @workflow.steps.reverse_each do |step|
+      break if @workflow.steps.index(step) == 0   # 0th step is the backlog, items are added to the backlog, not pulled into it.
+      
+      previous_step = @workflow.steps[@workflow.steps.index(step)-1]
+      
+      while step.can_pull? && previous_step.has_completed_work_items?
+        work_item = previous_step.pop_next_completed_work_item
+        step.wip << work_item
         update({ :action => :pull, :work_item => work_item.dup, :step => step.dup })
       end
     end
-
   end
   
   def work
-    @workflow.steps.each do |step|
-      break if @workflow.steps.index(step) == @workflow.steps.size  # can't work what's in the last step
-
+    @workflow.steps.reverse_each do |step|
+      break if @workflow.steps.index(step) == 0   # 0th step is the backlog, items are not "worked" in the backlog
+    
       step.wip.each do |work_item|
         work_item.work
       end
