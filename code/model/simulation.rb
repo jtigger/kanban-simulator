@@ -99,11 +99,7 @@ class Simulation
   
 private  
   def pull
-    @workflow.steps.reverse_each do |step|
-      break if @workflow.steps.index(step) == 0   # 0th step is the backlog, items are added to the backlog, not pulled into it.
-      
-      previous_step = @workflow.steps[@workflow.steps.index(step)-1]
-      
+    @workflow.reverse_each do |step, previous_step|
       while step.can_pull? && previous_step.has_completed_work_items?
         work_item = previous_step.pop_next_completed_work_item
         step.wip << work_item
@@ -113,9 +109,7 @@ private
   end
   
   def work
-    @workflow.steps.reverse_each do |step|
-      break if @workflow.steps.index(step) == 0   # 0th step is the backlog, items are not "worked" in the backlog
-    
+    @workflow.reverse_each do |step, previous_step|
       step.wip.each do |work_item|
         work_item.work
       end

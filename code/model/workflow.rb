@@ -31,6 +31,18 @@ class Workflow
     workflow
   end
 
+  def is_backlog?(step)
+    @steps.index(step) == 0
+  end
+
+  def reverse_each # :yield: 
+    @steps.reverse_each do |step|
+      break if is_backlog?(step)
+      previous_step = @steps[@steps.index(step)-1]
+      yield step, previous_step
+    end
+  end
+
   def update(event)
     changed
     notify_observers(event)
