@@ -1,13 +1,8 @@
 
 To Do:
-[ ] Modify Parse to take workflow step adds
-    [x] "Finalize" the exact phrase
-    [ ] Come up with regular expression to parse phrase
-    [ ] Convert to AddWorkflowStep command
-[ ] Modify Parse to create a new workflow
-    [ ] "Finalize" the exact phrase
-    [ ] Come up with regular expression to parse phrase
-    [ ] Convert to AddWorkflowStep command
+
+[ ] rename "cycle" to "tick"
+
 
     
 [ ] Simulation
@@ -16,10 +11,4 @@ To Do:
     [x] has_completed_work_items()
     [x] pop_next_completed_work_item()
     [x] each_step |step, previous_step|
-
-Refactoring:
-[x] pull in step enumeration logic into Workflow.
-
-[ ] extend "Configuration Command" to include a "add workflow step" to allow Tom to write any workflow he wants.
-
-[x] Rename "StoryCard" to "WorkItem"
+    

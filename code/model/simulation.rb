@@ -11,6 +11,7 @@ class Simulation
   attr_accessor :work_items  
   attr_accessor :workflow     # setter is redefined below
   attr_reader   :cycle
+  attr_accessor :hardstop     # we're stopping after this many ticks
   
   # sets the simulation's workflow by copying the definition supplied;
   # while doing so, signaling to observers of the change.
@@ -91,6 +92,14 @@ class Simulation
     work
     
     update({ :action => :cycle_end, :time => self.cycle })
+  end
+  
+  def run
+    @hardstop = 10000000 if @hardstop == nil  # read: a very big number
+    
+    while(@cycle < @hardstop) do
+      step
+    end
   end
 
   # Being an "Observer" of Workflows and Story Cards, propagate any events to listeners of 
