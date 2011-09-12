@@ -78,6 +78,16 @@ class TestSimulationConfiguration < Test::Unit::TestCase
     assert_equal("Step 3", @simulation.workflow.steps[2].name)
   end
   
+  def test_specify_the_simulation_hardstop
+    config_plan = 'The simulation should stop after 20 ticks.'
+    @simulation_observer = MockSimulationObserver.new
+    @simulation.add_observer(@simulation_observer)
+
+    @simulation.configure(config_plan)
+    @simulation.run
+    assert(@simulation_observer.received_event({ :action => :cycle_end, :time => 20}))
+  end
+  
   def test_load_config_from_file
     config = Tempfile.new("test-config")
     config.puts('Using "Kanban".')

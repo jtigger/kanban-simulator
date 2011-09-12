@@ -4,6 +4,8 @@ require File.dirname(__FILE__) + "/configuration_command.rb"
 require File.dirname(__FILE__) + "/add_workflow_step.rb"
 require File.dirname(__FILE__) + "/establish_workflow.rb"
 require File.dirname(__FILE__) + "/modify_step.rb"
+require File.dirname(__FILE__) + "/set_hardstop.rb"
+
 
 
 # Natural language parser for configuration of the simulation.
@@ -22,6 +24,7 @@ class ConfigurationParser
   Add_Workflow_Step_Pattern = /.*"(.*)" step.*/i
   Establish_Workflow_Pattern = /.*(using|employing|with|utilizing) (the )?"(.*)"/i
   Modify_Step_Pattern = /(where|and) the "(.*)" (of|for) "(.*)" is (.*)\.?/i
+  Set_Simulation_Hardstop_Pattern = /.* simulation .* stop .* ([0-9]+) ticks?.*/i
   Ends_With_A_Period = /(.*)\.\Z/
   Value_Is_Quoted = /^"(.*)"$/
   Value_Is_A_Fixnum = /^[[:digit:]]*$/
@@ -62,6 +65,10 @@ class ConfigurationParser
         property_value.sub!(Value_Is_Quoted, '\1') if property_value.kind_of? String
         
         config_step = ModifyStep.new(step_name, { property_name => property_value })
+      end
+      if line =~ Set_Simulation_Hardstop_Pattern
+        hardstop = Set_Simulation_Hardstop_Pattern.match(line)[1].to_i
+        config_step = SetHardstop.new(hardstop)
       end
       if !config_step.nil?
         config_step.original_text = line

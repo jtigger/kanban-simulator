@@ -5,6 +5,8 @@ Our workflow, "Kanban" is comprised of:
    and a "In Test" step
    and a "Done" step.
 
+The simulation should stop after 20 ticks.
+
 # where the "pull strategy" for "In Analysis" is "batch" where "batch size" is ().
 
 # Workflow spec:

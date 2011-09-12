@@ -76,9 +76,7 @@ class TestSimulationExecution < Test::Unit::TestCase
   
   def test_simulation_runs_specified_number_of_cycles
     @simulation.hardstop = 10
-    
     @simulation.run
-    
     assert(@simulation_observer.received_event({ :action => :cycle_end, :time => 10}))
   end
 end

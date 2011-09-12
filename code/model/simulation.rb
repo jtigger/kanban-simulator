@@ -95,7 +95,7 @@ class Simulation
   end
   
   def run
-    @hardstop = 10000000 if @hardstop == nil  # read: a very big number
+    raise "called run() without specifying a hardstop limit." if @hardstop == nil
     
     while(@cycle < @hardstop) do
       step
