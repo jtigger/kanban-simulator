@@ -86,6 +86,7 @@ class TestSimulationConfiguration < Test::Unit::TestCase
     @simulation.configure(config_plan)
     @simulation.run
     assert(@simulation_observer.received_event({ :action => :cycle_end, :time => 20}))
+    assert(! (@simulation_observer.received_event({ :action => :cycle_end, :time => 21})))
   end
   
   def test_load_config_from_file
