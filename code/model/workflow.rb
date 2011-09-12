@@ -9,7 +9,7 @@ class Workflow
   attr_accessor :name
   attr_accessor :steps
 
-  def initialize(name, observer=nil)
+  def initialize(name="", observer=nil)
     @name = name
 
     @steps = [].make_observable

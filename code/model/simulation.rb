@@ -27,9 +27,12 @@ class Simulation
   end
   
   def initialize(workflow=nil, observer=nil)
+    workflow = Workflow.new if workflow == nil
+
     add_observer(observer) if observer != nil
-    self.workflow=(workflow) if workflow != nil
     reset
+
+    self.workflow=(workflow)
   end
   
   def reset

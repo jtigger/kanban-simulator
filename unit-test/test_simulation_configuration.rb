@@ -6,6 +6,8 @@ require File.dirname(__FILE__) + "/../code/model/simulation.rb"
 require File.dirname(__FILE__) + "/../code/model/workflow_step.rb"
 require File.dirname(__FILE__) + "/helpers/workflow_test_helper.rb"
 
+require File.dirname(__FILE__) + "/../code/model/config/add_workflow_step.rb"
+
 
 # Author:: John S. Ryan (jtigger@infosysengr.com)
 class TestSimulationConfiguration < Test::Unit::TestCase
@@ -55,6 +57,19 @@ class TestSimulationConfiguration < Test::Unit::TestCase
     
     # assert that estimations are basically "random"
     assert(estimations.standard_deviation > 10.0)
+  end
+
+  
+  def test_build_workflow_from_config
+    @simulation = Simulation.new
+    config_plan = [  AddWorkflowStep.new("Step 1"), AddWorkflowStep.new("Step 2"), AddWorkflowStep.new("Step 3") ]
+    
+    @simulation.configure(config_plan)
+
+    assert_equal(3, @simulation.workflow.steps.size)  # includes "Backlog" and "Done"
+    assert_equal("Step 1", @simulation.workflow.steps[0].name)
+    assert_equal("Step 2", @simulation.workflow.steps[1].name)
+    assert_equal("Step 3", @simulation.workflow.steps[2].name)
   end
   
   def test_load_config_from_file
