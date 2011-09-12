@@ -1,5 +1,7 @@
 require File.dirname(__FILE__) + "/../workflow.rb"
 require File.dirname(__FILE__) + "/configuration_command.rb"
+
+require File.dirname(__FILE__) + "/add_workflow_step.rb"
 require File.dirname(__FILE__) + "/establish_workflow.rb"
 require File.dirname(__FILE__) + "/modify_step.rb"
 
@@ -16,6 +18,8 @@ require File.dirname(__FILE__) + "/modify_step.rb"
 #
 # Author:: John S. Ryan (jtigger@infosysengr.com)
 class ConfigurationParser
+  Define_Workflow_Pattern = /.*Our workflow, "(.*)" is .*/i
+  Add_Workflow_Step_Pattern = /.*"(.*)" step.*/i
   Establish_Workflow_Pattern = /.*(using|employing|with|utilizing) (the )?"(.*)"/i
   Modify_Step_Pattern = /(where|and) the "(.*)" (of|for) "(.*)" is (.*)\.?/i
   Ends_With_A_Period = /(.*)\.\Z/
@@ -33,6 +37,14 @@ class ConfigurationParser
       config_step = nil
 
       next if line =~ /^#/
+      # if line =~ Define_Workflow_Pattern
+      #   workflow_name = Define_Workflow_Pattern.match(line[1])
+      #   config_step = 
+      # end
+      if line =~ Add_Workflow_Step_Pattern
+        step_name = Add_Workflow_Step_Pattern.match(line)[1]
+        config_step = AddWorkflowStep.new(step_name)
+      end
       if line =~ Establish_Workflow_Pattern
         workflow_name = Establish_Workflow_Pattern.match(line)[3]
         config_step = EstablishWorkflow.new(workflow_name)

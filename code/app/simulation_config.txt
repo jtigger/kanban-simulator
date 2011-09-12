@@ -1,13 +1,15 @@
-# Our workflow, "Optional Name" is comprised of:
-#    a "In Analysis" step
-#    a "In Dev" step
-#    and a "In Test" step.
+Our workflow, "Kanban" is comprised of:
+   a "Backlog" step,
+   a "In Analysis" step
+   a "In Dev" step
+   and a "In Test" step
+   and a "Done" step.
 
 # where the "pull strategy" for "In Analysis" is "batch" where "batch size" is ().
 
 # Workflow spec:
-We are using the "Kanban" workflow
-where the "WIP limit" for "In Analysis" is 9
- and the "WIP limit" for "In Dev" is 4
- and the "WIP limit" for "In Test" is 2
+# We are using the "Kanban" workflow
+# where the "WIP limit" for "In Analysis" is 9
+#  and the "WIP limit" for "In Dev" is 4
+#  and the "WIP limit" for "In Test" is 2
 

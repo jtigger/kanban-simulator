@@ -71,17 +71,18 @@ class KanbanSimulator
       
       @ui.info("Workflow definition:")
       @simulation.workflow.steps.each_with_index { |step, idx|
-        @ui.info("Step #{idx} = #{step.name} (WIP Limit = #{step.wip_limit})")
+        # @ui.info("Step #{idx} = #{step.name} (WIP Limit = #{step.wip_limit})")
+        @ui.info("Step #{idx} = #{step.name}")
       }
 
-      @ui.info("Initializing backlog...")
-      @simulation.generate_to_backlog(@num_of_stories) do |work_item, idx|
-        work_item.priority = idx
-        work_item.estimated_points = WorkItem::Acceptable_Point_Values[rand(5)]
-      end
-      @simulation.work_items.each_with_index { |work_item, idx|
-        @ui.info("Story card \##{idx}: priority = #{work_item.priority}; estimate = #{work_item.estimated_points}")  
-      }
+      # @ui.info("Initializing backlog...")
+      # @simulation.generate_to_backlog(@num_of_stories) do |work_item, idx|
+      #   work_item.priority = idx
+      #   work_item.estimated_points = WorkItem::Acceptable_Point_Values[rand(5)]
+      # end
+      # @simulation.work_items.each_with_index { |work_item, idx|
+      #   @ui.info("Story card \##{idx}: priority = #{work_item.priority}; estimate = #{work_item.estimated_points}")  
+      # }
   end
 end
 

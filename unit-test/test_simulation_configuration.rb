@@ -62,7 +62,13 @@ class TestSimulationConfiguration < Test::Unit::TestCase
   
   def test_build_workflow_from_config
     @simulation = Simulation.new
-    config_plan = [  AddWorkflowStep.new("Step 1"), AddWorkflowStep.new("Step 2"), AddWorkflowStep.new("Step 3") ]
+    
+    config_plan = 'Our workflow, "Kanban" is comprised of:
+       a "Step 1" step
+       a "Step 2" step
+       and a "Step 3" step"'
+       
+    # config_plan = [  AddWorkflowStep.new("Step 1"), AddWorkflowStep.new("Step 2"), AddWorkflowStep.new("Step 3") ]
     
     @simulation.configure(config_plan)
 
