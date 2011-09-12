@@ -74,6 +74,10 @@ class TestSimulationExecution < Test::Unit::TestCase
     end  
   end
   
+  def test_work_is_limited_to_capacity
+    # @simulation.workflow.steps.index{|step|step.name == "In Dev"}.capacity = 1
+  end
+  
   def test_simulation_runs_specified_number_of_cycles
     @simulation.hardstop = 10
     @simulation.run

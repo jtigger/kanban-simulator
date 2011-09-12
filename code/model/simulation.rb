@@ -121,10 +121,10 @@ private
   end
   
   def work
-    @workflow.reverse_each do |step, previous_step|
-      step.wip.each do |work_item|
-        work_item.work
-      end
+    completed_work_items = []
+    @workflow.steps.each do |step|
+      step.wip += completed_work_items if !completed_work_items.nil?
+      completed_work_items = step.work
     end
   end
 

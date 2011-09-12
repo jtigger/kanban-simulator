@@ -1,3 +1,4 @@
+require File.dirname(__FILE__) + "/../lang/math.rb"
 
 # Embodies the essential aspects of a single requirement of the system.
 #
@@ -16,10 +17,11 @@ class WorkItem
     @cycles_left = cycles_required
   end
   
-  def work
-    if !completed_current_step?
-      @cycles_left -= 1
-    end
+  def work(remaining_capacity)
+    burn = Math.min(@cycles_left, remaining_capacity)
+    @cycles_left -= burn
+    remaining_capacity -= burn
+    return remaining_capacity
   end
   
   def completed_current_step?

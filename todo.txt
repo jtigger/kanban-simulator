@@ -5,7 +5,7 @@ To Do:
     [ ] rename "cycle_(start|end)" events.
 [ ] rename "wip" to "workqueue".
 
-
+[ ] move the queue management into WorkFlowStep
     
 [ ] Simulation
     [ ] properly work items (right now, everything is getting worked on).

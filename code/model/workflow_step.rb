@@ -21,6 +21,7 @@ class WorkflowStep
   def initialize(name) # :yield: (passed a ref to "self"); initialization logic.
     @name = name
     @wip = []
+    @capacity = 2  # HACK: this needs to be set externally.
     yield self if block_given?
   end
   
@@ -58,6 +59,20 @@ class WorkflowStep
         @wip.delete(work_item)
         return work_item
       end
+    end
+  end
+  
+  def work
+    completed_work_items = []
+    remaining_capacity = @capacity
+    while remaining_capacity > 0 && !(wip.empty?)
+      work_item = wip.first   # TODO: good spot to plug in a strategy
+      remaining_capacity = work_item.work(remaining_capacity)
+      if work_item.completed_current_step?
+        completed_work_items << work_item
+        wip.delete(work_item)
+      end
+      return completed_work_items
     end
   end
   

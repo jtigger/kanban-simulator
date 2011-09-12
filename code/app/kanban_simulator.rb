@@ -1,4 +1,5 @@
 require File.dirname(__FILE__) + "/../model/simulation.rb"
+require "pp"
 
 # Executable for running Kanban simulations
 #
@@ -30,6 +31,18 @@ class TextUi
   def trace(message)
     $stderr.puts("#{PROGRAM}:TRACE:#{message}") if @verbosity >= 3
   end
+end
+
+class EventSpewer
+  
+  def initialize(ui)
+    @ui = ui
+  end
+  
+  def update(event)
+    pp event
+  end
+  
 end
 
 class KanbanSimulator
@@ -75,14 +88,18 @@ class KanbanSimulator
         @ui.info("Step #{idx} = #{step.name}")
       }
 
-      # @ui.info("Initializing backlog...")
-      # @simulation.generate_to_backlog(@num_of_stories) do |work_item, idx|
-      #   work_item.priority = idx
-      #   work_item.estimated_points = WorkItem::Acceptable_Point_Values[rand(5)]
-      # end
-      # @simulation.work_items.each_with_index { |work_item, idx|
-      #   @ui.info("Story card \##{idx}: priority = #{work_item.priority}; estimate = #{work_item.estimated_points}")  
-      # }
+      @ui.info("Initializing backlog...")
+      @simulation.generate_to_backlog(@num_of_stories) do |work_item, idx|
+        work_item.priority = idx
+        work_item.estimated_points = WorkItem::Acceptable_Point_Values[rand(5)]
+      end
+      @simulation.work_items.each_with_index { |work_item, idx|
+        @ui.info("Work Item \##{idx}: estimate = #{work_item.estimated_points}")  
+      }
+      
+      @simulation.add_observer(EventSpewer.new(@ui))
+      @simulation.hardstop = 5
+      @simulation.run
   end
 end
 
