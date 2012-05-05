@@ -98,7 +98,7 @@ class KanbanSimulator
       }
       
       @simulation.add_observer(EventSpewer.new(@ui))
-      @simulation.hardstop = 5
+      # @simulation.hardstop = 5
       @simulation.run
   end
 end

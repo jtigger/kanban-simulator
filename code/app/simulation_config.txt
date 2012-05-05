@@ -5,13 +5,4 @@ Our workflow, "Kanban" is comprised of:
    and a "In Test" step
    and a "Done" step.
 
-The simulation should stop after 20 ticks.
-
-# where the "pull strategy" for "In Analysis" is "batch" where "batch size" is ().
-
-# Workflow spec:
-# We are using the "Kanban" workflow
-# where the "WIP limit" for "In Analysis" is 9
-#  and the "WIP limit" for "In Dev" is 4
-#  and the "WIP limit" for "In Test" is 2
-
+The simulation should stop after 5 ticks.
