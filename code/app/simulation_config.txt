@@ -1,8 +1,0 @@
-Our workflow, "Kanban" is comprised of:
-   a "Backlog" step,
-   a "In Analysis" step
-   a "In Dev" step
-   and a "In Test" step
-   and a "Done" step.
-
-The simulation should stop after 5 ticks.

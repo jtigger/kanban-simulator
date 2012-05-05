@@ -2,13 +2,6 @@ kanban-simulator
 
 Workflow simulator with specific configurations for a typical software development scenario.
 
-To execute, run:
-
-   $ ruby code/app/kanban_simulator.rb <number of stories to create>
-
-for example, to create a backlog of 20 stories, 
-
-   $ ruby code/app/kanban_simulator.rb 20
-
-You can configure the simulation by editing the configuration file:
-   $ $EDITOR code/app/simulation_config.txt
+Given a set of parameters, runs a step-by-step simulation of the workflow enabling
+students to develop a coarse feel for the common dynamics of these kinds of systems
+with the hope that they will translate this to their real world projects.
