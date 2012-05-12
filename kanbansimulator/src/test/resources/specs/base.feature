@@ -8,7 +8,8 @@ Feature: Run a simple Simulation
 		- there are four steps in the workflow,
 		- there are 10 iterations in the simulation,
 		- the capacity and batch size are as described in TOC_V2.xls, "Agile PMO (Just Say No)" tab.
-	so that I can identify where the constraints are in the simulated workflow system and anticipate when the work is going to be completed.
+	so that I can identify where the constraints are in the simulated workflow system and anticipate
+	        when the work is going to be completed.
 
 I know this is done when...
     Scenario: hard-coded configuration
