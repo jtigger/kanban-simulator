@@ -7,7 +7,7 @@ Feature: Run a simple Simulation
 	where:
 		- there are four steps in the workflow,
 		- there are 10 iterations in the simulation,
-		- the capacity and batch size are as described in TOC_V2.xls, "Agile PMO (Just Say No)" tab.
+		- the capacity and batch size are as described in TOC_V3.xls, "Agile PMO (Just Say No)" tab.
 	so that I can identify where the constraints are in the simulated workflow system and anticipate
 	        when the work is going to be completed.
 
@@ -21,5 +21,5 @@ I know this is done when...
     Scenario: 
        given 
        when I copy that data into the CFD spreadsheet,
-       then the CFD itself is identical to what is seen in the TOC_V2.xls, "Agile PMO (Just Say No)".
+       then the CFD itself is identical to what is seen in the TOC_V3.xls, "Agile PMO (Just Say No)".
 """
