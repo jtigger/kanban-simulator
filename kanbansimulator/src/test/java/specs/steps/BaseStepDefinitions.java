@@ -21,13 +21,18 @@ public class BaseStepDefinitions {
 
 	@Given("^we hard-code the Agile PMO simulation configuration$")
 	public void we_hard_code_the_Agile_PMO_simulation_configuration() {
-		stimulator = new Stimulator();
+		getStimulator();
+	}
+	
+	@Given("^the batch size is (\\d+) stories.$")
+	public void the_batch_size_is_stories(int batchSize) {
+		getStimulator().setBatchSize(batchSize);
 	}
 
 	@When("^the simulator completes a run$")
 	public void the_simulator_completes_a_run() {
 		resultsFile = new File("output.csv");
-		stimulator.run(resultsFile);
+		getStimulator().run(resultsFile);
 	}
 
 	@Then("^it generates a .csv file containing the iteration-by-iteration results \\(exactly as seen in the Agile PMO tab of the spreadsheet\\); with column titles.$")
@@ -53,4 +58,12 @@ public class BaseStepDefinitions {
 			throw new RuntimeException(e);
 		}
 	}
+
+	private Stimulator getStimulator() {
+		if(stimulator == null) {
+			stimulator = new Stimulator();
+		}
+		return stimulator;
+	}
+
 }

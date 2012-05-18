@@ -14,6 +14,7 @@ Feature: Run a simple Simulation
 I know this is done when...
     Scenario: hard-coded configuration for Agile PMO
       Given we hard-code the Agile PMO simulation configuration
+        And the batch size is 11 stories.
       When the simulator completes a run
       Then it generates a .csv file containing the iteration-by-iteration results (exactly as seen in the Agile PMO tab of the spreadsheet); with column titles.
 

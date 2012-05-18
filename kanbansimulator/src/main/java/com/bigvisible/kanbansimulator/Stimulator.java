@@ -5,9 +5,10 @@ import java.io.FileWriter;
 import java.io.IOException;
 
 public class Stimulator {
+	
+	private int batchSize = 11;
 
 	public void run(File resultsFile) {
-		int batchSize = 11;
 	    int capacityOfBA = 13;
 	    
 	    IterationResult firstIteration = new IterationResult();
@@ -25,6 +26,10 @@ public class Stimulator {
 			throw new RuntimeException(e);
 		}
 		
+	}
+
+	public void setBatchSize(int batchSize) {
+		this.batchSize = batchSize;
 	}
 
 }
