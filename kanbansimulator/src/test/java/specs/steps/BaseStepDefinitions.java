@@ -32,7 +32,8 @@ public class BaseStepDefinitions {
 
 	@Then("^it generates a .csv file containing the iteration-by-iteration results \\(exactly as seen in the Agile PMO tab of the spreadsheet\\); with column titles.$")
 	public void it_generates_a_csv_file_containing_the_iteration_by_iteration_results_exactly_as_seen_in_the_Agile_PMO_tab_of_the_spreadsheet_with_column_titles() {
-		String expectedFirstLine = "11,13,11,0";
+		String expectedFirstLine = "1,11,13,11,0";
+		
 		String contents;
 		contents = readCSVFileContents();
 		
