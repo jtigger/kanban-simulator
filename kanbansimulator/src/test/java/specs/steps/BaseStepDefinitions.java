@@ -1,12 +1,10 @@
 package specs.steps;
 
 
-import static org.hamcrest.Matchers.startsWith;
-import static org.junit.Assert.assertThat;
-
 import java.io.File;
 import java.io.FileReader;
 import java.nio.CharBuffer;
+import java.util.List;
 
 import com.bigvisible.kanbansimulator.Stimulator;
 
@@ -54,15 +52,19 @@ public class BaseStepDefinitions {
 		resultsFile = new File("output.csv");
 		getStimulator().run(resultsFile);
 	}
+	
+	@Then("^it generates a .csv file containing the iteration-by-iteration results with the following values:$")
+	public void it_generates_a_csv_file_containing_the_iteration_by_iteration_results_with_the_following_values(List<IterationResultExample> results) {
+		System.out.println(results.iterator().next().bACapacity);
 
-	@Then("^it generates a .csv file containing the iteration-by-iteration results \\(exactly as seen in the Agile PMO tab of the spreadsheet\\); with column titles$")
-	public void it_generates_a_csv_file_containing_the_iteration_by_iteration_results_exactly_as_seen_in_the_Agile_PMO_tab_of_the_spreadsheet_with_column_titles() {
-		String expectedFirstLine = "1,11,13,11,0";
+		// TODO: hmmmm, should we be comparing the results of the CSV file?  or should we
+		// be testing the business logic by comparing IterationResultExample instances with
+		// IterationResults ?
 		
 		String contents;
 		contents = readCSVFileContents();
-		
-		assertThat(contents, startsWith(expectedFirstLine));
+
+	    throw new PendingException();
 	}
 
 	private String readCSVFileContents() {
