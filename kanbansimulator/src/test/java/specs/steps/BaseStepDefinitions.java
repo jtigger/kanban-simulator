@@ -53,8 +53,8 @@ public class BaseStepDefinitions {
 		getStimulator().run(resultsFile);
 	}
 	
-	@Then("^it generates a .csv file containing the iteration-by-iteration results with the following values:$")
-	public void it_generates_a_csv_file_containing_the_iteration_by_iteration_results_with_the_following_values(List<IterationResultExample> results) {
+	@Then("^the simulator will have generated a .csv file$")
+	public void the_simulator_will_have_generated_a_csv_file(List<IterationResultExample> results) {
 		System.out.println(results.iterator().next().bACapacity);
 
 		// TODO: hmmmm, should we be comparing the results of the CSV file?  or should we
@@ -67,6 +67,26 @@ public class BaseStepDefinitions {
 	    throw new PendingException();
 	}
 
+	@Then("^the simulator will have generated the following results:$")
+	public void the_simulator_will_have_generated_the_following_results(List<IterationResultExample> results) {
+	    // Express the Regexp above with the code you wish you had
+	    // For automatic conversion, change DataTable to List<YourType>
+	    throw new PendingException();
+	}
+
+	@Then("^the simulator generates a .csv file$")
+	public void the_simulator_generates_a_csv_file() {
+	    // Express the Regexp above with the code you wish you had
+	    throw new PendingException();
+	}
+
+	@Then("^the .csv file includes the following results:$")
+	public void the_csv_file_includes_the_following_results(List<IterationResultExample> results) {
+	    // Express the Regexp above with the code you wish you had
+	    // For automatic conversion, change DataTable to List<YourType>
+	    throw new PendingException();
+	}
+	
 	private String readCSVFileContents() {
 		try {
 			FileReader file = new FileReader(resultsFile);
