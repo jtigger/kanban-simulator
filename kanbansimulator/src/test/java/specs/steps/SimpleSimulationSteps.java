@@ -6,6 +6,8 @@ import java.io.FileReader;
 import java.nio.CharBuffer;
 import java.util.List;
 
+import specs.IterationResultExample;
+
 import com.bigvisible.kanbansimulator.Stimulator;
 
 import cucumber.annotation.en.Given;
@@ -13,7 +15,7 @@ import cucumber.annotation.en.Then;
 import cucumber.annotation.en.When;
 import cucumber.runtime.PendingException;
 
-public class BaseStepDefinitions {
+public class SimpleSimulationSteps {
 	private Stimulator stimulator;
 	private File resultsFile;
 	

@@ -1,4 +1,4 @@
-package specs.steps;
+package specs;
 
 public class IterationResultExample {
     public int iteration;
