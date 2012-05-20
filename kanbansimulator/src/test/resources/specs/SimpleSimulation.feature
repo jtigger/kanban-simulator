@@ -24,8 +24,6 @@ I know this is done when...
         |         1 |          11  |          13 |           11 |                     0 |           12 |            11 |                      0 |               12 |                11 |                          0 |          10 |           10 |                     1 |              10 |         
         |         9 |           0  |          13 |            0 |                     0 |           12 |             0 |                      0 |               12 |                 0 |                          0 |          10 |            8 |                     0 |              88 |         
 
-    # TODO: hook-up and compare these values.
-       
        
     Scenario: Locally Optimized for BA
       Given the batch size is 13 stories
@@ -35,10 +33,10 @@ I know this is done when...
         |         1 |          13  |          13 |           13 |                     0 |           12 |            12 |                      1 |               12 |                12 |                          0 |          10 |           10 |                     2 |              10 |         
         |         9 |           0  |          13 |            0 |                     0 |           12 |             0 |                      0 |               12 |                 0 |                          0 |          10 |            8 |                     0 |              88 |         
 
-    # TODO: hook-up and compare these values.
-
+    
     Scenario: Test .csv file creation for Agile PMO
       Given the batch size is 11 stories
+      #  And the desired output is comma-separated values
       When the simulator completes a run
       Then the simulator generates a .csv file 
       And the .csv file includes the following results:

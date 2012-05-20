@@ -1,5 +1,7 @@
 package specs.steps;
 
+import static org.hamcrest.Matchers.isIn;
+import static org.junit.Assert.assertThat;
 
 import java.io.File;
 import java.io.FileReader;
@@ -51,17 +53,25 @@ public class SimpleSimulationSteps {
 
 	@When("^the simulator completes a run$")
 	public void the_simulator_completes_a_run() {
-		resultsFile = new File("output.csv");
-		getStimulator().run(resultsFile);
+		// resultsFile = new File("output.csv");
+		// getStimulator().run(resultsFile);
+		getStimulator().run();
 	}
-	
+
+	@Then("^the simulator will have generated the following results:$")
+	public void the_simulator_will_have_generated_the_following_results(List<IterationResultExample> results) {
+	    List<IterationResultExample> actualResults = IterationResultExample.asExample(getStimulator().results());
+		
+		for (IterationResultExample iterationResultExample : results) {
+			// assertThat("some test", iterationResultExample, isIn(actualResults));
+		}
+
+		throw new PendingException();
+	}
+
 	@Then("^the simulator will have generated a .csv file$")
 	public void the_simulator_will_have_generated_a_csv_file(List<IterationResultExample> results) {
 		System.out.println(results.iterator().next().bACapacity);
-
-		// TODO: hmmmm, should we be comparing the results of the CSV file?  or should we
-		// be testing the business logic by comparing IterationResultExample instances with
-		// IterationResults ?
 		
 		String contents;
 		contents = readCSVFileContents();
@@ -69,15 +79,10 @@ public class SimpleSimulationSteps {
 	    throw new PendingException();
 	}
 
-	@Then("^the simulator will have generated the following results:$")
-	public void the_simulator_will_have_generated_the_following_results(List<IterationResultExample> results) {
-	    // Express the Regexp above with the code you wish you had
-	    // For automatic conversion, change DataTable to List<YourType>
-	    throw new PendingException();
-	}
 
 	@Then("^the simulator generates a .csv file$")
 	public void the_simulator_generates_a_csv_file() {
+
 	    // Express the Regexp above with the code you wish you had
 	    throw new PendingException();
 	}

@@ -1,8 +1,7 @@
 package com.bigvisible.kanbansimulator;
 
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.util.LinkedList;
+import java.util.List;
 
 public class Stimulator {
 	
@@ -11,14 +10,20 @@ public class Stimulator {
 	private int developmentCapacity;
 	private int webDevelopmentCapacity;
 	private int qualityAssuranceCapacity;
+	private List<IterationResult> results = new LinkedList<IterationResult>();
 
-	public void run(File resultsFile) {
+	public void run(/*File resultsFile */) {
 	    IterationResult firstIteration = new IterationResult();
 	    firstIteration.setIterationNumber(1);
 	    firstIteration.setPutIntoPlay(batchSize);
 	    firstIteration.setCapacityOfBA(businessAnalystCapacity);
+	    firstIteration.setCapacityOfDev(developmentCapacity);
+	    firstIteration.setCapacityOfWebDev(webDevelopmentCapacity);
+	    firstIteration.setCapacityOfQA(qualityAssuranceCapacity);
 	    firstIteration.run();
-		
+	    
+	    results.add(firstIteration);
+		/*
 		try {
 			FileWriter file = new FileWriter(resultsFile);
 			file.write(firstIteration.toString());
@@ -27,6 +32,7 @@ public class Stimulator {
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
+		*/
 	}
 
 	public void setBatchSize(int batchSize) {
@@ -47,6 +53,10 @@ public class Stimulator {
 
 	public void setQualityAssuranceCapacity(int qualityAssuranceCapacity) {
 		this.qualityAssuranceCapacity = qualityAssuranceCapacity;
+	}
+
+	public List<IterationResult> results() {
+		return results;
 	}
 
 }
