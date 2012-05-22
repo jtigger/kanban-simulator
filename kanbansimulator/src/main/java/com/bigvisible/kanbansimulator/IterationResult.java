@@ -7,9 +7,6 @@ import java.util.List;
 public class IterationResult {
 	private int iterationNumber;
 	private int putIntoPlay;
-	private int capacityOfDev;
-	private int completedByDev;
-	private int remainingInDevQueue;
 	private int capacityOfWebDev;
 	private int completedByWebDev;
 	private int remainingInWebDevQueue;
@@ -79,11 +76,12 @@ public class IterationResult {
 		ba.setCompleted(Math.min(ba.getQueued(), ba.getCapacity()));
 		ba.setQueued(ba.getQueued() - ba.getCompleted());
 
-		remainingInDevQueue += ba.getCompleted(); 
-		completedByDev = Math.min(remainingInDevQueue, capacityOfDev);
-		remainingInDevQueue -= completedByDev;
-
-		remainingInWebDevQueue += completedByDev;
+		WorkflowStep dev = getStep("Dev");
+		dev.setQueued(dev.getQueued()+ba.getCompleted());
+		dev.setCompleted(Math.min(dev.getQueued(), dev.getCapacity()));
+		dev.setQueued(dev.getQueued() - dev.getCompleted());
+		
+		remainingInWebDevQueue += dev.getCompleted();
 		completedByWebDev = Math.min(remainingInWebDevQueue, capacityOfWebDev);
 		remainingInWebDevQueue -= completedByWebDev;
 
@@ -98,11 +96,11 @@ public class IterationResult {
 		IterationResult nextIteration = new IterationResult();
 		nextIteration.iterationNumber = iterationNumber+1;
 		nextIteration.setCapacityOfBA(getStep("BA").getCapacity());
-		nextIteration.setCapacityOfDev(capacityOfDev);
+		nextIteration.setCapacityOfDev(getStep("Dev").getCapacity());
 		nextIteration.setCapacityOfWebDev(capacityOfWebDev);
 		nextIteration.setCapacityOfQA(capacityOfQA);
 		nextIteration.setRemainingInBAQueue(getStep("BA").getQueued());
-		nextIteration.remainingInDevQueue = remainingInDevQueue;
+		nextIteration.getStep("Dev").setQueued(getStep("Dev").getQueued());
 		nextIteration.remainingInWebDevQueue = remainingInWebDevQueue;
 		nextIteration.remainingInQAQueue = remainingInQAQueue;
 		nextIteration.totalCompleted = totalCompleted;
@@ -143,19 +141,19 @@ public class IterationResult {
 	}
 
 	public int getCapacityOfDev() {
-		return capacityOfDev;
+		return getStep("Dev").getCapacity();
 	}
 
 	public void setCapacityOfDev(int capacityOfDev) {
-		this.capacityOfDev = capacityOfDev;
+		getStep("Dev").setCapacity(capacityOfDev);
 	}
 
 	public int getCompletedByDev() {
-		return completedByDev;
+		return getStep("Dev").getCompleted();
 	}
 
 	public int getRemainingInDevQueue() {
-		return remainingInDevQueue;
+		return getStep("Dev").getQueued();
 	}
 
 	public int getCapacityOfWebDev() {
@@ -175,11 +173,11 @@ public class IterationResult {
 	}
 
 	public void setCompletedByDev(int completedByDev) {
-		this.completedByDev = completedByDev;
+		getStep("Dev").setCompleted(completedByDev);
 	}
 
 	public void setRemainingInDevQueue(int remainingInDevQueue) {
-		this.remainingInDevQueue = remainingInDevQueue;
+		getStep("Dev").setQueued(remainingInDevQueue);
 	}
 
 	public void setCompletedByWebDev(int completedByWebDev) {
