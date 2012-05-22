@@ -46,6 +46,11 @@ public class SimpleSimulationSteps {
 		getStimulator().setQualityAssuranceCapacity(qualityAssuranceCapacity);
 	}
 
+	@Given("^the backlog starts with (\\d+) stories$")
+	public void the_backlog_starts_with_stories(int numberOfStories) {
+		getStimulator().addStories(numberOfStories);
+	}
+
 	@Given("^the batch size is (\\d+) stories$")
 	public void the_batch_size_is_stories(int batchSize) {
 		getStimulator().setBatchSize(batchSize);
@@ -63,10 +68,8 @@ public class SimpleSimulationSteps {
 	    List<IterationResultExample> actualResults = IterationResultExample.asExample(getStimulator().results());
 		
 		for (IterationResultExample iterationResultExample : results) {
-			// assertThat("some test", iterationResultExample, isIn(actualResults));
+			 assertThat("some test", iterationResultExample, isIn(actualResults));
 		}
-
-		throw new PendingException();
 	}
 
 	@Then("^the simulator will have generated a .csv file$")

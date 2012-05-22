@@ -11,6 +11,7 @@ I know this is done when...
 
     Background: (This background defines what is a 'simple' simulation)
     Given the workflow has 4 steps
+      And the backlog starts with 88 stories
       And the BA capacity is 13 stories per iteration
       And the Dev capacity is 12 stories per iteration
       And the Web Dev capacity is 12 stories per iteration

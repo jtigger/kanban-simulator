@@ -18,19 +18,39 @@ public class IterationResult {
 	private int totalCompleted;
 
 	public void run() {
-		completedByBA = Math.min(putIntoPlay, capacityOfBA);
-		remainingInBAQueue = putIntoPlay - completedByBA;
+		remainingInBAQueue += putIntoPlay;
+		completedByBA = Math.min(remainingInBAQueue, capacityOfBA);
+		remainingInBAQueue -= completedByBA;
 
-		completedByDev = Math.min(completedByBA, capacityOfDev);
-		remainingInDevQueue = completedByBA - completedByDev;
+		remainingInDevQueue += completedByBA; 
+		completedByDev = Math.min(remainingInDevQueue, capacityOfDev);
+		remainingInDevQueue -= completedByDev;
 
-		completedByWebDev = Math.min(completedByDev, capacityOfWebDev);
-		remainingInWebDevQueue = completedByDev - completedByWebDev;
+		remainingInWebDevQueue += completedByDev;
+		completedByWebDev = Math.min(remainingInWebDevQueue, capacityOfWebDev);
+		remainingInWebDevQueue -= completedByWebDev;
 
-		completedByQA = Math.min(completedByWebDev, capacityOfQA);
-		remainingInQAQueue = completedByWebDev - completedByQA;
+		remainingInQAQueue += completedByWebDev;
+		completedByQA = Math.min(remainingInQAQueue, capacityOfQA);
+		remainingInQAQueue -= completedByQA;
 		
-		totalCompleted = completedByQA;
+		totalCompleted += completedByQA;
+	}
+
+	public IterationResult nextIteration() {
+		IterationResult nextIteration = new IterationResult();
+		nextIteration.iterationNumber = iterationNumber+1;
+		nextIteration.setCapacityOfBA(capacityOfBA);
+		nextIteration.setCapacityOfDev(capacityOfDev);
+		nextIteration.setCapacityOfWebDev(capacityOfWebDev);
+		nextIteration.setCapacityOfQA(capacityOfQA);
+		nextIteration.remainingInBAQueue = remainingInBAQueue;
+		nextIteration.remainingInDevQueue = remainingInDevQueue;
+		nextIteration.remainingInWebDevQueue = remainingInWebDevQueue;
+		nextIteration.remainingInQAQueue = remainingInQAQueue;
+		nextIteration.totalCompleted = totalCompleted;
+		
+		return nextIteration;
 	}
 
 	@Override
