@@ -8,7 +8,7 @@ public class IterationResult {
 	private int iterationNumber;
 	private int putIntoPlay;
 	private int totalCompleted;
-	
+
 	private List<WorkflowStep> steps;
 
 	private static class WorkflowStep {
@@ -16,37 +16,44 @@ public class IterationResult {
 		private int capacity;
 		private int completed;
 		private int queued;
-		
+
 		public WorkflowStep(String description) {
 			setDescription(description);
 		}
-		
+
 		public String getDescription() {
 			return description;
 		}
+
 		public void setDescription(String description) {
 			this.description = description;
 		}
+
 		public int getCapacity() {
 			return capacity;
 		}
+
 		public void setCapacity(int capacity) {
 			this.capacity = capacity;
 		}
+
 		public int getCompleted() {
 			return completed;
 		}
+
 		public void setCompleted(int completed) {
 			this.completed = completed;
 		}
+
 		public int getQueued() {
 			return queued;
 		}
+
 		public void setQueued(int queued) {
 			this.queued = queued;
 		}
 	}
-	
+
 	public IterationResult() {
 		steps = new LinkedList<WorkflowStep>();
 		steps.add(new WorkflowStep("BA"));
@@ -54,53 +61,41 @@ public class IterationResult {
 		steps.add(new WorkflowStep("WebDev"));
 		steps.add(new WorkflowStep("QA"));
 	}
-	
+
 	private WorkflowStep getStep(String description) {
 		for (WorkflowStep step : steps) {
-			if(step.getDescription().equalsIgnoreCase(description)) {
+			if (step.getDescription().equalsIgnoreCase(description)) {
 				return step;
 			}
 		}
 		return null;
 	}
-	
+
 	public void run() {
-		WorkflowStep ba = getStep("BA");
-		ba.setQueued(ba.getQueued()+putIntoPlay);
-		ba.setCompleted(Math.min(ba.getQueued(), ba.getCapacity()));
-		ba.setQueued(ba.getQueued() - ba.getCompleted());
-
-		WorkflowStep dev = getStep("Dev");
-		dev.setQueued(dev.getQueued()+ba.getCompleted());
-		dev.setCompleted(Math.min(dev.getQueued(), dev.getCapacity()));
-		dev.setQueued(dev.getQueued() - dev.getCompleted());
-		
-		WorkflowStep webDev = getStep("WebDev");
-		webDev.setQueued(webDev.getQueued()+dev.getCompleted());
-		webDev.setCompleted(Math.min(webDev.getQueued(), webDev.getCapacity()));
-		webDev.setQueued(webDev.getQueued() - webDev.getCompleted());
-		
-		WorkflowStep qa = getStep("QA");
-		qa.setQueued(qa.getQueued()+webDev.getCompleted());
-		qa.setCompleted(Math.min(qa.getQueued(), qa.getCapacity()));
-		qa.setQueued(qa.getQueued() - qa.getCompleted());
-
-		totalCompleted += qa.getCompleted();
+		int inputFromPreviousStep = putIntoPlay;
+		for (WorkflowStep step : steps) {
+			step.setQueued(step.getQueued() + inputFromPreviousStep);
+			step.setCompleted(Math.min(step.getQueued(), step.getCapacity()));
+			step.setQueued(step.getQueued() - step.getCompleted());
+			inputFromPreviousStep = step.getCompleted();
+		}
+		totalCompleted += inputFromPreviousStep;
 	}
 
 	public IterationResult nextIteration() {
 		IterationResult nextIteration = new IterationResult();
-		nextIteration.iterationNumber = iterationNumber+1;
+		nextIteration.iterationNumber = iterationNumber + 1;
 		nextIteration.setCapacityOfBA(getStep("BA").getCapacity());
 		nextIteration.setCapacityOfDev(getStep("Dev").getCapacity());
 		nextIteration.setCapacityOfWebDev(getStep("WebDev").getCapacity());
 		nextIteration.setCapacityOfQA(getStep("QA").getCapacity());
 		nextIteration.setRemainingInBAQueue(getStep("BA").getQueued());
 		nextIteration.getStep("Dev").setQueued(getStep("Dev").getQueued());
-		nextIteration.getStep("WebDev").setQueued(getStep("WebDev").getQueued());
+		nextIteration.getStep("WebDev")
+				.setQueued(getStep("WebDev").getQueued());
 		nextIteration.getStep("QA").setQueued(getStep("QA").getQueued());
 		nextIteration.totalCompleted = totalCompleted;
-		
+
 		return nextIteration;
 	}
 
