@@ -85,8 +85,9 @@ public class IterationResult {
 		IterationResult nextIteration = new IterationResult();
 		nextIteration.iterationNumber = iterationNumber + 1;
 		for (WorkflowStep step : steps) {
-			WorkflowStep sameStepInNextIteration = nextIteration.getStep(step.getDescription());
-			
+			WorkflowStep sameStepInNextIteration = nextIteration.getStep(step
+					.getDescription());
+
 			sameStepInNextIteration.setCapacity(step.getCapacity());
 			sameStepInNextIteration.setQueued(step.getQueued());
 		}
@@ -209,5 +210,22 @@ public class IterationResult {
 
 	public int getTotalCompleted() {
 		return totalCompleted;
+	}
+
+	public String toCSVString() {
+		StringBuffer csv = new StringBuffer(steps.size() * 10);  // why not avoid reallocation if we can? :)
+		
+		csv.append(getIterationNumber()+", ");
+		csv.append(getPutIntoPlay()+", ");
+		
+		for (WorkflowStep step : steps) {
+			csv.append(step.getCapacity()+", ");
+			csv.append(step.getCompleted()+", ");
+			csv.append(step.getQueued()+", ");
+		}
+		
+		csv.append(getTotalCompleted());
+
+		return csv.toString();
 	}
 }

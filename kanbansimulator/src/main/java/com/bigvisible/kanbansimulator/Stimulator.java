@@ -1,5 +1,8 @@
 package com.bigvisible.kanbansimulator;
 
+import java.io.IOException;
+import java.io.OutputStream;
+import java.io.PrintWriter;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -14,12 +17,17 @@ public class Stimulator {
 	private int qualityAssuranceCapacity = 1;
 	private List<IterationResult> results = new LinkedList<IterationResult>();
 
-	public void run(/*File resultsFile */) {
+	public void run(OutputStream rawOutputStream) {
+		if(rawOutputStream == null) {
+			rawOutputStream = new NullOutputStream();
+		}
+		PrintWriter output = new PrintWriter(rawOutputStream);
+		
 		int iterationNumber = 1;
 		storiesUnplayed = totalStories;
 	    IterationResult iteration = new IterationResult();
 	    iteration.setIterationNumber(iterationNumber);
-
+	    
 		while(storiesCompleted < totalStories) {
 		    iteration.setPutIntoPlay(Math.min(storiesUnplayed, batchSize));
 		    iteration.setCapacityOfBA(businessAnalystCapacity);
@@ -31,18 +39,11 @@ public class Stimulator {
 		    results.add(iteration);
 		    storiesUnplayed -= iteration.getPutIntoPlay();
 		    storiesCompleted = iteration.getTotalCompleted();
+		    
+		    output.print(iteration.toCSVString());
+		    
 		    iteration = iteration.nextIteration();
 		}
-		/*
-		try {
-			FileWriter file = new FileWriter(resultsFile);
-			file.write(firstIteration.toString());
-			file.flush();
-			file.close();
-		} catch (Exception e) {
-			throw new RuntimeException(e);
-		}
-		*/
 	}
 
 	public void setBatchSize(int batchSize) {
@@ -76,6 +77,17 @@ public class Stimulator {
 
 	public int getStoriesCompleted() {
 		return storiesCompleted;
+	}
+	
+	/**
+	 * OutputStream that simply sinks all data given to it.
+	 */
+	public static class NullOutputStream extends OutputStream {
+		@Override
+		public void write(int b) throws IOException {
+			// this is where bytes go to die.
+		}
+
 	}
 
 }

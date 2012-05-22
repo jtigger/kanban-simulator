@@ -37,12 +37,10 @@ I know this is done when...
     
     Scenario: Test .csv file creation for Agile PMO
       Given the batch size is 11 stories
-      #  And the desired output is comma-separated values
+        And the desired output is comma-separated values
       When the simulator completes a run
       Then the simulator generates a .csv file 
       And the .csv file includes the following results:
         | Iteration | Put in Play  | BA Capacity | BA Completed | BA Remaining in Queue | Dev Capacity | Dev Completed | Dev Remaining in Queue | Web Dev Capacity | Web Dev Completed | Web Dev Remaining in Queue | QA Capacity | QA Completed | QA Remaining in Queue | Total Completed |
         |         1 |          11  |          13 |           11 |                     0 |           12 |            11 |                      0 |               12 |                11 |                          0 |          10 |           10 |                     1 |              10 |         
-
-    # TODO: hook-up and compare these values.
     

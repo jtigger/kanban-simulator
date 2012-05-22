@@ -10,7 +10,7 @@ public class StimulatorTest {
 	public void simulator_runs_until_all_stories_are_finished() {
 		Stimulator stimuator = new Stimulator();
 		stimuator.addStories(88);
-		stimuator.run();
+		stimuator.run(null);
 		
 		assertEquals(88, stimuator.getStoriesCompleted());
 	}
