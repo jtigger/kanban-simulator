@@ -85,15 +85,12 @@ public class IterationResult {
 	public IterationResult nextIteration() {
 		IterationResult nextIteration = new IterationResult();
 		nextIteration.iterationNumber = iterationNumber + 1;
-		nextIteration.setCapacityOfBA(getStep("BA").getCapacity());
-		nextIteration.setCapacityOfDev(getStep("Dev").getCapacity());
-		nextIteration.setCapacityOfWebDev(getStep("WebDev").getCapacity());
-		nextIteration.setCapacityOfQA(getStep("QA").getCapacity());
-		nextIteration.setRemainingInBAQueue(getStep("BA").getQueued());
-		nextIteration.getStep("Dev").setQueued(getStep("Dev").getQueued());
-		nextIteration.getStep("WebDev")
-				.setQueued(getStep("WebDev").getQueued());
-		nextIteration.getStep("QA").setQueued(getStep("QA").getQueued());
+		for (WorkflowStep step : steps) {
+			WorkflowStep sameStepInNextIteration = nextIteration.getStep(step.getDescription());
+			
+			sameStepInNextIteration.setCapacity(step.getCapacity());
+			sameStepInNextIteration.setQueued(step.getQueued());
+		}
 		nextIteration.totalCompleted = totalCompleted;
 
 		return nextIteration;
