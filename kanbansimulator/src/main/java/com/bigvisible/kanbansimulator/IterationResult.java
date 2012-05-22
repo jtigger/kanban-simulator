@@ -1,11 +1,12 @@
 package com.bigvisible.kanbansimulator;
 
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+
 public class IterationResult {
 	private int iterationNumber;
 	private int putIntoPlay;
-	private int capacityOfBA;
-	private int completedByBA;
-	private int remainingInBAQueue;
 	private int capacityOfDev;
 	private int completedByDev;
 	private int remainingInDevQueue;
@@ -16,13 +17,69 @@ public class IterationResult {
 	private int completedByQA;
 	private int remainingInQAQueue;
 	private int totalCompleted;
+	
+	private List<WorkflowStep> steps;
 
+	private static class WorkflowStep {
+		private String description;
+		private int capacity;
+		private int completed;
+		private int queued;
+		
+		public WorkflowStep(String description) {
+			setDescription(description);
+		}
+		
+		public String getDescription() {
+			return description;
+		}
+		public void setDescription(String description) {
+			this.description = description;
+		}
+		public int getCapacity() {
+			return capacity;
+		}
+		public void setCapacity(int capacity) {
+			this.capacity = capacity;
+		}
+		public int getCompleted() {
+			return completed;
+		}
+		public void setCompleted(int completed) {
+			this.completed = completed;
+		}
+		public int getQueued() {
+			return queued;
+		}
+		public void setQueued(int queued) {
+			this.queued = queued;
+		}
+	}
+	
+	public IterationResult() {
+		steps = new LinkedList<WorkflowStep>();
+		steps.add(new WorkflowStep("BA"));
+		steps.add(new WorkflowStep("Dev"));
+		steps.add(new WorkflowStep("WebDev"));
+		steps.add(new WorkflowStep("QA"));
+	}
+	
+	private WorkflowStep getStep(String description) {
+		for (WorkflowStep step : steps) {
+			if(step.getDescription().equalsIgnoreCase(description)) {
+				return step;
+			}
+		}
+		return null;
+	}
+	
 	public void run() {
-		remainingInBAQueue += putIntoPlay;
-		completedByBA = Math.min(remainingInBAQueue, capacityOfBA);
-		remainingInBAQueue -= completedByBA;
+		WorkflowStep ba = getStep("BA");
+		ba.setQueued(ba.getQueued()+putIntoPlay);
+		ba.setCompleted(Math.min(ba.getQueued(), ba.getCapacity()));
+		ba.setQueued(ba.getQueued() - ba.getCompleted());
 
-		remainingInDevQueue += completedByBA; 
+		remainingInDevQueue += ba.getCompleted(); 
 		completedByDev = Math.min(remainingInDevQueue, capacityOfDev);
 		remainingInDevQueue -= completedByDev;
 
@@ -40,23 +97,17 @@ public class IterationResult {
 	public IterationResult nextIteration() {
 		IterationResult nextIteration = new IterationResult();
 		nextIteration.iterationNumber = iterationNumber+1;
-		nextIteration.setCapacityOfBA(capacityOfBA);
+		nextIteration.setCapacityOfBA(getStep("BA").getCapacity());
 		nextIteration.setCapacityOfDev(capacityOfDev);
 		nextIteration.setCapacityOfWebDev(capacityOfWebDev);
 		nextIteration.setCapacityOfQA(capacityOfQA);
-		nextIteration.remainingInBAQueue = remainingInBAQueue;
+		nextIteration.setRemainingInBAQueue(getStep("BA").getQueued());
 		nextIteration.remainingInDevQueue = remainingInDevQueue;
 		nextIteration.remainingInWebDevQueue = remainingInWebDevQueue;
 		nextIteration.remainingInQAQueue = remainingInQAQueue;
 		nextIteration.totalCompleted = totalCompleted;
 		
 		return nextIteration;
-	}
-
-	@Override
-	public String toString() {
-		return "" + iterationNumber + "," + putIntoPlay + "," + capacityOfBA
-				+ "," + completedByBA + "," + remainingInBAQueue;
 	}
 
 	public int getIterationNumber() {
@@ -76,19 +127,19 @@ public class IterationResult {
 	}
 
 	public int getCapacityOfBA() {
-		return capacityOfBA;
+		return getStep("BA").getCapacity();
 	}
 
 	public void setCapacityOfBA(int capacityOfBA) {
-		this.capacityOfBA = capacityOfBA;
+		getStep("BA").setCapacity(capacityOfBA);
 	}
 
 	public int getCompletedByBA() {
-		return completedByBA;
+		return getStep("BA").getCompleted();
 	}
 
 	public int getRemainingInBAQueue() {
-		return remainingInBAQueue;
+		return getStep("BA").getQueued();
 	}
 
 	public int getCapacityOfDev() {
@@ -97,7 +148,6 @@ public class IterationResult {
 
 	public void setCapacityOfDev(int capacityOfDev) {
 		this.capacityOfDev = capacityOfDev;
-
 	}
 
 	public int getCompletedByDev() {
@@ -117,11 +167,11 @@ public class IterationResult {
 	}
 
 	public void setCompletedByBA(int completedByBA) {
-		this.completedByBA = completedByBA;
+		getStep("BA").setCompleted(completedByBA);
 	}
 
 	public void setRemainingInBAQueue(int remainingInBAQueue) {
-		this.remainingInBAQueue = remainingInBAQueue;
+		getStep("BA").setQueued(remainingInBAQueue);
 	}
 
 	public void setCompletedByDev(int completedByDev) {
