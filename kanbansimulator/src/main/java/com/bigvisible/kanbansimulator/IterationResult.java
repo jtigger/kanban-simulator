@@ -7,12 +7,6 @@ import java.util.List;
 public class IterationResult {
 	private int iterationNumber;
 	private int putIntoPlay;
-	private int capacityOfWebDev;
-	private int completedByWebDev;
-	private int remainingInWebDevQueue;
-	private int capacityOfQA;
-	private int completedByQA;
-	private int remainingInQAQueue;
 	private int totalCompleted;
 	
 	private List<WorkflowStep> steps;
@@ -81,15 +75,17 @@ public class IterationResult {
 		dev.setCompleted(Math.min(dev.getQueued(), dev.getCapacity()));
 		dev.setQueued(dev.getQueued() - dev.getCompleted());
 		
-		remainingInWebDevQueue += dev.getCompleted();
-		completedByWebDev = Math.min(remainingInWebDevQueue, capacityOfWebDev);
-		remainingInWebDevQueue -= completedByWebDev;
-
-		remainingInQAQueue += completedByWebDev;
-		completedByQA = Math.min(remainingInQAQueue, capacityOfQA);
-		remainingInQAQueue -= completedByQA;
+		WorkflowStep webDev = getStep("WebDev");
+		webDev.setQueued(webDev.getQueued()+dev.getCompleted());
+		webDev.setCompleted(Math.min(webDev.getQueued(), webDev.getCapacity()));
+		webDev.setQueued(webDev.getQueued() - webDev.getCompleted());
 		
-		totalCompleted += completedByQA;
+		WorkflowStep qa = getStep("QA");
+		qa.setQueued(qa.getQueued()+webDev.getCompleted());
+		qa.setCompleted(Math.min(qa.getQueued(), qa.getCapacity()));
+		qa.setQueued(qa.getQueued() - qa.getCompleted());
+
+		totalCompleted += qa.getCompleted();
 	}
 
 	public IterationResult nextIteration() {
@@ -97,12 +93,12 @@ public class IterationResult {
 		nextIteration.iterationNumber = iterationNumber+1;
 		nextIteration.setCapacityOfBA(getStep("BA").getCapacity());
 		nextIteration.setCapacityOfDev(getStep("Dev").getCapacity());
-		nextIteration.setCapacityOfWebDev(capacityOfWebDev);
-		nextIteration.setCapacityOfQA(capacityOfQA);
+		nextIteration.setCapacityOfWebDev(getStep("WebDev").getCapacity());
+		nextIteration.setCapacityOfQA(getStep("QA").getCapacity());
 		nextIteration.setRemainingInBAQueue(getStep("BA").getQueued());
 		nextIteration.getStep("Dev").setQueued(getStep("Dev").getQueued());
-		nextIteration.remainingInWebDevQueue = remainingInWebDevQueue;
-		nextIteration.remainingInQAQueue = remainingInQAQueue;
+		nextIteration.getStep("WebDev").setQueued(getStep("WebDev").getQueued());
+		nextIteration.getStep("QA").setQueued(getStep("QA").getQueued());
 		nextIteration.totalCompleted = totalCompleted;
 		
 		return nextIteration;
@@ -157,11 +153,11 @@ public class IterationResult {
 	}
 
 	public int getCapacityOfWebDev() {
-		return capacityOfWebDev;
+		return getStep("WebDev").getCapacity();
 	}
 
 	public int getCapacityOfQA() {
-		return capacityOfQA;
+		return getStep("QA").getCapacity();
 	}
 
 	public void setCompletedByBA(int completedByBA) {
@@ -181,43 +177,43 @@ public class IterationResult {
 	}
 
 	public void setCompletedByWebDev(int completedByWebDev) {
-		this.completedByWebDev = completedByWebDev;
+		getStep("WebDev").setCompleted(completedByWebDev);
 	}
 
 	public void setRemainingInWebDevQueue(int remainingInWebDevQueue) {
-		this.remainingInWebDevQueue = remainingInWebDevQueue;
+		getStep("WebDev").setQueued(remainingInWebDevQueue);
 	}
 
 	public void setCompletedByQA(int completedByQA) {
-		this.completedByQA = completedByQA;
+		getStep("QA").setCompleted(completedByQA);
 	}
 
 	public void setRemainingInQAQueue(int remainingInQAQueue) {
-		this.remainingInQAQueue = remainingInQAQueue;
+		getStep("QA").setQueued(remainingInQAQueue);
 	}
 
 	public void setCapacityOfWebDev(int capacityOfWebDev) {
-		this.capacityOfWebDev = capacityOfWebDev;
+		getStep("WebDev").setCapacity(capacityOfWebDev);
 	}
 
 	public int getCompletedByWebDev() {
-		return completedByWebDev;
+		return getStep("WebDev").getCompleted();
 	}
 
 	public int getRemainingInWebDevQueue() {
-		return remainingInWebDevQueue;
+		return getStep("WebDev").getQueued();
 	}
 
 	public void setCapacityOfQA(int capacityOfQA) {
-		this.capacityOfQA = capacityOfQA;
+		getStep("QA").setCapacity(capacityOfQA);
 	}
 
 	public int getCompletedByQA() {
-		return completedByQA;
+		return getStep("QA").getCompleted();
 	}
 
 	public int getRemainingInQAQueue() {
-		return remainingInQAQueue;
+		return getStep("QA").getQueued();
 	}
 
 	public int getTotalCompleted() {
