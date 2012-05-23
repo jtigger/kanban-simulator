@@ -116,20 +116,20 @@ public class IterationResult {
 		this.putIntoPlay = putIntoPlay;
 	}
 
-	public int getCapacityOfBA() {
-		return getStep("BA").getCapacity();
+	public int getCapacity(String stepName) {
+		return getStep(stepName).getCapacity();
 	}
 
-	public void setCapacityOfBA(int capacityOfBA) {
-		getStep("BA").setCapacity(capacityOfBA);
+	public void setCapacity(String stepName, int newCapacity) {
+		getStep(stepName).setCapacity(newCapacity);
 	}
 
-	public int getCompletedByBA() {
-		return getStep("BA").getCompleted();
+	public int getCompleted(String stepName) {
+		return getStep(stepName).getCompleted();
 	}
 
-	public int getRemainingInBAQueue() {
-		return getStep("BA").getQueued();
+	public int getQueued(String stepName) {
+		return getStep(stepName).getQueued();
 	}
 
 	public int getCapacityOfDev() {
@@ -156,12 +156,12 @@ public class IterationResult {
 		return getStep("QA").getCapacity();
 	}
 
-	public void setCompletedByBA(int completedByBA) {
-		getStep("BA").setCompleted(completedByBA);
+	public void setCompleted(String stepName, int completed) {
+		getStep(stepName).setCompleted(completed);
 	}
 
-	public void setRemainingInBAQueue(int remainingInBAQueue) {
-		getStep("BA").setQueued(remainingInBAQueue);
+	public void setQueued(String stepName, int queued) {
+		getStep(stepName).setQueued(queued);
 	}
 
 	public void setCompletedByDev(int completedByDev) {
