@@ -5,15 +5,17 @@ import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.FileReader;
+import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
-import java.nio.CharBuffer;
 import java.util.List;
 
 import specs.IterationResultExample;
 
+import com.bigvisible.kanbansimulator.IterationResult;
 import com.bigvisible.kanbansimulator.Stimulator;
 
 import cucumber.annotation.en.Given;
@@ -84,6 +86,15 @@ public class SimpleSimulationSteps {
 	@When("^the simulator completes a run$")
 	public void the_simulator_completes_a_run() {
 		getStimulator().run(resultsOutput);
+		if (resultsOutput != null) {
+			try {
+				resultsOutput.close();
+			} catch (IOException e) {
+				throw new RuntimeException(
+						"While attempting to flush and close \""
+								+ resultsFile.getAbsolutePath() + "\"", e);
+			}
+		}
 	}
 
 	@Then("^the simulator will have generated the following results:$")
@@ -93,7 +104,8 @@ public class SimpleSimulationSteps {
 				.asExample(getStimulator().results());
 
 		for (IterationResultExample iterationResultExample : results) {
-			assertThat("some test", iterationResultExample, isIn(actualResults));
+			assertThat("(looking for example in the list of actual results)",
+					iterationResultExample, isIn(actualResults));
 		}
 	}
 
@@ -105,22 +117,22 @@ public class SimpleSimulationSteps {
 	@Then("^the .csv file includes the following results:$")
 	public void the_csv_file_includes_the_following_results(
 			List<IterationResultExample> results) {
-		// Express the Regexp above with the code you wish you had
-		// For automatic conversion, change DataTable to List<YourType>
-		throw new PendingException();
-	}
-
-	private String readCSVFileContents() {
+		InputStream inputStream;
 		try {
-			FileReader file = new FileReader(resultsFile);
-			CharBuffer buffer = CharBuffer.allocate(1024);
-			int charsRead = file.read(buffer);
+			inputStream = new FileInputStream(resultsFile);
+		} catch (FileNotFoundException e) {
+			throw new RuntimeException("Trying to open \""
+					+ resultsFile.getAbsolutePath() + "\" for reading.", e);
+		}
 
-			buffer.rewind();
+		List<IterationResult> resultsFromCSV = IterationResult
+				.parseCSV(inputStream);
+		List<IterationResultExample> actualContents = IterationResultExample
+				.asExample(resultsFromCSV);
 
-			return buffer.subSequence(0, charsRead).toString();
-		} catch (Exception e) {
-			throw new RuntimeException(e);
+		for (IterationResultExample iterationResultExample : results) {
+			assertThat("(looking for example in the list of actual results)",
+					iterationResultExample, isIn(actualContents));
 		}
 	}
 

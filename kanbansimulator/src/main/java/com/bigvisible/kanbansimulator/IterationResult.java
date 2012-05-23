@@ -1,5 +1,9 @@
 package com.bigvisible.kanbansimulator;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -213,19 +217,66 @@ public class IterationResult {
 	}
 
 	public String toCSVString() {
-		StringBuffer csv = new StringBuffer(steps.size() * 10);  // why not avoid reallocation if we can? :)
-		
-		csv.append(getIterationNumber()+", ");
-		csv.append(getPutIntoPlay()+", ");
-		
+		StringBuffer csv = new StringBuffer(steps.size() * 10); // why not avoid
+																// reallocation
+																// if we can? :)
+
+		csv.append(getIterationNumber() + ", ");
+		csv.append(getPutIntoPlay() + ", ");
+
 		for (WorkflowStep step : steps) {
-			csv.append(step.getCapacity()+", ");
-			csv.append(step.getCompleted()+", ");
-			csv.append(step.getQueued()+", ");
+			csv.append(step.getCapacity() + ", ");
+			csv.append(step.getCompleted() + ", ");
+			csv.append(step.getQueued() + ", ");
 		}
-		
+
 		csv.append(getTotalCompleted());
 
 		return csv.toString();
+	}
+
+	public static IterationResult parseCSV(String asCSV) {
+		IterationResult iterationResult = new IterationResult();
+		String[] resultValues = asCSV.split(",");
+		int idx = 0;
+
+		iterationResult.iterationNumber = Integer.parseInt(resultValues[idx++]
+				.trim());
+		iterationResult.putIntoPlay = Integer.parseInt(resultValues[idx++]
+				.trim());
+		for (WorkflowStep step : iterationResult.steps) {
+			step.capacity = Integer.parseInt(resultValues[idx++].trim());
+			step.completed = Integer.parseInt(resultValues[idx++].trim());
+			step.queued = Integer.parseInt(resultValues[idx++].trim());
+		}
+		iterationResult.totalCompleted = Integer.parseInt(resultValues[idx++]
+				.trim());
+
+		return iterationResult;
+	}
+
+	public static List<IterationResult> parseCSV(InputStream inputStream) {
+		List<IterationResult> iterationResults = new LinkedList<IterationResult>();
+
+		BufferedReader inputReader = new BufferedReader(new InputStreamReader(
+				inputStream));
+
+		int lineNo = 1; // we're assuming we got first dibs on this stream
+						// and that it's currently rewound.
+
+		String nextLine;
+		do {
+			try {
+				nextLine = inputReader.readLine();
+			} catch (IOException e) {
+				throw new RuntimeException("Trying to read line #" + lineNo
+						+ ".", e);
+			}
+			if (nextLine != null) {
+				iterationResults.add(parseCSV(nextLine));
+			}
+		} while (nextLine != null);
+
+		return iterationResults;
 	}
 }

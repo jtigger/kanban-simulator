@@ -40,10 +40,13 @@ public class Stimulator {
 		    storiesUnplayed -= iteration.getPutIntoPlay();
 		    storiesCompleted = iteration.getTotalCompleted();
 		    
-		    output.print(iteration.toCSVString());
+		    output.println(iteration.toCSVString());
 		    
 		    iteration = iteration.nextIteration();
 		}
+		// It's this PrintWriter instance that's buffering, calling flush() on the wrapped
+		// raw OutputStream will have no effect.
+		output.flush();
 	}
 
 	public void setBatchSize(int batchSize) {
