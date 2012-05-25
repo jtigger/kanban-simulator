@@ -132,36 +132,12 @@ public class IterationResult {
 		return getStep(stepName).getQueued();
 	}
 
-	public int getCapacityOfQA() {
-		return getStep("QA").getCapacity();
-	}
-
 	public void setCompleted(String stepName, int completed) {
 		getStep(stepName).setCompleted(completed);
 	}
 
 	public void setQueued(String stepName, int queued) {
 		getStep(stepName).setQueued(queued);
-	}
-
-	public void setCompletedByQA(int completedByQA) {
-		getStep("QA").setCompleted(completedByQA);
-	}
-
-	public void setRemainingInQAQueue(int remainingInQAQueue) {
-		getStep("QA").setQueued(remainingInQAQueue);
-	}
-
-	public void setCapacityOfQA(int capacityOfQA) {
-		getStep("QA").setCapacity(capacityOfQA);
-	}
-
-	public int getCompletedByQA() {
-		return getStep("QA").getCompleted();
-	}
-
-	public int getRemainingInQAQueue() {
-		return getStep("QA").getQueued();
 	}
 
 	public int getTotalCompleted() {

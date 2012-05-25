@@ -73,12 +73,12 @@ public class IterationResultTest {
 		iterationResult.setCapacity("BA", 10);
 		iterationResult.setCapacity("Dev", 10);
 		iterationResult.setCapacity("WebDev", 10);
-		iterationResult.setCapacityOfQA(10);
+		iterationResult.setCapacity("QA", 10);
 		
 		iterationResult.run();
 		
-		assertEquals(10, iterationResult.getCompletedByQA());
-		assertEquals(0, iterationResult.getRemainingInQAQueue());
+		assertEquals(10, iterationResult.getCompleted("QA"));
+		assertEquals(0, iterationResult.getQueued("QA"));
 		assertEquals(10, iterationResult.getTotalCompleted());
 	}
 	
@@ -90,7 +90,7 @@ public class IterationResultTest {
 		iterationResult.setCapacity("BA", 10);
 		iterationResult.setCapacity("Dev", 10);
 		iterationResult.setCapacity("WebDev", 10);
-		iterationResult.setCapacityOfQA(10);
+		iterationResult.setCapacity("QA", 10);
 		
 		iterationResult.run();
 		
@@ -99,7 +99,7 @@ public class IterationResultTest {
 		assertEquals(iterationResult.getCapacity("BA"), nextIteration.getCapacity("BA"));
 		assertEquals(iterationResult.getCapacity("Dev"), nextIteration.getCapacity("Dev"));
 		assertEquals(iterationResult.getCapacity("WebDev"), nextIteration.getCapacity("WebDev"));
-		assertEquals(iterationResult.getCapacityOfQA(), nextIteration.getCapacityOfQA());
+		assertEquals(iterationResult.getCapacity("QA"), nextIteration.getCapacity("QA"));
 	}
     
     @Test
@@ -111,7 +111,7 @@ public class IterationResultTest {
 		iterationResult.setCapacity("BA", 9);
 		iterationResult.setCapacity("Dev", 8);
 		iterationResult.setCapacity("WebDev", 7);
-		iterationResult.setCapacityOfQA(6);
+		iterationResult.setCapacity("QA", 6);
 		
 		iterationResult.run();
 		
@@ -120,7 +120,7 @@ public class IterationResultTest {
 		assertEquals(1, nextIteration.getQueued("BA"));
 		assertEquals(1, nextIteration.getQueued("Dev"));
 		assertEquals(1, nextIteration.getQueued("WebDev"));
-		assertEquals(1, nextIteration.getRemainingInQAQueue());
+		assertEquals(1, nextIteration.getQueued("QA"));
 	}
     
     @Test
@@ -139,7 +139,7 @@ public class IterationResultTest {
     	firstIteration.setCapacity("BA", 1);
     	firstIteration.setCapacity("Dev", 1);
     	firstIteration.setCapacity("WebDev", 1);
-    	firstIteration.setCapacityOfQA(1);
+    	firstIteration.setCapacity("QA", 1);
     	firstIteration.setPutIntoPlay(1);
     	
     	firstIteration.run();
@@ -180,9 +180,9 @@ public class IterationResultTest {
 			iteration.setCapacity("WebDev", 8);
 			iteration.setCompleted("WebDev", 9);
 			iteration.setQueued("WebDev", 10);
-			iteration.setCapacityOfQA(11);
-			iteration.setCompletedByQA(12);
-			iteration.setRemainingInQAQueue(13);
+			iteration.setCapacity("QA", 11);
+			iteration.setCompleted("QA", 12);
+			iteration.setQueued("QA", 13);
 			
 			String asCSV = iteration.toCSVString();
 			
@@ -206,9 +206,9 @@ public class IterationResultTest {
 			assertEquals(8, iteration.getCapacity("WebDev"));
 			assertEquals(9, iteration.getCompleted("WebDev"));
 			assertEquals(10, iteration.getQueued("WebDev"));
-			assertEquals(11, iteration.getCapacityOfQA());
-			assertEquals(12, iteration.getCompletedByQA());
-			assertEquals(13, iteration.getRemainingInQAQueue());
+			assertEquals(11, iteration.getCapacity("QA"));
+			assertEquals(12, iteration.getCompleted("QA"));
+			assertEquals(13, iteration.getQueued("QA"));
 			assertEquals(14, iteration.getTotalCompleted());
 		}
     }

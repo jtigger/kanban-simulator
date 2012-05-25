@@ -33,7 +33,7 @@ public class Stimulator {
 		    iteration.setCapacity("BA", businessAnalystCapacity);
 		    iteration.setCapacity("Dev", developmentCapacity);
 		    iteration.setCapacity("WebDev", webDevelopmentCapacity);
-		    iteration.setCapacityOfQA(qualityAssuranceCapacity);
+		    iteration.setCapacity("QA", qualityAssuranceCapacity);
 		    iteration.run();
 		    
 		    results.add(iteration);
