@@ -10,7 +10,7 @@ public class Stimulator {
 	private int totalStories = 0;
 	private int storiesCompleted = 0;
 	private int storiesUnplayed = 0;
-	private int batchSize = 11;
+	private int batchSize = 1;
 	private int businessAnalystCapacity = 1;
 	private int developmentCapacity = 1;
 	private int webDevelopmentCapacity = 1;

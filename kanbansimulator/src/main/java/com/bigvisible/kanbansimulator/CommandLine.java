@@ -5,7 +5,7 @@ import java.io.PrintWriter;
 
 public class CommandLine {
 
-	private static int NUM_OF_STEPS = 0;
+	private static int NUM_OF_WORKFLOWSTEPS = 0;
 	private static int NUM_OF_STORIES = 1;
 	private static int BA_CAPACITY = 2;
 	private static int DEV_CAPACITY = 3;
@@ -39,6 +39,7 @@ public class CommandLine {
 		stimulator.setDevelopmentCapacity(argAsInt(args, DEV_CAPACITY));
 		stimulator.setWebDevelopmentCapacity(argAsInt(args, WEBDEV_CAPACITY));
 		stimulator.setQualityAssuranceCapacity(argAsInt(args, QA_CAPACITY));
+		stimulator.setBatchSize(argAsInt(args, BATCH_SIZE));
 		stimulator.run(out);
 	}
 

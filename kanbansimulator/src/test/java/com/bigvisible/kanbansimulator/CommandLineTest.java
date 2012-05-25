@@ -6,6 +6,7 @@ import org.junit.Test;
 import com.bigvisible.kanbansimulator.CommandLine;
 
 import static org.junit.Assert.*;
+import static org.hamcrest.Matchers.*;
 
 public class CommandLineTest {
 
@@ -21,8 +22,7 @@ public class CommandLineTest {
 
 		String output = rawOuput.toString();
 
-		assertTrue(output
-				.contains("1, 11, 13, 11, 0, 12, 11, 0, 12, 11, 0, 10, 10, 1, 10"));
+		assertThat(output, containsString("1, 11, 13, 11, 0, 12, 11, 0, 12, 11, 0, 10, 10, 1, 10"));
 	}
 
 	@Test
