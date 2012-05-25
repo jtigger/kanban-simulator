@@ -61,9 +61,9 @@ public class IterationResultExample {
 		example.devCapacity = result.getCapacity("Dev");
 		example.devCompleted = result.getCompleted("Dev");
 		example.devRemainingInQueue = result.getQueued("Dev");
-		example.webDevCapacity = result.getCapacityOfWebDev();
-		example.webDevCompleted = result.getCompletedByWebDev();
-		example.webDevRemainingInQueue = result.getRemainingInWebDevQueue();
+		example.webDevCapacity = result.getCapacity("WebDev");
+		example.webDevCompleted = result.getCompleted("WebDev");
+		example.webDevRemainingInQueue = result.getQueued("WebDev");
 		example.qACapacity = result.getCapacityOfQA();
 		example.qACompleted = result.getCompletedByQA();
 		example.qARemainingInQueue = result.getRemainingInQAQueue();

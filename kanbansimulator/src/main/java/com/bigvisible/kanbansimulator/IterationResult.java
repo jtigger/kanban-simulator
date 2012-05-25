@@ -132,10 +132,6 @@ public class IterationResult {
 		return getStep(stepName).getQueued();
 	}
 
-	public int getCapacityOfWebDev() {
-		return getStep("WebDev").getCapacity();
-	}
-
 	public int getCapacityOfQA() {
 		return getStep("QA").getCapacity();
 	}
@@ -148,32 +144,12 @@ public class IterationResult {
 		getStep(stepName).setQueued(queued);
 	}
 
-	public void setCompletedByWebDev(int completedByWebDev) {
-		getStep("WebDev").setCompleted(completedByWebDev);
-	}
-
-	public void setRemainingInWebDevQueue(int remainingInWebDevQueue) {
-		getStep("WebDev").setQueued(remainingInWebDevQueue);
-	}
-
 	public void setCompletedByQA(int completedByQA) {
 		getStep("QA").setCompleted(completedByQA);
 	}
 
 	public void setRemainingInQAQueue(int remainingInQAQueue) {
 		getStep("QA").setQueued(remainingInQAQueue);
-	}
-
-	public void setCapacityOfWebDev(int capacityOfWebDev) {
-		getStep("WebDev").setCapacity(capacityOfWebDev);
-	}
-
-	public int getCompletedByWebDev() {
-		return getStep("WebDev").getCompleted();
-	}
-
-	public int getRemainingInWebDevQueue() {
-		return getStep("WebDev").getQueued();
 	}
 
 	public void setCapacityOfQA(int capacityOfQA) {

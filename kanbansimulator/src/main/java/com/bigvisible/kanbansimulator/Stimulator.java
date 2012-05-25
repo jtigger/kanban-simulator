@@ -32,7 +32,7 @@ public class Stimulator {
 		    iteration.setPutIntoPlay(Math.min(storiesUnplayed, batchSize));
 		    iteration.setCapacity("BA", businessAnalystCapacity);
 		    iteration.setCapacity("Dev", developmentCapacity);
-		    iteration.setCapacityOfWebDev(webDevelopmentCapacity);
+		    iteration.setCapacity("WebDev", webDevelopmentCapacity);
 		    iteration.setCapacityOfQA(qualityAssuranceCapacity);
 		    iteration.run();
 		    
