@@ -27,11 +27,11 @@ public class CommandLine {
 	}
 
 	public static void main(String[] args) {
-		if(args.length < 7) {
+		if (args.length < 7) {
 			printUsage();
 			return;
 		}
-		
+
 		Stimulator stimulator = new Stimulator();
 
 		stimulator.addStories(argAsInt(args, NUM_OF_STORIES));
@@ -41,10 +41,10 @@ public class CommandLine {
 		stimulator.setQualityAssuranceCapacity(argAsInt(args, QA_CAPACITY));
 		stimulator.run(out);
 	}
-	
+
 	private static void printUsage() {
 		PrintWriter output = new PrintWriter(out);
-		
+
 		output.println("Kanban Simulator (KBS)         Version 0.01                           2012-05-24");
 		output.println("\nUsage:\n");
 		output.println("   java -jar stimulator.jar (steps) (total stories) (BA) (DEV) (WEBDEV) (QA) (BATCH)\n");
@@ -56,7 +56,7 @@ public class CommandLine {
 		output.println("  WEBDEV = capacity of Web Development step.");
 		output.println("  QA = capacity of Quality Assurance step.");
 		output.println("  BATCH = total number of stories to release into the kanban board each iteration.");
-		
+
 		output.flush();
 	}
 
