@@ -16,6 +16,7 @@ public class Stimulator {
 	private int webDevelopmentCapacity = 1;
 	private int qualityAssuranceCapacity = 1;
 	private List<IterationResult> results = new LinkedList<IterationResult>();
+	private int numberOfIterationsToRun;
 
 	public void run(OutputStream rawOutputStream) {
 		if(rawOutputStream == null) {
@@ -28,7 +29,13 @@ public class Stimulator {
 	    IterationResult iteration = new IterationResult();
 	    iteration.setIterationNumber(iterationNumber);
 	    
+	    
 		while(storiesCompleted < totalStories) {
+			if(numberOfIterationsToRun > 0) {
+				if(iteration.getIterationNumber() > numberOfIterationsToRun) {
+					break;
+				}
+			}
 		    iteration.setPutIntoPlay(Math.min(storiesUnplayed, batchSize));
 		    iteration.setCapacity("BA", businessAnalystCapacity);
 		    iteration.setCapacity("Dev", developmentCapacity);
@@ -91,6 +98,14 @@ public class Stimulator {
 			// this is where bytes go to die.
 		}
 
+	}
+
+	public void setNumberOfIterationsToRun(int numberOfIterationsToRun) {
+		this.numberOfIterationsToRun = numberOfIterationsToRun;
+	}
+
+	public int getIterationsRun() {
+		return results.size();
 	}
 
 }

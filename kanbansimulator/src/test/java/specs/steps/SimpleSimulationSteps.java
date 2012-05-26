@@ -24,14 +24,40 @@ import cucumber.annotation.en.When;
 import cucumber.runtime.PendingException;
 
 public class SimpleSimulationSteps {
-	private Stimulator stimulator;
-	private File resultsFile = null;
-	private OutputStream resultsOutput = null;
+	private Stimulator getStimulator() {
+		return SimulatorFeatureContext.instance().getStimulator();
+	}
+	private OutputStream getResultsOutput() {
+		return SimulatorFeatureContext.instance().getResultsOutput();
+	}
+	private File getResultsFile() {
+		return SimulatorFeatureContext.instance().getResultsFile();
+	}
+	private void setResultsOutput(FileOutputStream fileOutputStream) {
+		SimulatorFeatureContext.instance().setResultsOutput(fileOutputStream);
+	}
+	private void setResultsFile(File file) {
+		SimulatorFeatureContext.instance().setResultsFile(file);
+	}
+
+	// TODO: find the right home for this method.  It is being used in multiple features.
+	@When("^the simulator completes a run$")
+	public void the_simulator_completes_a_run() {
+		getStimulator().run(getResultsOutput());
+		if (getResultsOutput() != null) {
+			try {
+				getResultsOutput().close();
+			} catch (IOException e) {
+				throw new RuntimeException(
+						"While attempting to flush and close \""
+								+ getResultsFile().getAbsolutePath() + "\"", e);
+			}
+		}
+	}
 
 	@Given("^the workflow has (\\d+) steps$")
 	public void the_workflow_has_steps(int arg1) {
-		// TODO: consider deleting this and just inferring from the capacity
-		// setup steps.
+		SimulatorFeatureContext.reset();
 	}
 
 	@Given("^the BA capacity is (\\d+) stories per iteration$")
@@ -70,30 +96,16 @@ public class SimpleSimulationSteps {
 
 	@Given("^the desired output is comma-separated values$")
 	public void the_desired_output_is_comma_separated_values() {
-		resultsFile = new File("resultsOutput.csv");
+		setResultsFile(new File("resultsOutput.csv"));
 
 		try {
-			resultsOutput = new FileOutputStream(resultsFile);
+			setResultsOutput(new FileOutputStream(getResultsFile()));
 		} catch (FileNotFoundException e) {
 			throw new RuntimeException(
 					"Trying to open file \""
-							+ resultsFile.getAbsolutePath()
+							+ getResultsFile().getAbsolutePath()
 							+ "\" for writing.  Does this process have permissions to write in this directory?",
 					e);
-		}
-	}
-
-	@When("^the simulator completes a run$")
-	public void the_simulator_completes_a_run() {
-		getStimulator().run(resultsOutput);
-		if (resultsOutput != null) {
-			try {
-				resultsOutput.close();
-			} catch (IOException e) {
-				throw new RuntimeException(
-						"While attempting to flush and close \""
-								+ resultsFile.getAbsolutePath() + "\"", e);
-			}
 		}
 	}
 
@@ -111,7 +123,7 @@ public class SimpleSimulationSteps {
 
 	@Then("^the simulator generates a .csv file$")
 	public void the_simulator_generates_a_csv_file() {
-		assertTrue(resultsFile.exists());
+		assertTrue(getResultsFile().exists());
 	}
 
 	@Then("^the .csv file includes the following results:$")
@@ -119,10 +131,10 @@ public class SimpleSimulationSteps {
 			List<IterationResultExample> results) {
 		InputStream inputStream;
 		try {
-			inputStream = new FileInputStream(resultsFile);
+			inputStream = new FileInputStream(getResultsFile());
 		} catch (FileNotFoundException e) {
 			throw new RuntimeException("Trying to open \""
-					+ resultsFile.getAbsolutePath() + "\" for reading.", e);
+					+ getResultsFile().getAbsolutePath() + "\" for reading.", e);
 		}
 
 		List<IterationResult> resultsFromCSV = IterationResult
@@ -134,12 +146,5 @@ public class SimpleSimulationSteps {
 			assertThat("(looking for example in the list of actual results)",
 					iterationResultExample, isIn(actualContents));
 		}
-	}
-
-	private Stimulator getStimulator() {
-		if (stimulator == null) {
-			stimulator = new Stimulator();
-		}
-		return stimulator;
 	}
 }
