@@ -13,10 +13,10 @@ import static org.hamcrest.Matchers.*;
 
 public class ConfigurableNumberOfIterationsSteps {
 	
-	private SimulatorFeatureContext context;
+	private SimulatorScenarioContext context;
 
 	@Autowired
-	public void setContext(SimulatorFeatureContext context) {
+	public void setContext(SimulatorScenarioContext context) {
 		this.context = context;
 	}
 

@@ -27,10 +27,10 @@ import cucumber.runtime.PendingException;
 
 public class SimpleSimulationSteps {
 	
-	private SimulatorFeatureContext context;
+	private SimulatorScenarioContext context;
 
 	@Autowired
-	public void setContext(SimulatorFeatureContext context) {
+	public void setContext(SimulatorScenarioContext context) {
 		this.context = context;
 	}
 	

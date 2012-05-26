@@ -7,5 +7,5 @@ http://www.springframework.org/schema/context http://www.springframework.org/sch
     <context:component-scan base-package="specs.steps" />
     <context:annotation-config />
 
-    <bean id="context" class="specs.steps.SimulatorFeatureContext" scope="cucumber-glue" />
+    <bean id="context" class="specs.steps.SimulatorScenarioContext" scope="cucumber-glue" />
 </beans>

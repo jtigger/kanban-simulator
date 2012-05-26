@@ -6,12 +6,12 @@ import java.io.OutputStream;
 import com.bigvisible.kanbansimulator.Stimulator;
 
 
-public class SimulatorFeatureContext {
+public class SimulatorScenarioContext {
 	private Stimulator stimulator;
 	private OutputStream resultsOutput = null;
 	private File resultsFile = null;
 
-	public SimulatorFeatureContext() {
+	public SimulatorScenarioContext() {
 		stimulator = new Stimulator();
 	}
 	
