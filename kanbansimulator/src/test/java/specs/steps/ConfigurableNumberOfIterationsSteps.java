@@ -1,5 +1,7 @@
 package specs.steps;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.bigvisible.kanbansimulator.Stimulator;
 
 import cucumber.annotation.en.Given;
@@ -10,8 +12,16 @@ import static org.junit.Assert.*;
 import static org.hamcrest.Matchers.*;
 
 public class ConfigurableNumberOfIterationsSteps {
+	
+	private SimulatorFeatureContext context;
+
+	@Autowired
+	public void setContext(SimulatorFeatureContext context) {
+		this.context = context;
+	}
+
 	private Stimulator getStimulator() {
-		return SimulatorFeatureContext.instance().getStimulator();
+		return context.getStimulator();
 	}
 	
 	@Given("^I set the number of iterations to (\\d+)$")

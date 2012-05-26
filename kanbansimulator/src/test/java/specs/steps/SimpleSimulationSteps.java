@@ -13,6 +13,8 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import specs.IterationResultExample;
 
 import com.bigvisible.kanbansimulator.IterationResult;
@@ -24,20 +26,28 @@ import cucumber.annotation.en.When;
 import cucumber.runtime.PendingException;
 
 public class SimpleSimulationSteps {
+	
+	private SimulatorFeatureContext context;
+
+	@Autowired
+	public void setContext(SimulatorFeatureContext context) {
+		this.context = context;
+	}
+	
 	private Stimulator getStimulator() {
-		return SimulatorFeatureContext.instance().getStimulator();
+		return context.getStimulator();
 	}
 	private OutputStream getResultsOutput() {
-		return SimulatorFeatureContext.instance().getResultsOutput();
+		return context.getResultsOutput();
 	}
 	private File getResultsFile() {
-		return SimulatorFeatureContext.instance().getResultsFile();
+		return context.getResultsFile();
 	}
 	private void setResultsOutput(FileOutputStream fileOutputStream) {
-		SimulatorFeatureContext.instance().setResultsOutput(fileOutputStream);
+		context.setResultsOutput(fileOutputStream);
 	}
 	private void setResultsFile(File file) {
-		SimulatorFeatureContext.instance().setResultsFile(file);
+		context.setResultsFile(file);
 	}
 
 	// TODO: find the right home for this method.  It is being used in multiple features.
@@ -57,7 +67,7 @@ public class SimpleSimulationSteps {
 
 	@Given("^the workflow has (\\d+) steps$")
 	public void the_workflow_has_steps(int arg1) {
-		SimulatorFeatureContext.reset();
+		// hey hey, ho ho, this worthless step has got to go...
 	}
 
 	@Given("^the BA capacity is (\\d+) stories per iteration$")
