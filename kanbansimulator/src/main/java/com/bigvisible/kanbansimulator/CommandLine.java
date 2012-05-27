@@ -5,13 +5,12 @@ import java.io.PrintWriter;
 
 public class CommandLine {
 
-	private static int NUM_OF_WORKFLOWSTEPS = 0;
-	private static int NUM_OF_STORIES = 1;
-	private static int BA_CAPACITY = 2;
-	private static int DEV_CAPACITY = 3;
-	private static int WEBDEV_CAPACITY = 4;
-	private static int QA_CAPACITY = 5;
-	private static int BATCH_SIZE = 6;
+	private static int NUM_OF_STORIES = 0;
+	private static int BA_CAPACITY = 1;
+	private static int DEV_CAPACITY = 2;
+	private static int WEBDEV_CAPACITY = 3;
+	private static int QA_CAPACITY = 4;
+	private static int BATCH_SIZE = 5;
 
 	private static OutputStream out = System.out;
 
@@ -27,7 +26,7 @@ public class CommandLine {
 	}
 
 	public static void main(String[] args) {
-		if (args.length < 7) {
+		if (args.length < 6) {
 			printUsage();
 			return;
 		}
@@ -50,7 +49,6 @@ public class CommandLine {
 		output.println("\nUsage:\n");
 		output.println("   java -jar stimulator.jar (steps) (total stories) (BA) (DEV) (WEBDEV) (QA) (BATCH)\n");
 		output.println("where...");
-		output.println("  step = total number of steps in the workflow (currently ignored).");
 		output.println("  total stories = total number of stories in the backlog.");
 		output.println("  BA = capacity of Business Analysis step.");
 		output.println("  DEV = capacity of Development step.");

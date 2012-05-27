@@ -10,8 +10,7 @@ Feature: Configurabe workflow capacities for each iteration
 I know this is done when...
 
     Background: (This background defines the constants in the simulation)
-    Given the workflow has 4 steps
-      And the batch size is 11 stories
+    Given the batch size is 11 stories
 
     Scenario: Original Beer Game presentation scenario
       Given the following workflow capacities by iteration:

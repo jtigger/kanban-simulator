@@ -5,13 +5,12 @@ Feature: Run a simple Simulation
 	As a Kanban Class Instructor,
 	I want to be able to configure the batch size for a 'simple' simulation (see background below)
 	so that I can demonstrate the effects of the batch size on work that accumulates in a 
-	in each workflow queue when the batch size exceeds the constraint within the system.
+	in each workflow step when the batch size exceeds the constraint within the system.
 
 I know this is done when...
 
     Background: (This background defines what is a 'simple' simulation)
-    Given the workflow has 4 steps
-      And the backlog starts with 88 stories
+    Given the backlog starts with 88 stories
       And the BA capacity is 13 stories per iteration
       And the Dev capacity is 12 stories per iteration
       And the Web Dev capacity is 12 stories per iteration

@@ -65,11 +65,6 @@ public class SimpleSimulationSteps {
 		}
 	}
 
-	@Given("^the workflow has (\\d+) steps$")
-	public void the_workflow_has_steps(int arg1) {
-		// hey hey, ho ho, this worthless step has got to go...
-	}
-
 	@Given("^the BA capacity is (\\d+) stories per iteration$")
 	public void the_BA_capacity_is_stories_per_iteration(
 			int businessAnalystCapacity) {
