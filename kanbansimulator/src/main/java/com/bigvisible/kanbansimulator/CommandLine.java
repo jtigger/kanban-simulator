@@ -11,6 +11,7 @@ public class CommandLine {
 	private static int WEBDEV_CAPACITY = 3;
 	private static int QA_CAPACITY = 4;
 	private static int BATCH_SIZE = 5;
+	private static int NUM_OF_ITERATIONS = 6;
 
 	private static OutputStream out = System.out;
 
@@ -26,7 +27,7 @@ public class CommandLine {
 	}
 
 	public static void main(String[] args) {
-		if (args.length < 6) {
+		if (args.length < 7) {
 			printUsage();
 			return;
 		}
@@ -39,6 +40,7 @@ public class CommandLine {
 		stimulator.setWebDevelopmentCapacity(argAsInt(args, WEBDEV_CAPACITY));
 		stimulator.setQualityAssuranceCapacity(argAsInt(args, QA_CAPACITY));
 		stimulator.setBatchSize(argAsInt(args, BATCH_SIZE));
+		stimulator.setNumberOfIterationsToRun(argAsInt(args, NUM_OF_ITERATIONS));
 		stimulator.run(out);
 	}
 
@@ -47,7 +49,7 @@ public class CommandLine {
 
 		output.println("Kanban Simulator (KBS)         Version 0.01                           2012-05-24");
 		output.println("\nUsage:\n");
-		output.println("   java -jar stimulator.jar (steps) (total stories) (BA) (DEV) (WEBDEV) (QA) (BATCH)\n");
+		output.println("   java -jar stimulator.jar (total stories) (BA) (DEV) (WEBDEV) (QA) (BATCH)  (iterations)\n");
 		output.println("where...");
 		output.println("  total stories = total number of stories in the backlog.");
 		output.println("  BA = capacity of Business Analysis step.");
@@ -55,6 +57,7 @@ public class CommandLine {
 		output.println("  WEBDEV = capacity of Web Development step.");
 		output.println("  QA = capacity of Quality Assurance step.");
 		output.println("  BATCH = total number of stories to release into the kanban board each iteration.");
+		output.println("  iterations = the total number of iterations that simulator will run.  (Use 0 to indicate that the simulator is to stop when there are no more stories in the workflow.)");
 
 		output.flush();
 	}

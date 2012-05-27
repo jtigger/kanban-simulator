@@ -29,28 +29,42 @@ public class Stimulator {
 	    IterationResult iteration = new IterationResult();
 	    iteration.setIterationNumber(iterationNumber);
 	    
-	    
-		while(storiesCompleted < totalStories) {
-			if(numberOfIterationsToRun > 0) {
-				if(iteration.getIterationNumber() > numberOfIterationsToRun) {
-					break;
-				}
+	    if(numberOfIterationsToRun == 0) {
+			while(storiesCompleted < totalStories) {
+			    iteration.setPutIntoPlay(Math.min(storiesUnplayed, batchSize));
+			    iteration.setCapacity("BA", businessAnalystCapacity);
+			    iteration.setCapacity("Dev", developmentCapacity);
+			    iteration.setCapacity("WebDev", webDevelopmentCapacity);
+			    iteration.setCapacity("QA", qualityAssuranceCapacity);
+			    iteration.run();
+			    
+			    results.add(iteration);
+			    storiesUnplayed -= iteration.getPutIntoPlay();
+			    storiesCompleted = iteration.getTotalCompleted();
+			    
+			    output.println(iteration.toCSVString());
+			    
+			    iteration = iteration.nextIteration();
 			}
-		    iteration.setPutIntoPlay(Math.min(storiesUnplayed, batchSize));
-		    iteration.setCapacity("BA", businessAnalystCapacity);
-		    iteration.setCapacity("Dev", developmentCapacity);
-		    iteration.setCapacity("WebDev", webDevelopmentCapacity);
-		    iteration.setCapacity("QA", qualityAssuranceCapacity);
-		    iteration.run();
-		    
-		    results.add(iteration);
-		    storiesUnplayed -= iteration.getPutIntoPlay();
-		    storiesCompleted = iteration.getTotalCompleted();
-		    
-		    output.println(iteration.toCSVString());
-		    
-		    iteration = iteration.nextIteration();
-		}
+	    }
+	    else {
+			while(iteration.getIterationNumber() <= numberOfIterationsToRun) {
+			    iteration.setPutIntoPlay(Math.min(storiesUnplayed, batchSize));
+			    iteration.setCapacity("BA", businessAnalystCapacity);
+			    iteration.setCapacity("Dev", developmentCapacity);
+			    iteration.setCapacity("WebDev", webDevelopmentCapacity);
+			    iteration.setCapacity("QA", qualityAssuranceCapacity);
+			    iteration.run();
+			    
+			    results.add(iteration);
+			    storiesUnplayed -= iteration.getPutIntoPlay();
+			    storiesCompleted = iteration.getTotalCompleted();
+			    
+			    output.println(iteration.toCSVString());
+			    
+			    iteration = iteration.nextIteration();
+			}
+	    }
 		// It's this PrintWriter instance that's buffering, calling flush() on the wrapped
 		// raw OutputStream will have no effect.
 		output.flush();
@@ -76,6 +90,10 @@ public class Stimulator {
 		this.qualityAssuranceCapacity = qualityAssuranceCapacity;
 	}
 
+	public void setNumberOfIterationsToRun(int numberOfIterationsToRun) {
+		this.numberOfIterationsToRun = numberOfIterationsToRun;
+	}
+
 	public List<IterationResult> results() {
 		return results;
 	}
@@ -98,10 +116,6 @@ public class Stimulator {
 			// this is where bytes go to die.
 		}
 
-	}
-
-	public void setNumberOfIterationsToRun(int numberOfIterationsToRun) {
-		this.numberOfIterationsToRun = numberOfIterationsToRun;
 	}
 
 	public int getIterationsRun() {
