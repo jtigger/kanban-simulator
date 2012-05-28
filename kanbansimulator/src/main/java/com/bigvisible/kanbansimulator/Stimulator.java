@@ -17,6 +17,8 @@ public class Stimulator {
 	private int qualityAssuranceCapacity = 1;
 	private List<IterationResult> results = new LinkedList<IterationResult>();
 	private int numberOfIterationsToRun;
+	private int iterationNumber = 1;
+    private IterationResult iteration = new IterationResult();
 
 	public void run(OutputStream rawOutputStream) {
 		if(rawOutputStream == null) {
@@ -24,50 +26,40 @@ public class Stimulator {
 		}
 		PrintWriter output = new PrintWriter(rawOutputStream);
 		
-		int iterationNumber = 1;
 		storiesUnplayed = totalStories;
-	    IterationResult iteration = new IterationResult();
 	    iteration.setIterationNumber(iterationNumber);
 	    
 	    if(numberOfIterationsToRun == 0) {
 			while(storiesCompleted < totalStories) {
-			    iteration.setPutIntoPlay(Math.min(storiesUnplayed, batchSize));
-			    iteration.setCapacity("BA", businessAnalystCapacity);
-			    iteration.setCapacity("Dev", developmentCapacity);
-			    iteration.setCapacity("WebDev", webDevelopmentCapacity);
-			    iteration.setCapacity("QA", qualityAssuranceCapacity);
-			    iteration.run();
-			    
-			    results.add(iteration);
-			    storiesUnplayed -= iteration.getPutIntoPlay();
-			    storiesCompleted = iteration.getTotalCompleted();
-			    
-			    output.println(iteration.toCSVString());
-			    
-			    iteration = iteration.nextIteration();
+			    runIteration(output);
 			}
 	    }
 	    else {
 			while(iteration.getIterationNumber() <= numberOfIterationsToRun) {
-			    iteration.setPutIntoPlay(Math.min(storiesUnplayed, batchSize));
-			    iteration.setCapacity("BA", businessAnalystCapacity);
-			    iteration.setCapacity("Dev", developmentCapacity);
-			    iteration.setCapacity("WebDev", webDevelopmentCapacity);
-			    iteration.setCapacity("QA", qualityAssuranceCapacity);
-			    iteration.run();
-			    
-			    results.add(iteration);
-			    storiesUnplayed -= iteration.getPutIntoPlay();
-			    storiesCompleted = iteration.getTotalCompleted();
-			    
-			    output.println(iteration.toCSVString());
-			    
-			    iteration = iteration.nextIteration();
+			    runIteration(output);
 			}
 	    }
 		// It's this PrintWriter instance that's buffering, calling flush() on the wrapped
 		// raw OutputStream will have no effect.
 		output.flush();
+	}
+
+	private void runIteration(PrintWriter output) {
+		iteration.setPutIntoPlay(Math.min(storiesUnplayed, batchSize));
+		iteration.setCapacity("BA", businessAnalystCapacity);
+		iteration.setCapacity("Dev", developmentCapacity);
+		iteration.setCapacity("WebDev", webDevelopmentCapacity);
+		iteration.setCapacity("QA", qualityAssuranceCapacity);
+		iteration.run();
+		
+		results.add(iteration);
+		storiesUnplayed -= iteration.getPutIntoPlay();
+		storiesCompleted = iteration.getTotalCompleted();
+		
+		output.println(iteration.toCSVString());
+		
+		iteration = iteration.nextIteration();
+		return;
 	}
 
 	public void setBatchSize(int batchSize) {
