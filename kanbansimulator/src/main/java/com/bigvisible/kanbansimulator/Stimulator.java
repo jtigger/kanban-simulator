@@ -17,26 +17,29 @@ public class Stimulator {
 	private int qualityAssuranceCapacity = 1;
 	private List<IterationResult> results = new LinkedList<IterationResult>();
 	private int numberOfIterationsToRun;
-	private int iterationNumber = 1;
-    private IterationResult iteration = new IterationResult();
 
 	public void run(OutputStream rawOutputStream) {
 		if(rawOutputStream == null) {
 			rawOutputStream = new NullOutputStream();
 		}
+	    
 		PrintWriter output = new PrintWriter(rawOutputStream);
 		
 		storiesUnplayed = totalStories;
-	    iteration.setIterationNumber(iterationNumber);
 	    
+		IterationResult iteration = null;
 	    if(numberOfIterationsToRun == 0) {
 			while(storiesCompleted < totalStories) {
-			    runIteration(output);
+			    iteration = runNextIteration(iteration, Math.min(storiesUnplayed, batchSize));
+				updateSimulatorState(iteration);
+				outputIterationResults(output, iteration);
 			}
 	    }
 	    else {
-			while(iteration.getIterationNumber() <= numberOfIterationsToRun) {
-			    runIteration(output);
+			while((iteration == null ? 1 : iteration.getIterationNumber()) < numberOfIterationsToRun) {
+			    iteration = runNextIteration(iteration, Math.min(storiesUnplayed, batchSize));
+				updateSimulatorState(iteration);
+				outputIterationResults(output, iteration);
 			}
 	    }
 		// It's this PrintWriter instance that's buffering, calling flush() on the wrapped
@@ -44,22 +47,37 @@ public class Stimulator {
 		output.flush();
 	}
 
-	private void runIteration(PrintWriter output) {
-		iteration.setPutIntoPlay(Math.min(storiesUnplayed, batchSize));
-		iteration.setCapacity("BA", businessAnalystCapacity);
-		iteration.setCapacity("Dev", developmentCapacity);
-		iteration.setCapacity("WebDev", webDevelopmentCapacity);
-		iteration.setCapacity("QA", qualityAssuranceCapacity);
+	private IterationResult runNextIteration(IterationResult previousIteration, int storiesToPlay) {
+		IterationResult iteration;
+		
+		if(previousIteration == null) {
+			iteration = new IterationResult();
+			iteration.setIterationNumber(1);
+			iteration.setCapacity("BA", businessAnalystCapacity);
+			iteration.setCapacity("Dev", developmentCapacity);
+			iteration.setCapacity("WebDev", webDevelopmentCapacity);
+			iteration.setCapacity("QA", qualityAssuranceCapacity);
+
+		} else {
+			iteration = previousIteration.nextIteration();
+		}
+		iteration.setPutIntoPlay(storiesToPlay);
+		
 		iteration.run();
 		
-		results.add(iteration);
+		return iteration;
+	}
+
+	private void updateSimulatorState(IterationResult iteration) {
 		storiesUnplayed -= iteration.getPutIntoPlay();
 		storiesCompleted = iteration.getTotalCompleted();
 		
+	    results.add(iteration);
+	}
+
+	private void outputIterationResults(PrintWriter output,
+			IterationResult iteration) {
 		output.println(iteration.toCSVString());
-		
-		iteration = iteration.nextIteration();
-		return;
 	}
 
 	public void setBatchSize(int batchSize) {
