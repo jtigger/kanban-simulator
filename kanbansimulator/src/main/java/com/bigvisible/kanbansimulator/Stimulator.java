@@ -28,24 +28,29 @@ public class Stimulator {
 		storiesUnplayed = totalStories;
 	    
 		IterationResult iteration = null;
-	    if(numberOfIterationsToRun == 0) {
-			while(storiesCompleted < totalStories) {
-			    iteration = runNextIteration(iteration, Math.min(storiesUnplayed, batchSize));
-				updateSimulatorState(iteration);
-				outputIterationResults(output, iteration);
-			}
-	    }
-	    else {
-			while((iteration == null ? 1 : iteration.getIterationNumber()) < numberOfIterationsToRun) {
-			    iteration = runNextIteration(iteration, Math.min(storiesUnplayed, batchSize));
-				updateSimulatorState(iteration);
-				outputIterationResults(output, iteration);
-			}
-	    }
+        while (haveMoreIterationsToRun()) {
+            iteration = runNextIteration(iteration, Math.min(storiesUnplayed, batchSize));
+            updateSimulatorState(iteration);
+            outputIterationResults(output, iteration);
+        }
 		// It's this PrintWriter instance that's buffering, calling flush() on the wrapped
 		// raw OutputStream will have no effect.
 		output.flush();
 	}
+
+    private boolean haveMoreIterationsToRun() {
+        boolean thereAreASetNumberOfIterationsToRun = numberOfIterationsToRun > 0;
+        
+        if(thereAreASetNumberOfIterationsToRun) {
+            return getIterationsRun() < numberOfIterationsToRun;
+        } else {
+            return thereAreStoriesLeftToPlay();
+        }
+    }
+
+    private boolean thereAreStoriesLeftToPlay() {
+        return storiesCompleted < totalStories;
+    }
 
 	private IterationResult runNextIteration(IterationResult previousIteration, int storiesToPlay) {
 		IterationResult iteration;
