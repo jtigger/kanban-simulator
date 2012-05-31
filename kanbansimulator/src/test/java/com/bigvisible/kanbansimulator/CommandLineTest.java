@@ -12,7 +12,7 @@ public class CommandLineTest {
 
 	@Test
 	public void when_passed_proper_set_of_parameters_then_simulator_runs_successfully() {
-		String args[] = new String[] { "4", "88", "13", "12", "12", "10", "11" };
+		String args[] = new String[] { "88", "13", "12", "12", "10", "11", "0" };
 
 		ByteArrayOutputStream rawOuput = new ByteArrayOutputStream();
 
