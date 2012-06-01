@@ -10,46 +10,20 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 
 import specs.IterationResultExample;
 
 import com.bigvisible.kanbansimulator.IterationResult;
-import com.bigvisible.kanbansimulator.Stimulator;
 
 import cucumber.annotation.en.Given;
 import cucumber.annotation.en.Then;
 import cucumber.annotation.en.When;
 import cucumber.runtime.PendingException;
 
-public class SimpleSimulationSteps {
+public class SimpleSimulationSteps extends StepDefinitionForSimulatorSpecification {
 	
-	private SimulatorScenarioContext context;
-
-	@Autowired
-	public void setContext(SimulatorScenarioContext context) {
-		this.context = context;
-	}
-	
-	private Stimulator getStimulator() {
-		return context.getStimulator();
-	}
-	private OutputStream getResultsOutput() {
-		return context.getResultsOutput();
-	}
-	private File getResultsFile() {
-		return context.getResultsFile();
-	}
-	private void setResultsOutput(FileOutputStream fileOutputStream) {
-		context.setResultsOutput(fileOutputStream);
-	}
-	private void setResultsFile(File file) {
-		context.setResultsFile(file);
-	}
-
 	// TODO: find the right home for this method.  It is being used in multiple features.
 	@When("^the simulator completes a run$")
 	public void the_simulator_completes_a_run() {

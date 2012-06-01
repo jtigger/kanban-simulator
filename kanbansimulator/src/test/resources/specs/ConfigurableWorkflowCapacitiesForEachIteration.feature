@@ -30,5 +30,3 @@ I know this is done when...
         | Iteration | Put in Play  | BA Capacity | BA Completed | BA Remaining in Queue | Dev Capacity | Dev Completed | Dev Remaining in Queue | Web Dev Capacity | Web Dev Completed | Web Dev Remaining in Queue | QA Capacity | QA Completed | QA Remaining in Queue | Total Completed |
         |         1 |          11  |          13 |           11 |                     0 |           12 |            11 |                      0 |               12 |                11 |                          0 |          10 |           10 |                     1 |              10 |         
         |        10 |           0  |          13 |            0 |                     0 |            8 |             0 |                      0 |               12 |                 0 |                          0 |          10 |           10 |                     5 |              83 |         
-
-    # TODO: hook-up and compare these values.
