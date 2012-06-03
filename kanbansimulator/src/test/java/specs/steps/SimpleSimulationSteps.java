@@ -95,7 +95,7 @@ public class SimpleSimulationSteps extends StepDefinitionForSimulatorSpecificati
 				.asExample(getStimulator().results());
 
 		for (IterationResultExample iterationResultExample : results) {
-			assertThat("... while looking for an example in the list of actual results ... (opposite of what you might assume)",
+			assertThat("... while looking for an example in the list of actual results ... (i.e. swap actual and expected in this message)",
 					iterationResultExample, isIn(actualResults));
 		}
 	}
