@@ -2,28 +2,56 @@ package com.bigvisible.kanbansimulator;
 
 import static org.junit.Assert.assertEquals;
 
+import java.security.SecureRandom;
+
 import org.junit.Before;
 import org.junit.Test;
 
 public class IterationResultTest {
-    static final String[] WORKFLOW_STEP_NAMES = new String[] {"BA", "Dev", "WebDev", "QA"};
+    static final String[] WORKFLOW_STEP_NAMES = new String[] { "BA", "Dev", "WebDev", "QA" };
     static final String FIRST_WORKFLOW_STEP = WORKFLOW_STEP_NAMES[0];
-    static final String LAST_WORKFLOW_STEP = WORKFLOW_STEP_NAMES[WORKFLOW_STEP_NAMES.length-1];
+    static final String LAST_WORKFLOW_STEP = WORKFLOW_STEP_NAMES[WORKFLOW_STEP_NAMES.length - 1];
 
-    public static class Capacity_settings_determine_how_much_work_is_completed_and_how_much_is_queued {
+    private static void ForEachWorkflowStep(DoTheFollowing loopBody) {
+        for (int idx = 0; idx < WORKFLOW_STEP_NAMES.length; idx++) {
+            String WORKFLOW_STEP_NAME = WORKFLOW_STEP_NAMES[idx];
+            loopBody.run(WORKFLOW_STEP_NAME);
+        }
+    }
+    
+    private interface DoTheFollowing {
+        void run(String workflowStepName);
+    }
+    
+    private static SecureRandom random = new SecureRandom();
+
+    /**
+     * Where any number will do, within reason.
+     * 
+     * @return an integer between 10 and 20
+     */
+    private static int anyReasonableNumber() {
+        /*
+         * big enough that some values can be subtracted without resulting in a negative number, but small enough that
+         * if it's used for looping values, we don't get carried away.
+         */
+        return random.nextInt(20) + 10;
+    }
+
+    public static class When_a_typical_iteration_is_run {
         private IterationResult iterationResult;
         private int batchSize;
-        
+
         @Before
-        public void given() {
+        public void given_a_typical_iteration() {
             iterationResult = new IterationResult();
-            batchSize = 20;  // some reasonable amount to allow for some work to become queued.
+            batchSize = anyReasonableNumber();
 
             iterationResult.setPutIntoPlay(batchSize);
         }
-        
+
         @Test
-        public void when_the_capacity_of_a_workflow_step_matches_batch_size_THEN_all_stories_are_completed_and_none_are_queued_up() {
+        public void given_the_capacity_of_a_workflow_step_matches_batch_size__then_all_stories_are_completed_and_none_are_queued_up() {
             iterationResult.setCapacity(FIRST_WORKFLOW_STEP, batchSize);
 
             iterationResult.run();
@@ -33,7 +61,8 @@ public class IterationResultTest {
         }
 
         @Test
-        public void when_the_capacity_of_a_workflow_step_is_less_than_batch_size_then_some_stories_are_queued_up() throws Exception {
+        public void given_the_capacity_of_a_workflow_step_is_less_than_batch_size__then_some_stories_are_queued_up()
+                throws Exception {
             int howMuchLessCapacityIsThanBatchSize = 5;
             int capacityOfBA = batchSize - howMuchLessCapacityIsThanBatchSize;
 
@@ -46,25 +75,23 @@ public class IterationResultTest {
         }
 
         @Test
-        public void when_qa_has_capacity_for_all_work_completed_by_webdev_then_that_work_is_completed()
+        public void given_the_capacity_for_all_workflow_steps_is_greater_than_the_batch_size__then_all_stories_are_completed_in_the_iteration()
                 throws Exception {
-            setCapacityToAllWorkflowStepsTo(iterationResult, batchSize);
-
+            ForEachWorkflowStep(new DoTheFollowing() {
+                public void run(String workflowStepName) {
+                    iterationResult.setCapacity(workflowStepName, batchSize);
+                }
+            });
+            
             iterationResult.run();
 
             assertEquals(batchSize, iterationResult.getCompleted(LAST_WORKFLOW_STEP));
             assertEquals(0, iterationResult.getQueued(LAST_WORKFLOW_STEP));
             assertEquals(batchSize, iterationResult.getTotalCompleted());
         }
-
-        private static void setCapacityToAllWorkflowStepsTo(IterationResult iterationResult, int capacity) {
-            for (int idx = 0; idx < WORKFLOW_STEP_NAMES.length; idx++) {
-                iterationResult.setCapacity(WORKFLOW_STEP_NAMES[idx], capacity);
-            }
-        }
     }
-    
-    public static class Results_from_one_iteration_affects_the_next_iteration {
+
+    public static class When_the_next_iteration_is_generated {
         IterationResult iterationResult;
 
         @Before
@@ -73,34 +100,35 @@ public class IterationResultTest {
         }
 
         @Test
-        public void when_an_iteration_completes_the_next_iteration_number_is_one_greater() throws Exception {
-            iterationResult.setIterationNumber(1);
+        public void its_iteration_number_is_one_more_than_the_previous() throws Exception {
+            int iterationNumber = anyReasonableNumber();
+            iterationResult.setIterationNumber(iterationNumber);
             IterationResult nextIteration = iterationResult.nextIteration();
-        
-            assertEquals(2, nextIteration.getIterationNumber());
+
+            assertEquals(iterationNumber + 1, nextIteration.getIterationNumber());
         }
 
         @Test
-        public void when_an_iteration_completes_the_next_iteration_maintains_the_capacity_settings() throws Exception {
-            int batchSize = 20;
-
-            iterationResult.setPutIntoPlay(batchSize);
-            iterationResult.setCapacity("BA", batchSize);
-            iterationResult.setCapacity("Dev", batchSize);
-            iterationResult.setCapacity("WebDev", batchSize);
-            iterationResult.setCapacity("QA", batchSize);
+        public void its_capacity_settings_match_those_of_the_previous() throws Exception {
+            ForEachWorkflowStep(new DoTheFollowing() {
+                public void run(String workflowStepName) {
+                    iterationResult.setCapacity(workflowStepName, anyReasonableNumber());
+                }
+            });
 
             iterationResult.run();
 
-            IterationResult nextIteration = iterationResult.nextIteration();
+            final IterationResult nextIteration = iterationResult.nextIteration();
 
-            assertEquals(iterationResult.getCapacity("BA"), nextIteration.getCapacity("BA"));
-            assertEquals(iterationResult.getCapacity("Dev"), nextIteration.getCapacity("Dev"));
-            assertEquals(iterationResult.getCapacity("WebDev"), nextIteration.getCapacity("WebDev"));
-            assertEquals(iterationResult.getCapacity("QA"), nextIteration.getCapacity("QA"));
+            ForEachWorkflowStep(new DoTheFollowing() {
+                public void run(String workflowStepName) {
+                    assertEquals(iterationResult.getCapacity(workflowStepName),
+                            nextIteration.getCapacity(workflowStepName));
+                }
+            });
         }
     }
-    
+
     public static class Uncategorized {
         IterationResult iterationResult;
 
@@ -108,16 +136,17 @@ public class IterationResultTest {
         public void given() {
             iterationResult = new IterationResult();
         }
+
         @Test
         public void when_an_iteration_completes_the_next_iteration_carries_over_queue_amounts() throws Exception {
             int batchSize = 20;
 
             // configured so that a story is queued in each workflow step
             iterationResult.setPutIntoPlay(batchSize);
-            iterationResult.setCapacity("BA", batchSize-1);
-            iterationResult.setCapacity("Dev", batchSize-2);
-            iterationResult.setCapacity("WebDev", batchSize-3);
-            iterationResult.setCapacity("QA", batchSize-4);
+            iterationResult.setCapacity("BA", batchSize - 1);
+            iterationResult.setCapacity("Dev", batchSize - 2);
+            iterationResult.setCapacity("WebDev", batchSize - 3);
+            iterationResult.setCapacity("QA", batchSize - 4);
 
             iterationResult.run();
 
@@ -163,7 +192,6 @@ public class IterationResultTest {
             assertEquals(2, iteration.getQueued("BA"));
         }
     }
-
 
     public static class Iteration_Results_can_be_serialized_to_and_from_CSV {
         @Test
