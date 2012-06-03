@@ -9,18 +9,28 @@ import java.util.List;
 import java.util.Map;
 
 public class Stimulator {
-	private int totalStories = 0;
-	private int storiesCompleted = 0;
-	private int storiesUnplayed = 0;
-	private int batchSize = 1;
-	private int businessAnalystCapacity = 1;
-	private int developmentCapacity = 1;
-	private int webDevelopmentCapacity = 1;
-	private int qualityAssuranceCapacity = 1;
-	private List<IterationResult> results = new LinkedList<IterationResult>();
-	private Map<Integer,List<IterationParameter>> allIterationParameters = new HashMap<Integer,List<IterationParameter>>();
+	private int totalStories;
+	private int storiesCompleted;
+	private int storiesUnplayed;
+	private int batchSize;
+	private List<IterationResult> results;
+	private Map<Integer,List<IterationParameter>> allIterationParameters;
 	private int numberOfIterationsToRun;
 
+	public Stimulator() {
+	    totalStories = 0;
+	    storiesCompleted = 0;
+	    storiesUnplayed = 0;
+	    results = new LinkedList<IterationResult>();
+	    allIterationParameters = new HashMap<Integer,List<IterationParameter>>();
+
+	    setBatchSize(1);
+	    setBusinessAnalystCapacity(1);
+	    setDevelopmentCapacity(1);
+	    setWebDevelopmentCapacity(1);
+	    setQualityAssuranceCapacity(1);
+    }
+	
 	public void run(OutputStream rawOutputStream) {
 		if(rawOutputStream == null) {
 			rawOutputStream = new NullOutputStream();
@@ -61,11 +71,6 @@ public class Stimulator {
 		if(previousIteration == null) {
 			iteration = new IterationResult();
 			iteration.setIterationNumber(1);
-			iteration.setCapacity("BA", businessAnalystCapacity);
-			iteration.setCapacity("Dev", developmentCapacity);
-			iteration.setCapacity("WebDev", webDevelopmentCapacity);
-			iteration.setCapacity("QA", qualityAssuranceCapacity);
-
 		} else {
 			iteration = previousIteration.nextIteration();
 		}
@@ -93,19 +98,19 @@ public class Stimulator {
 	}
 
 	public void setBusinessAnalystCapacity(int businessAnalystCapacity) {
-		this.businessAnalystCapacity = businessAnalystCapacity;
+	    addParameter(IterationParameter.startingAt(1).forStep("BA").setCapacity(businessAnalystCapacity));
 	}
 
 	public void setDevelopmentCapacity(int developmentCapacity) {
-		this.developmentCapacity = developmentCapacity;
+        addParameter(IterationParameter.startingAt(1).forStep("Dev").setCapacity(developmentCapacity));
 	}
 
 	public void setWebDevelopmentCapacity(int webDevelopmentCapacity) {
-		this.webDevelopmentCapacity = webDevelopmentCapacity;
+        addParameter(IterationParameter.startingAt(1).forStep("WebDev").setCapacity(webDevelopmentCapacity));
 	}
 
 	public void setQualityAssuranceCapacity(int qualityAssuranceCapacity) {
-		this.qualityAssuranceCapacity = qualityAssuranceCapacity;
+        addParameter(IterationParameter.startingAt(1).forStep("QA").setCapacity(qualityAssuranceCapacity));
 	}
 
 	public void setNumberOfIterationsToRun(int numberOfIterationsToRun) {
