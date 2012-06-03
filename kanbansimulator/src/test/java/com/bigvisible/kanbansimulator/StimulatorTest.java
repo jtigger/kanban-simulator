@@ -1,6 +1,6 @@
 package com.bigvisible.kanbansimulator;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
@@ -40,11 +40,12 @@ public class StimulatorTest {
                 secondIteration.getCompleted("BA") - firstIteration.getCompleted("BA"));
     }
     
-    public void when_capacity_is_modified_for_a_workflow_step_at_a_given_iteration_THEN_that_change_applies_for_subsequent_iterations() {
+    @Test(expected=InvalidSimulatorConfiguration.class)
+    public void when_a_parameter_is_added_for_a_non_existent_workflow_step_THEN_that_configuration_is_rejected() throws Exception {
+        Stimulator stimulator = new Stimulator();
+        stimulator.addStories(1);
+        
+        stimulator.addParameter(IterationParameter.startingAt(1).forStep("InvalidWorkflowStepName").setCapacity(10));
+        stimulator.run(null);
     }
-    public void when_capacity_is_modified_for_a_workflow_step_at_a_given_iteration_THEN_that_change_does_NOT_apply_for_previous_iterations() {
-    }
-    public void when_capacity_is_modified_for_a_workflow_step_at_multiple_iterations_THEN_that_increase_does_NOT_apply_for_previous_iterations() {
-    }
-    
 }

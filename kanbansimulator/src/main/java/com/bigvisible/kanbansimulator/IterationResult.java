@@ -203,14 +203,31 @@ public class IterationResult {
     }
 
     public void configure(List<IterationParameter> iterationParameters) {
-        if(iterationParameters == null) {
+        if (iterationParameters == null) {
             return;
         }
         for (IterationParameter iterationParameter : iterationParameters) {
             WorkflowStep step = getStep(iterationParameter.getWorkflowStepName());
+            if (step == null) {
+                throw new InvalidSimulatorConfiguration(
+                        String.format(
+                                "Attempted to configure workflow step \"%s\" when the defined steps are: [%s]",
+                                iterationParameter.getWorkflowStepName(),
+                                getStepDescriptions()));
+            }
             if (iterationParameter.getCapacity() != null) {
                 step.setCapacity(iterationParameter.getCapacity());
             }
         }
+    }
+
+    private String getStepDescriptions() {
+        StringBuffer definedStepNames = new StringBuffer();
+        String delim = "";
+        for (WorkflowStep definedStep : steps) {
+            definedStepNames.append(delim).append(definedStep.getDescription());
+            delim = ", ";
+        }
+        return definedStepNames.toString();
     }
 }
