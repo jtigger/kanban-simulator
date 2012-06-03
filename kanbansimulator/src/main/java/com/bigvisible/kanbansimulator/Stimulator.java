@@ -3,8 +3,10 @@ package com.bigvisible.kanbansimulator;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintWriter;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 public class Stimulator {
 	private int totalStories = 0;
@@ -16,6 +18,7 @@ public class Stimulator {
 	private int webDevelopmentCapacity = 1;
 	private int qualityAssuranceCapacity = 1;
 	private List<IterationResult> results = new LinkedList<IterationResult>();
+	private Map<Integer,List<IterationParameter>> allIterationParameters = new HashMap<Integer,List<IterationParameter>>();
 	private int numberOfIterationsToRun;
 
 	public void run(OutputStream rawOutputStream) {
@@ -67,7 +70,7 @@ public class Stimulator {
 			iteration = previousIteration.nextIteration();
 		}
 		iteration.setPutIntoPlay(storiesToPlay);
-		
+		iteration.configure(allIterationParameters.get(iteration.getIterationNumber()));
 		iteration.run();
 		
 		return iteration;
@@ -109,7 +112,16 @@ public class Stimulator {
 		this.numberOfIterationsToRun = numberOfIterationsToRun;
 	}
 
-	public List<IterationResult> results() {
+	public void addParameter(IterationParameter iterationParameter) {
+        List<IterationParameter> iterationParameters = allIterationParameters.get(iterationParameter.getIteration());
+        if(iterationParameters == null) {
+            iterationParameters = new LinkedList<IterationParameter>();
+            allIterationParameters.put(iterationParameter.getIteration(), iterationParameters);
+        }
+        iterationParameters.add(iterationParameter);
+    }
+
+    public List<IterationResult> results() {
 		return results;
 	}
 
