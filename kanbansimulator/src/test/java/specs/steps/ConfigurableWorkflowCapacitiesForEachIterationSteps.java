@@ -6,6 +6,8 @@ import java.util.List;
 
 import specs.IterationParameterExample;
 import cucumber.annotation.en.Given;
+import cucumber.annotation.en.When;
+import cucumber.runtime.PendingException;
 
 public class ConfigurableWorkflowCapacitiesForEachIterationSteps extends StepDefinitionForSimulatorSpecification {
 
@@ -23,4 +25,17 @@ public class ConfigurableWorkflowCapacitiesForEachIterationSteps extends StepDef
                     startingAt(parameterExample.iteration).forStep("QA").setCapacity(parameterExample.qACapacity));
         }
     }
+    
+    @Given("^the workflow capacities come from a file with the following values:$")
+    public void the_workflow_capacities_come_from_a_file_with_the_following_values(String arg1) {
+        // Express the Regexp above with the code you wish you had
+        throw new PendingException();
+    }
+
+    @When("^the simulator completes a run using a file for iteration capacity parameters$")
+    public void the_simulator_completes_a_run_using_a_file_for_iteration_capacity_parameters() {
+        // Express the Regexp above with the code you wish you had
+        throw new PendingException();
+    }
+
 }
