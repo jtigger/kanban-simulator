@@ -2,15 +2,18 @@ package com.bigvisible.kanbansimulator;
 
 import static com.bigvisible.kanbansimulator.IterationParameter.startingAt;
 
-import java.awt.FlowLayout;
+import java.awt.Container;
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
+import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextArea;
@@ -34,7 +37,6 @@ public class GUI extends JFrame {
 
     public GUI() {
         setTitle("Kanban Simulator (\"Tom-il-ater\")");
-        JLabel storiesInBacklogLabel = new JLabel("Backlog:");
         storiesInBacklog.setName("storiesInBacklog");
         storiesInBacklog.setText("88");
 
@@ -65,21 +67,41 @@ public class GUI extends JFrame {
 
         JLabel outputLabel = new JLabel("Output:");
         outputTextArea.setName("outputTextArea");
-        outputTextArea.setText("Hello, world.");
+        outputTextArea.setText("Hello, Major Tom.");
 
-        setLayout(new FlowLayout());
+        Container pane = getContentPane();
+        pane.setLayout(new BoxLayout(pane, BoxLayout.Y_AXIS));
 
-        add(table.getTableHeader());
-        add(scrollPane);
-        add(storiesInBacklogLabel);
-        add(storiesInBacklog);
-        add(new JLabel("Batch Size:"));
-        add(batchSize);
-        add(new JLabel("Iterations To Run:"));
-        add(iterationsToRun);
-        add(runButton);
-        add(outputLabel);
+        JPanel iterationParameterPanel = new JPanel();
+        add(iterationParameterPanel);
+        iterationParameterPanel.add(table.getTableHeader());
+        iterationParameterPanel.add(scrollPane);
+        
+        JPanel batchSizePanel = new JPanel();
+        add(batchSizePanel);
+        batchSizePanel.add(new JLabel("Batch Size:"));
+        batchSizePanel.add(batchSize);
+        batchSize.setColumns(2);
+
+        JPanel storiesInBacklogPanel = new JPanel();
+        add(storiesInBacklogPanel);
+        storiesInBacklogPanel.add(new JLabel("Backlog:"));
+        storiesInBacklogPanel.add(storiesInBacklog);
+        storiesInBacklog.setColumns(2);
+
+        
+        JPanel iterationsToRunPanel = new JPanel();
+        add(iterationsToRunPanel);
+        iterationsToRunPanel.add(new JLabel("Iterations To Run:"));
+        iterationsToRunPanel.add(iterationsToRun);
+        iterationsToRun.setColumns(2);
+        
+        JPanel runButtonPanel = new JPanel();
+        add(runButtonPanel);
+        runButtonPanel.add(runButton);
+        
         add(outputTextArea);
+        
         add(statusLabel);
 
         addWindowListener(this.new GUIWindowListener());
