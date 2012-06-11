@@ -28,7 +28,7 @@ public class IterationResultTest {
     /**
      * Where any number will do, within reason.
      * 
-     * @return an integer between 10 and 20
+     * @return an integer between 10 and 30
      */
     private static int anyReasonableNumber() {
         /*

@@ -65,7 +65,7 @@ public class SimpleSimulationSteps extends StepDefinitionForSimulatorSpecificati
 
 	@Given("^the backlog starts with (\\d+) stories$")
 	public void the_backlog_starts_with_stories(int numberOfStories) {
-		getStimulator().addStories(numberOfStories);
+        getStimulator().addStories(numberOfStories);
 	}
 
 	@Given("^the batch size is (\\d+) stories$")
