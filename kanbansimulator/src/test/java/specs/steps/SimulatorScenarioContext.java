@@ -3,7 +3,6 @@ package specs.steps;
 import java.io.File;
 import java.io.OutputStream;
 
-import com.bigvisible.kanbansimulator.GUI;
 import com.bigvisible.kanbansimulator.GUIDriver;
 import com.bigvisible.kanbansimulator.Simulator;
 import com.bigvisible.kanbansimulator.SimulatorEngine;
@@ -39,6 +38,15 @@ public class SimulatorScenarioContext {
 	}
 
     public void setSimulatorAsGUI() {
-        stimulator = new GUIDriver();
+        GUIDriver guiDriver = new GUIDriver();
+        stimulator = guiDriver;
+        
+        guiDriver.start();
+    }
+    
+    public void destroy() {
+        if(stimulator instanceof GUIDriver) {
+            ((GUIDriver)stimulator).finish();
+        }
     }
 }
