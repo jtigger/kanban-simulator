@@ -3,19 +3,22 @@ package specs.steps;
 import java.io.File;
 import java.io.OutputStream;
 
-import com.bigvisible.kanbansimulator.Stimulator;
+import com.bigvisible.kanbansimulator.GUI;
+import com.bigvisible.kanbansimulator.GUIDriver;
+import com.bigvisible.kanbansimulator.Simulator;
+import com.bigvisible.kanbansimulator.SimulatorEngine;
 
 
 public class SimulatorScenarioContext {
-	private Stimulator stimulator;
+	private Simulator stimulator;
 	private OutputStream resultsOutput = null;
 	private File resultsFile = null;
 
 	public SimulatorScenarioContext() {
-		stimulator = new Stimulator();
+		stimulator = new SimulatorEngine();
 	}
 	
-	public Stimulator getStimulator() {
+	public Simulator getStimulator() {
 		return stimulator;
 	}
 	
@@ -34,4 +37,8 @@ public class SimulatorScenarioContext {
 	public void setResultsFile(File resultsFile) {
 		this.resultsFile = resultsFile;
 	}
+
+    public void setSimulatorAsGUI() {
+        stimulator = new GUIDriver();
+    }
 }

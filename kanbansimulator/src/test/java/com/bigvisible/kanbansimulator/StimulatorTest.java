@@ -8,7 +8,7 @@ public class StimulatorTest {
 
     @Test
     public void simulator_runs_until_all_stories_are_finished() {
-        Stimulator stimuator = new Stimulator();
+        Simulator stimuator = new SimulatorEngine();
         stimuator.addStories(88);
         stimuator.run(null);
 
@@ -20,7 +20,7 @@ public class StimulatorTest {
             throws Exception {
         // how's that for a test method name?!?!?!?!
 
-        Stimulator stimulator = new Stimulator();
+        Simulator stimulator = new SimulatorEngine();
         int initialBACapacity = 4;
         int greaterThanBACapacity = 10;
         int increaseInBACapacity = 2;
@@ -42,7 +42,7 @@ public class StimulatorTest {
     
     @Test(expected=InvalidSimulatorConfiguration.class)
     public void when_a_parameter_is_added_for_a_non_existent_workflow_step_THEN_that_configuration_is_rejected() throws Exception {
-        Stimulator stimulator = new Stimulator();
+        Simulator stimulator = new SimulatorEngine();
         stimulator.addStories(1);
         
         stimulator.addParameter(IterationParameter.startingAt(1).forStep("InvalidWorkflowStepName").setCapacity(10));

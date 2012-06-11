@@ -8,7 +8,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-public class Stimulator {
+public class SimulatorEngine implements Simulator {
 	private int totalStories;
 	private int storiesCompleted;
 	private int storiesUnplayed;
@@ -17,7 +17,7 @@ public class Stimulator {
 	private Map<Integer,List<IterationParameter>> allIterationParameters;
 	private int numberOfIterationsToRun;
 
-	public Stimulator() {
+	public SimulatorEngine() {
 	    totalStories = 0;
 	    storiesCompleted = 0;
 	    storiesUnplayed = 0;

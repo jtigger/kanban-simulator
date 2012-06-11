@@ -32,7 +32,7 @@ public class CommandLine {
 			return;
 		}
 
-		Stimulator stimulator = new Stimulator();
+		Simulator stimulator = new SimulatorEngine();
 
 		stimulator.addStories(argAsInt(args, NUM_OF_STORIES));
 		stimulator.setBusinessAnalystCapacity(argAsInt(args, BA_CAPACITY));

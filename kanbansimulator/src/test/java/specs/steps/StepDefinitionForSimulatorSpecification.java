@@ -6,11 +6,12 @@ import java.io.OutputStream;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.bigvisible.kanbansimulator.Stimulator;
+import com.bigvisible.kanbansimulator.Simulator;
+import com.bigvisible.kanbansimulator.SimulatorEngine;
 
 /**
  * <p>
- * A Step Definition targeted at an instance of a {@link Stimulator}. For a given Scenario, all subclasses will be
+ * A Step Definition targeted at an instance of a {@link SimulatorEngine}. For a given Scenario, all subclasses will be
  * injected with and share the same instance of {@link SimulatorScenarioContext}, automatically.
  * </p>
  * <p>
@@ -32,8 +33,12 @@ public abstract class StepDefinitionForSimulatorSpecification {
     public void setContext(SimulatorScenarioContext context) {
         this.context = context;
     }
-
-    protected Stimulator getStimulator() {
+    
+    protected void setSimulatorAsGUI() {
+        context.setSimulatorAsGUI();
+    }
+    
+    protected Simulator getStimulator() {
         return context.getStimulator();
     }
 
