@@ -36,7 +36,7 @@ public class GUI extends JFrame {
     private JLabel statusLabel;
 
     public GUI() {
-        setTitle("Kanban Simulator (\"Tom-il-ater\")");
+        setTitle("Kanban Simulator (\"Tom-ul-ater\")");
         storiesInBacklog.setName("storiesInBacklog");
         storiesInBacklog.setText("88");
 
@@ -48,9 +48,17 @@ public class GUI extends JFrame {
 
         String[] columnNames = { "Iteration", "BA", "Dev", "WebDev", "QA" };
 
-        Object[][] data = { { 1, 13, 12, 12, 10 }, { 2, 13, 12, 12, 10 }, { 3, 13, 12, 12, 10 }, { 4, 13, 12, 12, 10 },
-                { 5, 13, 12, 12, 10 }, { 6, 13, 12, 12, 10 }, { 7, 13, 12, 12, 10 }, { 8, 13, 12, 12, 10 },
-                { 9, 13, 12, 12, 10 }, { 10, 13, 12, 12, 10 },
+        Object[][] data = { 
+        		{ 1, 13, 12, 12, 10 }, 
+        		{ 2, 13, 12,  6, 10 }, 
+        		{ 3, 13, 12,  6, 10 }, 
+        		{ 4, 13, 12,  6, 10 },
+                { 5, 13, 12, 18, 10 }, 
+                { 6, 13, 12, 18, 10 }, 
+                { 7, 13,  8, 12,  8 }, 
+                { 8, 13,  8, 12,  8 },
+                { 9, 13,  8, 12,  8 }, 
+                { 10, 13, 8, 12,  8 },
 
         };
 
