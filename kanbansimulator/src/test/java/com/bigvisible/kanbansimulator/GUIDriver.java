@@ -122,8 +122,9 @@ public class GUIDriver implements Simulator {
     }
 
     public void setNumberOfIterationsToRun(int numberOfIterationsToRun) {
-        // TODO Auto-generated method stub
-
+        JTextComponentFixture iterationsToRunFixture = mainWindowFixture.textBox("iterationsToRun");
+        
+        iterationsToRunFixture.setText(""+numberOfIterationsToRun);
     }
 
     private Integer currentIteration;

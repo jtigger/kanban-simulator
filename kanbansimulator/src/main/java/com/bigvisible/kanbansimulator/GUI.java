@@ -24,6 +24,7 @@ public class GUI extends JFrame {
     private JTextField batchSize = new JTextField();
     private JTextField storiesInBacklog = new JTextField();
     private JTextArea outputTextArea = new JTextArea();
+    private JTextField iterationsToRun = new JTextField();
 
     private JTable table;
     private JScrollPane scrollPane;
@@ -32,12 +33,16 @@ public class GUI extends JFrame {
     private JLabel statusLabel;
 
     public GUI() {
+        setTitle("Kanban Simulator (\"Tom-il-ater\")");
         JLabel storiesInBacklogLabel = new JLabel("Backlog:");
         storiesInBacklog.setName("storiesInBacklog");
         storiesInBacklog.setText("88");
 
         batchSize.setName("batchSize");
         batchSize.setText("11");
+        
+        iterationsToRun.setName("iterationsToRun");
+        iterationsToRun.setText("10");
 
         String[] columnNames = { "Iteration", "BA", "Dev", "WebDev", "QA" };
 
@@ -68,7 +73,10 @@ public class GUI extends JFrame {
         add(scrollPane);
         add(storiesInBacklogLabel);
         add(storiesInBacklog);
+        add(new JLabel("Batch Size:"));
         add(batchSize);
+        add(new JLabel("Iterations To Run:"));
+        add(iterationsToRun);
         add(runButton);
         add(outputLabel);
         add(outputTextArea);
@@ -99,6 +107,7 @@ public class GUI extends JFrame {
             SimulatorEngine simulator = new SimulatorEngine();
             simulator.addStories(Integer.parseInt(storiesInBacklog.getText()));
             simulator.setBatchSize(Integer.parseInt(batchSize.getText()));
+            simulator.setNumberOfIterationsToRun(Integer.parseInt(iterationsToRun.getText()));
 
             Object[][] tableData = getTableData(table);
 
