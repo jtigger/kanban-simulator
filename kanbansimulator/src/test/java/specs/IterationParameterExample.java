@@ -6,4 +6,5 @@ public class IterationParameterExample {
     public int devCapacity;
     public int webDevCapacity;
     public int qACapacity;
+    public int batchSize;
 }
