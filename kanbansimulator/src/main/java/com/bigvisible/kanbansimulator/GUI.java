@@ -36,7 +36,7 @@ public class GUI extends JFrame {
     private JLabel statusLabel;
 
     public GUI() {
-        setTitle("Kanban Simulator (\"Tom-ul-ater\")");
+        setTitle("Kanban Simulator (\"Tom-U-later\")");
         storiesInBacklog.setName("storiesInBacklog");
         storiesInBacklog.setText("88");
 
