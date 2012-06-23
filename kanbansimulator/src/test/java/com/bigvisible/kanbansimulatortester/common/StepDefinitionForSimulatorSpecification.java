@@ -34,7 +34,7 @@ public abstract class StepDefinitionForSimulatorSpecification {
         this.context = context;
     }
     
-    protected void setSimulatorAsGUI() {
+    protected void driveSimulationThroughGUI() {
         context.setSimulatorAsGUI();
     }
     
