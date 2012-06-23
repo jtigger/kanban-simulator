@@ -1,4 +1,4 @@
-package specs.steps;
+package com.bigvisible.kanbansimulatortester.common;
 
 import java.io.File;
 import java.io.FileOutputStream;

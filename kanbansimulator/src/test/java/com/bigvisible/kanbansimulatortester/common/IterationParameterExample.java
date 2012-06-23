@@ -1,4 +1,4 @@
-package specs;
+package com.bigvisible.kanbansimulatortester.common;
 
 public class IterationParameterExample {
     public int iteration;

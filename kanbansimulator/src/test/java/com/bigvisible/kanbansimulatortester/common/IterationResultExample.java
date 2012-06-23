@@ -1,4 +1,4 @@
-package specs;
+package com.bigvisible.kanbansimulatortester.common;
 
 import java.util.LinkedList;
 import java.util.List;

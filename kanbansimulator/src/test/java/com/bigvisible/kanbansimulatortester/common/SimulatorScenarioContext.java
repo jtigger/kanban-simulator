@@ -1,11 +1,11 @@
-package specs.steps;
+package com.bigvisible.kanbansimulatortester.common;
 
 import java.io.File;
 import java.io.OutputStream;
 
-import com.bigvisible.kanbansimulator.GUIDriver;
 import com.bigvisible.kanbansimulator.Simulator;
 import com.bigvisible.kanbansimulator.SimulatorEngine;
+import com.bigvisible.kanbansimulatortester.gui.GUIDriver;
 
 
 public class SimulatorScenarioContext {

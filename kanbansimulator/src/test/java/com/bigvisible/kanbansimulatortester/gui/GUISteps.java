@@ -1,4 +1,6 @@
-package specs.steps;
+package com.bigvisible.kanbansimulatortester.gui;
+
+import com.bigvisible.kanbansimulatortester.common.StepDefinitionForSimulatorSpecification;
 
 import cucumber.annotation.en.Given;
 

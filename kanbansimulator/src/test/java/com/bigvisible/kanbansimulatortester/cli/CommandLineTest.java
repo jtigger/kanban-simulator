@@ -1,4 +1,4 @@
-package com.bigvisible.kanbansimulator;
+package com.bigvisible.kanbansimulatortester.cli;
 import java.io.ByteArrayOutputStream;
 
 import org.junit.Test;

@@ -1,8 +1,14 @@
-package com.bigvisible.kanbansimulator;
+package com.bigvisible.kanbansimulatortester.core.unit;
 
 import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
+
+import com.bigvisible.kanbansimulator.InvalidSimulatorConfiguration;
+import com.bigvisible.kanbansimulator.IterationParameter;
+import com.bigvisible.kanbansimulator.IterationResult;
+import com.bigvisible.kanbansimulator.Simulator;
+import com.bigvisible.kanbansimulator.SimulatorEngine;
 
 public class StimulatorTest {
 

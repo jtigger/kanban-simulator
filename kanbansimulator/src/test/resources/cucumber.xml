@@ -7,5 +7,5 @@ http://www.springframework.org/schema/context http://www.springframework.org/sch
     <context:component-scan base-package="specs.steps" />
     <context:annotation-config />
 
-    <bean id="context" class="specs.steps.SimulatorScenarioContext" scope="cucumber-glue" destroy-method="destroy" />
+    <bean id="context" class="com.bigvisible.kanbansimulatortester.common.SimulatorScenarioContext" scope="cucumber-glue" destroy-method="destroy" />
 </beans>

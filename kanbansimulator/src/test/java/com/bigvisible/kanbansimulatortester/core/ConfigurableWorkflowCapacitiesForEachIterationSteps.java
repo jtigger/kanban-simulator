@@ -1,10 +1,12 @@
-package specs.steps;
+package com.bigvisible.kanbansimulatortester.core;
 
 import static com.bigvisible.kanbansimulator.IterationParameter.startingAt;
 
 import java.util.List;
 
-import specs.IterationParameterExample;
+import com.bigvisible.kanbansimulatortester.common.IterationParameterExample;
+import com.bigvisible.kanbansimulatortester.common.StepDefinitionForSimulatorSpecification;
+
 import cucumber.annotation.en.Given;
 import cucumber.annotation.en.When;
 import cucumber.runtime.PendingException;

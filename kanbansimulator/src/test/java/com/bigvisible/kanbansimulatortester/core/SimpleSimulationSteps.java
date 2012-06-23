@@ -1,4 +1,4 @@
-package specs.steps;
+package com.bigvisible.kanbansimulatortester.core;
 
 import static org.hamcrest.Matchers.isIn;
 import static org.junit.Assert.assertThat;
@@ -13,9 +13,10 @@ import java.io.InputStream;
 import java.util.List;
 
 
-import specs.IterationResultExample;
 
 import com.bigvisible.kanbansimulator.IterationResult;
+import com.bigvisible.kanbansimulatortester.common.IterationResultExample;
+import com.bigvisible.kanbansimulatortester.common.StepDefinitionForSimulatorSpecification;
 
 import cucumber.annotation.en.Given;
 import cucumber.annotation.en.Then;

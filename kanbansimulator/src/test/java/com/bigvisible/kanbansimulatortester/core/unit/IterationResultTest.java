@@ -1,11 +1,15 @@
-package com.bigvisible.kanbansimulator;
+package com.bigvisible.kanbansimulatortester.core.unit;
 
 import static org.junit.Assert.assertEquals;
 
 import java.security.SecureRandom;
 
+import junit.framework.TestSuite;
+
 import org.junit.Before;
 import org.junit.Test;
+
+import com.bigvisible.kanbansimulator.IterationResult;
 
 public class IterationResultTest {
     static final String[] WORKFLOW_STEP_NAMES = new String[] { "BA", "Dev", "WebDev", "QA" };
@@ -18,11 +22,11 @@ public class IterationResultTest {
             loopBody.run(WORKFLOW_STEP_NAME);
         }
     }
-    
+
     private interface DoTheFollowing {
         void run(String workflowStepName);
     }
-    
+
     private static SecureRandom random = new SecureRandom();
 
     /**
@@ -82,7 +86,7 @@ public class IterationResultTest {
                     iterationResult.setCapacity(workflowStepName, batchSize);
                 }
             });
-            
+
             iterationResult.run();
 
             assertEquals(batchSize, iterationResult.getCompleted(LAST_WORKFLOW_STEP));
