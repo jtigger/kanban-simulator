@@ -8,7 +8,7 @@ import specs.IterationParameterExample;
 import cucumber.annotation.en.Given;
 import cucumber.runtime.PendingException;
 
-public class ConfigurableWorkflowCapacitiesAndBatchSizesByIteration extends StepDefinitionForSimulatorSpecification {
+public class ConfigurableWorkflowCapacitiesAndBatchSizesByIterationSteps extends StepDefinitionForSimulatorSpecification {
 
 	@Given("^the following workflow capacities and batch sizes by iteration:$")
 	public void the_following_workflow_capacities_and_batch_sizes_by_iteration(List<IterationParameterExample> parameterExamples) {
