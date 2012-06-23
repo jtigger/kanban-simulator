@@ -11,7 +11,7 @@ import cucumber.annotation.en.Given;
 import cucumber.annotation.en.When;
 import cucumber.runtime.PendingException;
 
-public class ConfigurableWorkflowCapacitiesForEachIterationSteps extends StepDefinitionForSimulatorSpecification {
+public class ConfigureIterationParameterSteps extends StepDefinitionForSimulatorSpecification {
 
     @Given("^the following workflow capacities by iteration:$")
     public void the_following_workflow_capacities_by_iteration(List<IterationParameterExample> parameterExamples) {
@@ -27,6 +27,26 @@ public class ConfigurableWorkflowCapacitiesForEachIterationSteps extends StepDef
                     startingAt(parameterExample.iteration).forStep("QA").setCapacity(parameterExample.qACapacity));
         }
     }
+    
+    @Given("^the following workflow capacities and batch sizes by iteration:$")
+    public void the_following_workflow_capacities_and_batch_sizes_by_iteration(List<IterationParameterExample> parameterExamples) {
+        for (IterationParameterExample parameterExample : parameterExamples) {
+            getStimulator().addParameter(
+                    startingAt(parameterExample.iteration).forStep("BA").setCapacity(parameterExample.bACapacity));
+            getStimulator().addParameter(
+                    startingAt(parameterExample.iteration).forStep("Dev").setCapacity(parameterExample.devCapacity));
+            getStimulator().addParameter(
+                    startingAt(parameterExample.iteration).forStep("WebDev").setCapacity(
+                            parameterExample.webDevCapacity));
+            getStimulator().addParameter(
+                    startingAt(parameterExample.iteration).forStep("QA").setCapacity(parameterExample.qACapacity));
+        }
+        
+        // Express the Regexp above with the code you wish you had
+        // For automatic conversion, change DataTable to List<YourType>
+        throw new PendingException();
+    }
+
     
     @Given("^the workflow capacities come from a file with the following values:$")
     public void the_workflow_capacities_come_from_a_file_with_the_following_values(String arg1) {
