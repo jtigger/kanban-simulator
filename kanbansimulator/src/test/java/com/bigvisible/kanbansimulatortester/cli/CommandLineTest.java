@@ -1,12 +1,13 @@
 package com.bigvisible.kanbansimulatortester.cli;
+import static org.hamcrest.Matchers.containsString;
+import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
+
 import java.io.ByteArrayOutputStream;
 
 import org.junit.Test;
 
 import com.bigvisible.kanbansimulator.CommandLine;
-
-import static org.junit.Assert.*;
-import static org.hamcrest.Matchers.*;
 
 public class CommandLineTest {
 

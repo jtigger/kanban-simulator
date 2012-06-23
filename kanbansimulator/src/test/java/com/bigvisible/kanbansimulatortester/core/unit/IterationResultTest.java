@@ -4,8 +4,6 @@ import static org.junit.Assert.assertEquals;
 
 import java.security.SecureRandom;
 
-import junit.framework.TestSuite;
-
 import org.junit.Before;
 import org.junit.Test;
 

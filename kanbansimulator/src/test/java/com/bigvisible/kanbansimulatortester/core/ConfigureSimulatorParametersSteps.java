@@ -1,13 +1,12 @@
 package com.bigvisible.kanbansimulatortester.core;
 
+import static org.hamcrest.Matchers.is;
+import static org.junit.Assert.assertThat;
+
 import com.bigvisible.kanbansimulatortester.common.StepDefinitionForSimulatorSpecification;
 
 import cucumber.annotation.en.Given;
 import cucumber.annotation.en.Then;
-import cucumber.runtime.PendingException;
-
-import static org.junit.Assert.*;
-import static org.hamcrest.Matchers.*;
 
 public class ConfigureSimulatorParametersSteps extends StepDefinitionForSimulatorSpecification {
 
