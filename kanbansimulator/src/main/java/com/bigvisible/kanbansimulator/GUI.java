@@ -30,7 +30,6 @@ public class GUI extends JFrame {
 
     private JTable table;
     private JScrollPane scrollPane;
-    private JScrollPane outputScrollPane;
     private JButton runButton = new JButton("Run");
     private JLabel statusLabel;
 
@@ -72,7 +71,6 @@ public class GUI extends JFrame {
         statusLabel = new JLabel("Waiting for user to configure simulation.");
         statusLabel.setName("statusLabel");
 
-        JLabel outputLabel = new JLabel("Output:");
         outputTextArea.setName("outputTextArea");
         outputTextArea.setText("Hello, Major Tom.");
 
