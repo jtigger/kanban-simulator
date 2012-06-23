@@ -16,17 +16,6 @@ public class IterationResultTest {
     static final String FIRST_WORKFLOW_STEP = WORKFLOW_STEP_NAMES[0];
     static final String LAST_WORKFLOW_STEP = WORKFLOW_STEP_NAMES[WORKFLOW_STEP_NAMES.length - 1];
 
-    private static void ForEachWorkflowStep(DoTheFollowing loopBody) {
-        for (int idx = 0; idx < WORKFLOW_STEP_NAMES.length; idx++) {
-            String WORKFLOW_STEP_NAME = WORKFLOW_STEP_NAMES[idx];
-            loopBody.run(WORKFLOW_STEP_NAME);
-        }
-    }
-
-    private interface DoTheFollowing {
-        void run(String workflowStepName);
-    }
-
     private static SecureRandom random = new SecureRandom();
 
     /**
@@ -81,11 +70,9 @@ public class IterationResultTest {
         @Test
         public void given_the_capacity_for_all_workflow_steps_is_greater_than_the_batch_size__then_all_stories_are_completed_in_the_iteration()
                 throws Exception {
-            ForEachWorkflowStep(new DoTheFollowing() {
-                public void run(String workflowStepName) {
-                    iterationResult.setCapacity(workflowStepName, batchSize);
-                }
-            });
+            for (String workflowStepName : WORKFLOW_STEP_NAMES) {
+                iterationResult.setCapacity(workflowStepName, batchSize);
+            }
 
             iterationResult.run();
 
@@ -114,22 +101,18 @@ public class IterationResultTest {
 
         @Test
         public void its_capacity_settings_match_those_of_the_previous() throws Exception {
-            ForEachWorkflowStep(new DoTheFollowing() {
-                public void run(String workflowStepName) {
-                    iterationResult.setCapacity(workflowStepName, anyReasonableNumber());
-                }
-            });
+            for (String workflowStepName : WORKFLOW_STEP_NAMES) {
+                iterationResult.setCapacity(workflowStepName, anyReasonableNumber());
+            }
 
             iterationResult.run();
 
             final IterationResult nextIteration = iterationResult.nextIteration();
 
-            ForEachWorkflowStep(new DoTheFollowing() {
-                public void run(String workflowStepName) {
-                    assertEquals(iterationResult.getCapacity(workflowStepName),
-                            nextIteration.getCapacity(workflowStepName));
-                }
-            });
+            for (String workflowStepName : WORKFLOW_STEP_NAMES) {
+                assertEquals(iterationResult.getCapacity(workflowStepName),
+                        nextIteration.getCapacity(workflowStepName));
+            }
         }
     }
 
