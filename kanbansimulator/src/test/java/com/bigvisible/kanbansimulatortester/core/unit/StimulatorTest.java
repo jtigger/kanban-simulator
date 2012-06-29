@@ -1,5 +1,6 @@
 package com.bigvisible.kanbansimulatortester.core.unit;
 
+import static org.junit.Assert.*;
 import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
@@ -53,5 +54,18 @@ public class StimulatorTest {
         
         stimulator.addParameter(IterationParameter.startingAt(1).forStep("InvalidWorkflowStepName").setCapacity(10));
         stimulator.run(null);
+    }
+    
+    @Test
+    public void when_the_batch_size_is_configured_at_a_given_iteration_THEN_the_amount_put_into_play_matches_that_configuration() throws Exception {
+        Simulator stimulator = new SimulatorEngine();
+        stimulator.addStories(20);
+        stimulator.setBatchSize(1);
+        
+        stimulator.addParameter(IterationParameter.startingAt(2).setBatchSize(10));
+        
+        stimulator.run(null);
+        
+        assertEquals(10, stimulator.results().get(1).getPutIntoPlay());
     }
 }

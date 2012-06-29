@@ -43,4 +43,8 @@ public class IterationParameter {
         return this;
     }
 
+    public boolean isWorkflowConfiguration() {
+        return workflowStepName != null;
+    }
+
 }

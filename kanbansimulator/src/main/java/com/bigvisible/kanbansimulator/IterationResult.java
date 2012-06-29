@@ -207,16 +207,18 @@ public class IterationResult {
             return;
         }
         for (IterationParameter iterationParameter : iterationParameters) {
-            WorkflowStep step = getStep(iterationParameter.getWorkflowStepName());
-            if (step == null) {
-                throw new InvalidSimulatorConfiguration(
-                        String.format(
-                                "Attempted to configure workflow step \"%s\" when the defined steps are: [%s]",
-                                iterationParameter.getWorkflowStepName(),
-                                getStepDescriptions()));
-            }
-            if (iterationParameter.getCapacity() != null) {
-                step.setCapacity(iterationParameter.getCapacity());
+            if (iterationParameter.isWorkflowConfiguration()) {
+                WorkflowStep step = getStep(iterationParameter.getWorkflowStepName());
+                if (step == null) {
+                    throw new InvalidSimulatorConfiguration(String.format(
+                            "Attempted to configure workflow step \"%s\" when the defined steps are: [%s]",
+                            iterationParameter.getWorkflowStepName(), getStepDescriptions()));
+                }
+                if (iterationParameter.getCapacity() != null) {
+                    step.setCapacity(iterationParameter.getCapacity());
+                }
+            } else {
+
             }
         }
     }
