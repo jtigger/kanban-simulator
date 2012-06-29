@@ -7,4 +7,6 @@ public class IterationParameterExample {
     public int webDevCapacity;
     public int qACapacity;
     public int batchSize;
+    
+    // Adding a comment to test branching
 }
