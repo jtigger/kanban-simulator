@@ -38,4 +38,9 @@ public class IterationParameter {
         return newParameter;
     }
 
+    public IterationParameter setBatchSize(int batchSize) {
+        // TODO Auto-generated method stub
+        return this;
+    }
+
 }

@@ -40,13 +40,9 @@ public class ConfigureIterationParameterSteps extends StepDefinitionForSimulator
                             parameterExample.webDevCapacity));
             getStimulator().addParameter(
                     startingAt(parameterExample.iteration).forStep("QA").setCapacity(parameterExample.qACapacity));
+            getStimulator().addParameter(startingAt(parameterExample.iteration).setBatchSize(parameterExample.batchSize));
         }
-        
-        // Express the Regexp above with the code you wish you had
-        // For automatic conversion, change DataTable to List<YourType>
-        throw new PendingException();
     }
-
     
     @Given("^the workflow capacities come from a file with the following values:$")
     public void the_workflow_capacities_come_from_a_file_with_the_following_values(String arg1) {
