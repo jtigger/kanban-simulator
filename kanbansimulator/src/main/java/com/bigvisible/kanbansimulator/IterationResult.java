@@ -218,7 +218,7 @@ public class IterationResult {
                     step.setCapacity(iterationParameter.getCapacity());
                 }
             } else {
-
+                setPutIntoPlay(iterationParameter.getBatchSize());
             }
         }
     }

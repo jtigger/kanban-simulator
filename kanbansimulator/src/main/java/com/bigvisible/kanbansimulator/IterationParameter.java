@@ -5,6 +5,7 @@ public class IterationParameter {
     private String workflowStepName;
     private int iteration;
     private Integer capacity;
+    private int batchSize;
 
     public String getWorkflowStepName() {
         return workflowStepName;
@@ -39,8 +40,12 @@ public class IterationParameter {
     }
 
     public IterationParameter setBatchSize(int batchSize) {
-        // TODO Auto-generated method stub
+        this.batchSize = batchSize;
         return this;
+    }
+
+    public int getBatchSize() {
+        return batchSize;
     }
 
     public boolean isWorkflowConfiguration() {
