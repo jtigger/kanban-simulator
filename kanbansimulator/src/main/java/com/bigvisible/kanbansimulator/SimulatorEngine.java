@@ -12,7 +12,6 @@ public class SimulatorEngine implements Simulator {
 	private int totalStories;
 	private int storiesCompleted;
 	private int storiesUnplayed;
-	private int batchSize;
 	private List<IterationResult> results;
 	private Map<Integer,List<IterationParameter>> allIterationParameters;
 	private int numberOfIterationsToRun;
@@ -41,8 +40,8 @@ public class SimulatorEngine implements Simulator {
 		storiesUnplayed = totalStories;
 	    
 		IterationResult iteration = null;
-        while (haveMoreIterationsToRun()) {
-            iteration = runNextIteration(iteration, Math.min(storiesUnplayed, batchSize));
+        while (haveMoreIterationsToRun()) { 
+            iteration = runNextIteration(iteration, storiesUnplayed);
             updateSimulatorState(iteration);
             outputIterationResults(output, iteration);
         }
@@ -65,7 +64,7 @@ public class SimulatorEngine implements Simulator {
         return storiesCompleted < totalStories;
     }
 
-	private IterationResult runNextIteration(IterationResult previousIteration, int storiesToPlay) {
+	private IterationResult runNextIteration(IterationResult previousIteration, int storiesAvailableToPlay) {
 		IterationResult iteration;
 		
 		if(previousIteration == null) {
@@ -74,15 +73,14 @@ public class SimulatorEngine implements Simulator {
 		} else {
 			iteration = previousIteration.nextIteration();
 		}
-		iteration.setBatchSize(storiesToPlay);
 		iteration.configure(allIterationParameters.get(iteration.getIterationNumber()));
-		iteration.run(storiesToPlay);
+		iteration.run(storiesAvailableToPlay);
 		
 		return iteration;
 	}
 
 	private void updateSimulatorState(IterationResult iteration) {
-		storiesUnplayed -= iteration.getBatchSize();
+		storiesUnplayed -= iteration.getPutIntoPlay();
 		storiesCompleted = iteration.getTotalCompleted();
 		
 	    results.add(iteration);
@@ -94,7 +92,7 @@ public class SimulatorEngine implements Simulator {
 	}
 
 	public void setBatchSize(int batchSize) {
-		this.batchSize = batchSize;
+	    addParameter(IterationParameter.startingAt(1).setBatchSize(batchSize));
 	}
 
 	public void setBusinessAnalystCapacity(int businessAnalystCapacity) {

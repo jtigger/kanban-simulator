@@ -89,7 +89,6 @@ public class IterationResultTest {
         
         @Test
         public void given_the_batch_size_is_greater_than_available_stories_to_play_THEN_the_number_of_stories_put_into_play_matches_available_stories() throws Exception {
-            // TODO: given_the_batch_size_is_greater_than_available_stories_to_play_THEN_the_number_of_stories_put_into_play_matches_available_stories
             int storiesAvailableToPlay = batchSize-1;
             iterationResult.run(storiesAvailableToPlay);
             assertEquals(storiesAvailableToPlay, iterationResult.getPutIntoPlay());
@@ -129,8 +128,14 @@ public class IterationResultTest {
             }
         }
         
+        @Test
         public void its_batch_size_matches_that_of_the_previous() throws Exception {
-            // TODO: its_batch_size_matches_that_of_the_previous()
+            int batchSize = 10;
+            iterationResult.setBatchSize(batchSize);
+
+            IterationResult nextIteration = iterationResult.nextIteration();
+            
+            assertEquals(batchSize, nextIteration.getBatchSize());
         }
     }
 
@@ -203,7 +208,7 @@ public class IterationResultTest {
         public void can_serialize_to_CSV() throws Exception {
             IterationResult iteration = new IterationResult();
             iteration.setIterationNumber(0);
-            iteration.setBatchSize(1);
+            iteration.setPutIntoPlay(1);
             iteration.setCapacity("BA", 2);
             iteration.setCompleted("BA", 3);
             iteration.setQueued("BA", 4);
@@ -229,7 +234,7 @@ public class IterationResultTest {
             IterationResult iteration = IterationResult.parseCSV(asCSV);
 
             assertEquals(0, iteration.getIterationNumber());
-            assertEquals(1, iteration.getBatchSize());
+            assertEquals(1, iteration.getPutIntoPlay());
             assertEquals(2, iteration.getCapacity("BA"));
             assertEquals(3, iteration.getCompleted("BA"));
             assertEquals(4, iteration.getQueued("BA"));

@@ -54,7 +54,7 @@ public class IterationResultExample {
 		IterationResultExample example = new IterationResultExample();
 		
 		example.iteration = result.getIterationNumber();
-		example.putInPlay = result.getBatchSize();
+		example.putInPlay = result.getPutIntoPlay();
 		example.bACapacity = result.getCapacity("BA");
 		example.bACompleted = result.getCompleted("BA");
 		example.bARemainingInQueue = result.getQueued("BA");
@@ -166,8 +166,8 @@ public class IterationResultExample {
 	@Override
 	public String toString() {
 		return String
-				.format("IterationResultExample [iteration=%s, bARemainingInQueue=%s, devRemainingInQueue=%s, webDevRemainingInQueue=%s, qARemainingInQueue=%s, totalCompleted=%s]",
-						iteration, bARemainingInQueue, devRemainingInQueue,
+				.format("IterationResultExample [iteration=%s, putInPlay=%s, bARemainingInQueue=%s, devRemainingInQueue=%s, webDevRemainingInQueue=%s, qARemainingInQueue=%s, totalCompleted=%s]",
+						iteration, putInPlay, bARemainingInQueue, devRemainingInQueue,
 						webDevRemainingInQueue, qARemainingInQueue,
 						totalCompleted);
 	}

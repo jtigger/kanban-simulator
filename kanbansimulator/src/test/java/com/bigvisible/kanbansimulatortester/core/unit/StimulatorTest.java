@@ -70,6 +70,21 @@ public class StimulatorTest {
     }
     
     public void when_batch_size_exceeds_number_of_stories_available_to_play_THEN_only_the_number_of_stories_available_are_actually_put_into_play() throws Exception {
-        // TODO: when_batch_size_exceeds_number_of_stories_available_to_play_THEN_only_the_number_of_stories_available_are_actually_put_into_play
+        int totalStories = 10;
+        int storiesPutInPlayForIteration1 = 1;
+        int expectedStoriesPutInPlayForIteration2 = totalStories - storiesPutInPlayForIteration1;
+        int batchSizeForIteration2 = expectedStoriesPutInPlayForIteration2 + 1;  // i.e. batchSize > putInPlay
+        
+        Simulator stimulator = new SimulatorEngine();
+        stimulator.addStories(totalStories);
+        stimulator.setBatchSize(storiesPutInPlayForIteration1);
+        
+        stimulator.addParameter(IterationParameter.startingAt(2).setBatchSize(batchSizeForIteration2));
+        
+        stimulator.run(null);
+        
+        int storiesPutInPlayForIteration2 = stimulator.results().get(1).getPutIntoPlay();
+        
+        assertEquals(expectedStoriesPutInPlayForIteration2, storiesPutInPlayForIteration2);
     }
 }

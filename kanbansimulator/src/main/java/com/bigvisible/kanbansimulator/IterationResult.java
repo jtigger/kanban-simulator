@@ -77,19 +77,20 @@ public class IterationResult {
 
     public void run(int storiesAvailableToPlay) {
         putIntoPlay = Math.min(storiesAvailableToPlay, batchSize);
-        int inputFromPreviousStep = batchSize;
+        int outputOfPreviousStep = putIntoPlay;
         for (WorkflowStep step : steps) {
-            step.setQueued(step.getQueued() + inputFromPreviousStep);
+            step.setQueued(step.getQueued() + outputOfPreviousStep);
             step.setCompleted(Math.min(step.getQueued(), step.getCapacity()));
             step.setQueued(step.getQueued() - step.getCompleted());
-            inputFromPreviousStep = step.getCompleted();
+            outputOfPreviousStep = step.getCompleted();
         }
-        totalCompleted += inputFromPreviousStep;
+        totalCompleted += outputOfPreviousStep;  // output from last step is considered "completed"
     }
 
     public IterationResult nextIteration() {
         IterationResult nextIteration = new IterationResult();
         nextIteration.iterationNumber = iterationNumber + 1;
+        nextIteration.batchSize = batchSize;
         for (WorkflowStep step : steps) {
             WorkflowStep sameStepInNextIteration = nextIteration.getStep(step.getDescription());
 
@@ -115,6 +116,14 @@ public class IterationResult {
 
     public void setBatchSize(int batchSize) {
         this.batchSize = batchSize;
+    }
+
+    public int getPutIntoPlay() {
+        return putIntoPlay;
+    }
+
+    public void setPutIntoPlay(int putIntoPlay) {
+        this.putIntoPlay = putIntoPlay;
     }
 
     public int getCapacity(String stepName) {
@@ -151,7 +160,7 @@ public class IterationResult {
                                                                 // if we can? :)
 
         csv.append(getIterationNumber() + ", ");
-        csv.append(getBatchSize() + ", ");
+        csv.append(getPutIntoPlay() + ", ");
 
         for (WorkflowStep step : steps) {
             csv.append(step.getCapacity() + ", ");
@@ -170,7 +179,7 @@ public class IterationResult {
         int idx = 0;
 
         iterationResult.iterationNumber = Integer.parseInt(resultValues[idx++].trim());
-        iterationResult.batchSize = Integer.parseInt(resultValues[idx++].trim());
+        iterationResult.putIntoPlay = Integer.parseInt(resultValues[idx++].trim());
         for (WorkflowStep step : iterationResult.steps) {
             step.capacity = Integer.parseInt(resultValues[idx++].trim());
             step.completed = Integer.parseInt(resultValues[idx++].trim());
@@ -233,9 +242,5 @@ public class IterationResult {
             delim = ", ";
         }
         return definedStepNames.toString();
-    }
-
-    public int getPutIntoPlay() {
-        return putIntoPlay;
     }
 }
