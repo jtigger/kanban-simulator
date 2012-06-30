@@ -66,6 +66,10 @@ public class StimulatorTest {
         
         stimulator.run(null);
         
-        assertEquals(10, stimulator.results().get(1).getPutIntoPlay());
+        assertEquals(10, stimulator.results().get(1).getBatchSize());
+    }
+    
+    public void when_batch_size_exceeds_number_of_stories_available_to_play_THEN_only_the_number_of_stories_available_are_actually_put_into_play() throws Exception {
+        // TODO: when_batch_size_exceeds_number_of_stories_available_to_play_THEN_only_the_number_of_stories_available_are_actually_put_into_play
     }
 }

@@ -9,8 +9,9 @@ import java.util.List;
 
 public class IterationResult {
     private int iterationNumber;
-    private int putIntoPlay;
+    private int batchSize;
     private int totalCompleted;
+    private int putIntoPlay;
 
     private List<WorkflowStep> steps;
 
@@ -74,8 +75,9 @@ public class IterationResult {
         return null;
     }
 
-    public void run() {
-        int inputFromPreviousStep = putIntoPlay;
+    public void run(int storiesAvailableToPlay) {
+        putIntoPlay = Math.min(storiesAvailableToPlay, batchSize);
+        int inputFromPreviousStep = batchSize;
         for (WorkflowStep step : steps) {
             step.setQueued(step.getQueued() + inputFromPreviousStep);
             step.setCompleted(Math.min(step.getQueued(), step.getCapacity()));
@@ -107,12 +109,12 @@ public class IterationResult {
         this.iterationNumber = iterationNumber;
     }
 
-    public int getPutIntoPlay() {
-        return putIntoPlay;
+    public int getBatchSize() {
+        return batchSize;
     }
 
-    public void setPutIntoPlay(int putIntoPlay) {
-        this.putIntoPlay = putIntoPlay;
+    public void setBatchSize(int batchSize) {
+        this.batchSize = batchSize;
     }
 
     public int getCapacity(String stepName) {
@@ -149,7 +151,7 @@ public class IterationResult {
                                                                 // if we can? :)
 
         csv.append(getIterationNumber() + ", ");
-        csv.append(getPutIntoPlay() + ", ");
+        csv.append(getBatchSize() + ", ");
 
         for (WorkflowStep step : steps) {
             csv.append(step.getCapacity() + ", ");
@@ -168,7 +170,7 @@ public class IterationResult {
         int idx = 0;
 
         iterationResult.iterationNumber = Integer.parseInt(resultValues[idx++].trim());
-        iterationResult.putIntoPlay = Integer.parseInt(resultValues[idx++].trim());
+        iterationResult.batchSize = Integer.parseInt(resultValues[idx++].trim());
         for (WorkflowStep step : iterationResult.steps) {
             step.capacity = Integer.parseInt(resultValues[idx++].trim());
             step.completed = Integer.parseInt(resultValues[idx++].trim());
@@ -218,7 +220,7 @@ public class IterationResult {
                     step.setCapacity(iterationParameter.getCapacity());
                 }
             } else {
-                setPutIntoPlay(iterationParameter.getBatchSize());
+                setBatchSize(iterationParameter.getBatchSize());
             }
         }
     }
@@ -231,5 +233,9 @@ public class IterationResult {
             delim = ", ";
         }
         return definedStepNames.toString();
+    }
+
+    public int getPutIntoPlay() {
+        return putIntoPlay;
     }
 }

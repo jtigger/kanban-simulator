@@ -54,7 +54,7 @@ public class IterationResultExample {
 		IterationResultExample example = new IterationResultExample();
 		
 		example.iteration = result.getIterationNumber();
-		example.putInPlay = result.getPutIntoPlay();
+		example.putInPlay = result.getBatchSize();
 		example.bACapacity = result.getCapacity("BA");
 		example.bACompleted = result.getCompleted("BA");
 		example.bARemainingInQueue = result.getQueued("BA");

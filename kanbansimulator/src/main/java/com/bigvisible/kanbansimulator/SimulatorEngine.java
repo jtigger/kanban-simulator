@@ -74,15 +74,15 @@ public class SimulatorEngine implements Simulator {
 		} else {
 			iteration = previousIteration.nextIteration();
 		}
-		iteration.setPutIntoPlay(storiesToPlay);
+		iteration.setBatchSize(storiesToPlay);
 		iteration.configure(allIterationParameters.get(iteration.getIterationNumber()));
-		iteration.run();
+		iteration.run(storiesToPlay);
 		
 		return iteration;
 	}
 
 	private void updateSimulatorState(IterationResult iteration) {
-		storiesUnplayed -= iteration.getPutIntoPlay();
+		storiesUnplayed -= iteration.getBatchSize();
 		storiesCompleted = iteration.getTotalCompleted();
 		
 	    results.add(iteration);
