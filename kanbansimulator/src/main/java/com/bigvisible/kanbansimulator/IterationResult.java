@@ -219,7 +219,7 @@ public class IterationResult {
         }
         
         for (IterationParameter iterationParameter : iterationParameters) {
-            if (iterationParameter.isWorkflowConfiguration()) {
+            if (iterationParameter.hasWorkflowConfiguration()) {
                 WorkflowStep step = getStep(iterationParameter.getWorkflowStepName());
                 if (step == null) {
                     throw new InvalidSimulatorConfiguration(String.format(

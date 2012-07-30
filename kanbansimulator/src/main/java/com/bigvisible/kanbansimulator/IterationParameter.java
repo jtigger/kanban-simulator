@@ -1,11 +1,14 @@
 package com.bigvisible.kanbansimulator;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class IterationParameter {
 
     private int iteration;
     private int batchSize;
     private WorkflowStepParameter workflowStepParameter = new WorkflowStepParameter();
-    
+    private Map<String, WorkflowStepParameter> stepNameToParameter = new HashMap<String, WorkflowStepParameter>();
 
     public String getWorkflowStepName() {
         return workflowStepParameter.getWorkflowStepName();
@@ -18,6 +21,11 @@ public class IterationParameter {
     public Integer getCapacity() {
         return workflowStepParameter.getCapacity();
     }
+    
+    public IterationParameter setCapacity(int capacity) {
+        workflowStepParameter.setCapacity(capacity);
+        return this;
+    }
 
     public void setIteration(int iteration) {
         this.iteration = iteration;
@@ -25,11 +33,12 @@ public class IterationParameter {
 
     public IterationParameter forStep(String workflowStepName) {
         workflowStepParameter.setWorkflowStepName(workflowStepName);
+        stepNameToParameter.put(workflowStepName, workflowStepParameter);
         return this;
     }
-
-    public IterationParameter setCapacity(Integer capacity) {
-        workflowStepParameter.setCapacity(capacity);
+    
+    public IterationParameter forStep(WorkflowStepParameter workflowStepParameter) {
+        this.workflowStepParameter = workflowStepParameter;
         return this;
     }
 
@@ -48,14 +57,22 @@ public class IterationParameter {
         return batchSize;
     }
 
-    public boolean isWorkflowConfiguration() {
+    public boolean hasWorkflowConfiguration() {
         return workflowStepParameter.getWorkflowStepName() != null;
     }
     
-    private class WorkflowStepParameter
+    
+    static public class WorkflowStepParameter
     {
         private Integer capacity;
         private String workflowStepName;
+        
+        static public WorkflowStepParameter named(String workflowStepName) {
+            WorkflowStepParameter workflowStepParameter = new WorkflowStepParameter();
+            workflowStepParameter.setWorkflowStepName(workflowStepName);
+            return workflowStepParameter;
+        }
+        
         public String getWorkflowStepName() {
             return workflowStepName;
         }
@@ -65,8 +82,9 @@ public class IterationParameter {
         public Integer getCapacity() {
             return capacity;
         }
-        public void setCapacity(Integer capacity) {
+        public WorkflowStepParameter setCapacity(Integer capacity) {
             this.capacity = capacity;
+            return this;
         }
 
     }
