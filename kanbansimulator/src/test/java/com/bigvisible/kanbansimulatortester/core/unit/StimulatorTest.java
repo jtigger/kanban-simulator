@@ -69,6 +69,8 @@ public class StimulatorTest {
         assertEquals(10, stimulator.results().get(1).getBatchSize());
     }
     
+    
+    @Test
     public void when_batch_size_exceeds_number_of_stories_available_to_play_THEN_only_the_number_of_stories_available_are_actually_put_into_play() throws Exception {
         int totalStories = 10;
         int storiesPutInPlayForIteration1 = 1;
