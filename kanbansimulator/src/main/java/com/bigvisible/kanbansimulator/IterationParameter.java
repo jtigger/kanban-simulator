@@ -2,13 +2,13 @@ package com.bigvisible.kanbansimulator;
 
 public class IterationParameter {
 
-    private String workflowStepName;
     private int iteration;
-    private Integer capacity;
     private int batchSize;
+    private WorkflowStepParameter workflowStepParameter = new WorkflowStepParameter();
+    
 
     public String getWorkflowStepName() {
-        return workflowStepName;
+        return workflowStepParameter.getWorkflowStepName();
     }
 
     public int getIteration() {
@@ -16,7 +16,7 @@ public class IterationParameter {
     }
 
     public Integer getCapacity() {
-        return capacity;
+        return workflowStepParameter.getCapacity();
     }
 
     public void setIteration(int iteration) {
@@ -24,12 +24,12 @@ public class IterationParameter {
     }
 
     public IterationParameter forStep(String workflowStepName) {
-        this.workflowStepName = workflowStepName;
+        workflowStepParameter.setWorkflowStepName(workflowStepName);
         return this;
     }
 
     public IterationParameter setCapacity(Integer capacity) {
-        this.capacity = capacity;
+        workflowStepParameter.setCapacity(capacity);
         return this;
     }
 
@@ -49,7 +49,26 @@ public class IterationParameter {
     }
 
     public boolean isWorkflowConfiguration() {
-        return workflowStepName != null;
+        return workflowStepParameter.getWorkflowStepName() != null;
+    }
+    
+    private class WorkflowStepParameter
+    {
+        private Integer capacity;
+        private String workflowStepName;
+        public String getWorkflowStepName() {
+            return workflowStepName;
+        }
+        public void setWorkflowStepName(String workflowStepName) {
+            this.workflowStepName = workflowStepName;
+        }
+        public Integer getCapacity() {
+            return capacity;
+        }
+        public void setCapacity(Integer capacity) {
+            this.capacity = capacity;
+        }
+
     }
 
 }

@@ -1,5 +1,6 @@
 package com.bigvisible.kanbansimulatortester.core.unit;
 
+import static org.junit.Assert.*;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
@@ -18,5 +19,4 @@ public class IterationParameterTest {
     public void when_parameter_configures_batch_size_THEN_it_is_NOT_a_workflowConfigurationParameter() throws Exception {
         assertFalse(IterationParameter.startingAt(1).setBatchSize(1).isWorkflowConfiguration());
     }
-
 }

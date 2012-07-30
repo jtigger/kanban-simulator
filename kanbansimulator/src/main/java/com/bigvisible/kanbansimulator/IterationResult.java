@@ -217,6 +217,7 @@ public class IterationResult {
         if (iterationParameters == null) {
             return;
         }
+        
         for (IterationParameter iterationParameter : iterationParameters) {
             if (iterationParameter.isWorkflowConfiguration()) {
                 WorkflowStep step = getStep(iterationParameter.getWorkflowStepName());
