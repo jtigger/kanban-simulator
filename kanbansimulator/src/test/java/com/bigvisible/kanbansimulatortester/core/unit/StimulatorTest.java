@@ -1,12 +1,12 @@
 package com.bigvisible.kanbansimulatortester.core.unit;
 
 import static org.junit.Assert.*;
-import static org.junit.Assert.assertEquals;
+import static com.bigvisible.kanbansimulator.IterationParameter.WorkflowStepParameter.*;
+import static com.bigvisible.kanbansimulator.IterationParameter.*;
 
 import org.junit.Test;
 
 import com.bigvisible.kanbansimulator.InvalidSimulatorConfiguration;
-import com.bigvisible.kanbansimulator.IterationParameter;
 import com.bigvisible.kanbansimulator.IterationResult;
 import com.bigvisible.kanbansimulator.Simulator;
 import com.bigvisible.kanbansimulator.SimulatorEngine;
@@ -35,8 +35,8 @@ public class StimulatorTest {
         stimulator.addStories(greaterThanBACapacity);
         stimulator.setBatchSize(greaterThanBACapacity);
         stimulator.setBusinessAnalystCapacity(initialBACapacity);
-        stimulator.addParameter(IterationParameter.startingAt(2).forStep("BA")
-                .setCapacity(initialBACapacity + increaseInBACapacity));
+        stimulator.addParameter(startingAt(2).forStep(named("BA")
+                .setCapacity(initialBACapacity + increaseInBACapacity)));
 
         stimulator.run(null);
 
@@ -52,7 +52,7 @@ public class StimulatorTest {
         Simulator stimulator = new SimulatorEngine();
         stimulator.addStories(1);
         
-        stimulator.addParameter(IterationParameter.startingAt(1).forStep("InvalidWorkflowStepName").setCapacity(10));
+        stimulator.addParameter(startingAt(1).forStep(named("InvalidWorkflowStepName").setCapacity(10)));
         stimulator.run(null);
     }
     
@@ -62,7 +62,7 @@ public class StimulatorTest {
         stimulator.addStories(20);
         stimulator.setBatchSize(1);
         
-        stimulator.addParameter(IterationParameter.startingAt(2).setBatchSize(10));
+        stimulator.addParameter(startingAt(2).setBatchSize(10));
         
         stimulator.run(null);
         
@@ -81,7 +81,7 @@ public class StimulatorTest {
         stimulator.addStories(totalStories);
         stimulator.setBatchSize(storiesPutInPlayForIteration1);
         
-        stimulator.addParameter(IterationParameter.startingAt(2).setBatchSize(batchSizeForIteration2));
+        stimulator.addParameter(startingAt(2).setBatchSize(batchSizeForIteration2));
         
         stimulator.run(null);
         

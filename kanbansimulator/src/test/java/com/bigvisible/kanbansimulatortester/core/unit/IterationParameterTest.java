@@ -13,8 +13,7 @@ public class IterationParameterTest {
 
     @Test
     public void when_parameter_configures_capacity_THEN_it_is_a_workflowConfigurationParameter() {
-        assertTrue(IterationParameter.startingAt(1).forStep("Dev").setCapacity(4).hasWorkflowConfiguration());
-        IterationParameter.startingAt(1).forStep(named("Dev").setCapacity(4)).hasWorkflowConfiguration();
+        assertTrue(IterationParameter.startingAt(1).forStep(named("Dev").setCapacity(4)).hasWorkflowConfiguration());
     }
     
     @Test

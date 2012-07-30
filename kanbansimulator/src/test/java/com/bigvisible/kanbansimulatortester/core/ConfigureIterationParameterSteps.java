@@ -1,6 +1,7 @@
 package com.bigvisible.kanbansimulatortester.core;
 
 import static com.bigvisible.kanbansimulator.IterationParameter.startingAt;
+import static com.bigvisible.kanbansimulator.IterationParameter.WorkflowStepParameter.*;
 
 import java.util.List;
 
@@ -17,14 +18,14 @@ public class ConfigureIterationParameterSteps extends StepDefinitionForSimulator
     public void the_following_workflow_capacities_by_iteration(List<IterationParameterExample> parameterExamples) {
         for (IterationParameterExample parameterExample : parameterExamples) {
             getStimulator().addParameter(
-                    startingAt(parameterExample.iteration).forStep("BA").setCapacity(parameterExample.bACapacity));
+                    startingAt(parameterExample.iteration).forStep(named("BA").setCapacity(parameterExample.bACapacity)));
             getStimulator().addParameter(
-                    startingAt(parameterExample.iteration).forStep("Dev").setCapacity(parameterExample.devCapacity));
+                    startingAt(parameterExample.iteration).forStep(named("Dev").setCapacity(parameterExample.devCapacity)));
             getStimulator().addParameter(
-                    startingAt(parameterExample.iteration).forStep("WebDev").setCapacity(
-                            parameterExample.webDevCapacity));
+                    startingAt(parameterExample.iteration).forStep(named("WebDev").setCapacity(
+                            parameterExample.webDevCapacity)));
             getStimulator().addParameter(
-                    startingAt(parameterExample.iteration).forStep("QA").setCapacity(parameterExample.qACapacity));
+                    startingAt(parameterExample.iteration).forStep(named("QA").setCapacity(parameterExample.qACapacity)));
         }
     }
     
@@ -32,14 +33,14 @@ public class ConfigureIterationParameterSteps extends StepDefinitionForSimulator
     public void the_following_workflow_capacities_and_batch_sizes_by_iteration(List<IterationParameterExample> parameterExamples) {
         for (IterationParameterExample parameterExample : parameterExamples) {
             getStimulator().addParameter(
-                    startingAt(parameterExample.iteration).forStep("BA").setCapacity(parameterExample.bACapacity));
+                    startingAt(parameterExample.iteration).forStep(named("BA").setCapacity(parameterExample.bACapacity)));
             getStimulator().addParameter(
-                    startingAt(parameterExample.iteration).forStep("Dev").setCapacity(parameterExample.devCapacity));
+                    startingAt(parameterExample.iteration).forStep(named("Dev").setCapacity(parameterExample.devCapacity)));
             getStimulator().addParameter(
-                    startingAt(parameterExample.iteration).forStep("WebDev").setCapacity(
-                            parameterExample.webDevCapacity));
+                    startingAt(parameterExample.iteration).forStep(named("WebDev").setCapacity(
+                            parameterExample.webDevCapacity)));
             getStimulator().addParameter(
-                    startingAt(parameterExample.iteration).forStep("QA").setCapacity(parameterExample.qACapacity));
+                    startingAt(parameterExample.iteration).forStep(named("QA").setCapacity(parameterExample.qACapacity)));
             getStimulator().addParameter(startingAt(parameterExample.iteration).setBatchSize(parameterExample.batchSize));
         }
     }

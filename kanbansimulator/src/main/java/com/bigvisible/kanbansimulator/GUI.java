@@ -1,6 +1,7 @@
 package com.bigvisible.kanbansimulator;
 
 import static com.bigvisible.kanbansimulator.IterationParameter.startingAt;
+import static com.bigvisible.kanbansimulator.IterationParameter.WorkflowStepParameter.*;
 
 import java.awt.Container;
 import java.awt.event.ActionEvent;
@@ -18,6 +19,7 @@ import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.table.TableModel;
+
 
 public class GUI extends JFrame {
     private static final long serialVersionUID = -1045195339415169014L;
@@ -147,10 +149,10 @@ public class GUI extends JFrame {
                 int webDevCapacity = getIntegerFromCell(cellsInRow[3]);
                 int qaCapacity = getIntegerFromCell(cellsInRow[4]);
 
-                simulator.addParameter(startingAt(iteration).forStep("BA").setCapacity(baCapacity));
-                simulator.addParameter(startingAt(iteration).forStep("Dev").setCapacity(devCapacity));
-                simulator.addParameter(startingAt(iteration).forStep("WebDev").setCapacity(webDevCapacity));
-                simulator.addParameter(startingAt(iteration).forStep("QA").setCapacity(qaCapacity));
+                simulator.addParameter(startingAt(iteration).forStep(named("BA").setCapacity(baCapacity)));
+                simulator.addParameter(startingAt(iteration).forStep(named("Dev").setCapacity(devCapacity)));
+                simulator.addParameter(startingAt(iteration).forStep(named("WebDev").setCapacity(webDevCapacity)));
+                simulator.addParameter(startingAt(iteration).forStep(named("QA").setCapacity(qaCapacity)));
             }
 
             simulator.run(null);

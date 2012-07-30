@@ -1,6 +1,10 @@
 package com.bigvisible.kanbansimulator;
 
+import static com.bigvisible.kanbansimulator.IterationParameter.WorkflowStepParameter.*;
+import static com.bigvisible.kanbansimulator.IterationParameter.*;
+
 import java.io.IOException;
+
 import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.util.HashMap;
@@ -92,23 +96,23 @@ public class SimulatorEngine implements Simulator {
 	}
 
 	public void setBatchSize(int batchSize) {
-	    addParameter(IterationParameter.startingAt(1).setBatchSize(batchSize));
+	    addParameter(startingAt(1).setBatchSize(batchSize));
 	}
 
 	public void setBusinessAnalystCapacity(int businessAnalystCapacity) {
-	    addParameter(IterationParameter.startingAt(1).forStep("BA").setCapacity(businessAnalystCapacity));
+	    addParameter(startingAt(1).forStep(named("BA").setCapacity(businessAnalystCapacity)));
 	}
 
 	public void setDevelopmentCapacity(int developmentCapacity) {
-        addParameter(IterationParameter.startingAt(1).forStep("Dev").setCapacity(developmentCapacity));
+        addParameter(startingAt(1).forStep(named("Dev").setCapacity(developmentCapacity)));
 	}
 
 	public void setWebDevelopmentCapacity(int webDevelopmentCapacity) {
-        addParameter(IterationParameter.startingAt(1).forStep("WebDev").setCapacity(webDevelopmentCapacity));
+        addParameter(startingAt(1).forStep(named("WebDev").setCapacity(webDevelopmentCapacity)));
 	}
 
 	public void setQualityAssuranceCapacity(int qualityAssuranceCapacity) {
-        addParameter(IterationParameter.startingAt(1).forStep("QA").setCapacity(qualityAssuranceCapacity));
+        addParameter(startingAt(1).forStep(named("QA").setCapacity(qualityAssuranceCapacity)));
 	}
 
 	public void setNumberOfIterationsToRun(int numberOfIterationsToRun) {

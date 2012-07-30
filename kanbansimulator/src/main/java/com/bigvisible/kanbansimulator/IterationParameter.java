@@ -31,12 +31,6 @@ public class IterationParameter {
         this.iteration = iteration;
     }
 
-    public IterationParameter forStep(String workflowStepName) {
-        workflowStepParameter.setWorkflowStepName(workflowStepName);
-        stepNameToParameter.put(workflowStepName, workflowStepParameter);
-        return this;
-    }
-    
     public IterationParameter forStep(WorkflowStepParameter workflowStepParameter) {
         this.workflowStepParameter = workflowStepParameter;
         return this;
