@@ -3,7 +3,6 @@ package com.bigvisible.kanbansimulatortester.core.unit;
 import static org.junit.Assert.*;
 import static org.junit.Assert.assertEquals;
 
-import java.security.SecureRandom;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -15,21 +14,6 @@ public class IterationResultTest {
     static final String FIRST_WORKFLOW_STEP = WORKFLOW_STEP_NAMES[0];
     static final String LAST_WORKFLOW_STEP = WORKFLOW_STEP_NAMES[WORKFLOW_STEP_NAMES.length - 1];
 
-    private static SecureRandom random = new SecureRandom();
-
-    /**
-     * Where any number will do, within reason.
-     * 
-     * @return an integer between 10 and 30
-     */
-    private static int anyReasonableNumber() {
-        /*
-         * big enough that some values can be subtracted without resulting in a negative number, but small enough that
-         * if it's used for looping values, we don't get carried away.
-         */
-        return random.nextInt(20) + 10;
-    }
-
     public static class When_a_typical_iteration_is_run {
         private IterationResult iterationResult;
         private int batchSize;
@@ -37,7 +21,7 @@ public class IterationResultTest {
         @Before
         public void given_a_typical_iteration() {
             iterationResult = new IterationResult();
-            batchSize = anyReasonableNumber();
+            batchSize = UnitTestHelper.anyReasonableNumber();
 
             iterationResult.setBatchSize(batchSize);
         }
@@ -105,7 +89,7 @@ public class IterationResultTest {
 
         @Test
         public void its_iteration_number_is_one_more_than_the_previous() throws Exception {
-            int iterationNumber = anyReasonableNumber();
+            int iterationNumber = UnitTestHelper.anyReasonableNumber();
             iterationResult.setIterationNumber(iterationNumber);
             IterationResult nextIteration = iterationResult.nextIteration();
 
@@ -115,7 +99,7 @@ public class IterationResultTest {
         @Test
         public void its_capacity_settings_match_those_of_the_previous() throws Exception {
             for (String workflowStepName : WORKFLOW_STEP_NAMES) {
-                iterationResult.setCapacity(workflowStepName, anyReasonableNumber());
+                iterationResult.setCapacity(workflowStepName, UnitTestHelper.anyReasonableNumber());
             }
 
             iterationResult.run(0);
