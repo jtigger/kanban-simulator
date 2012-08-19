@@ -15,64 +15,12 @@ public class IterationResult {
 
     private List<WorkflowStep> steps;
 
-    private static class WorkflowStep {
-        private String description;
-        private int capacity;
-        private int completed;
-        private int queued;
-
-        public WorkflowStep(String description) {
-            setDescription(description);
-        }
-
-        public String getDescription() {
-            return description;
-        }
-
-        public void setDescription(String description) {
-            this.description = description;
-        }
-
-        public int getCapacity() {
-            return capacity;
-        }
-
-        public void setCapacity(int capacity) {
-            this.capacity = capacity;
-        }
-
-        public int getCompleted() {
-            return completed;
-        }
-
-        public void setCompleted(int completed) {
-            this.completed = completed;
-        }
-
-        public int getQueued() {
-            return queued;
-        }
-
-        public void setQueued(int queued) {
-            this.queued = queued;
-        }
-    }
-
     public IterationResult() {
         steps = new LinkedList<WorkflowStep>();
         steps.add(new WorkflowStep("BA"));
         steps.add(new WorkflowStep("Dev"));
         steps.add(new WorkflowStep("WebDev"));
         steps.add(new WorkflowStep("QA"));
-    }
-
-    private WorkflowStep getStep(String description) {
-        for (WorkflowStep step : steps) {
-            if (step.getDescription().equalsIgnoreCase(description)) {
-                return step;
-            }
-        }
-        return null;
     }
 
     public void run(int storiesAvailableToPlay) {
@@ -233,6 +181,58 @@ public class IterationResult {
                 setBatchSize(iterationParameter.getBatchSize());
             }
         }
+    }
+
+    private static class WorkflowStep {
+        private String description;
+        private int capacity;
+        private int completed;
+        private int queued;
+    
+        public WorkflowStep(String description) {
+            setDescription(description);
+        }
+    
+        public String getDescription() {
+            return description;
+        }
+    
+        public void setDescription(String description) {
+            this.description = description;
+        }
+    
+        public int getCapacity() {
+            return capacity;
+        }
+    
+        public void setCapacity(int capacity) {
+            this.capacity = capacity;
+        }
+    
+        public int getCompleted() {
+            return completed;
+        }
+    
+        public void setCompleted(int completed) {
+            this.completed = completed;
+        }
+    
+        public int getQueued() {
+            return queued;
+        }
+    
+        public void setQueued(int queued) {
+            this.queued = queued;
+        }
+    }
+
+    private WorkflowStep getStep(String description) {
+        for (WorkflowStep step : steps) {
+            if (step.getDescription().equalsIgnoreCase(description)) {
+                return step;
+            }
+        }
+        return null;
     }
 
     private String getStepDescriptions() {

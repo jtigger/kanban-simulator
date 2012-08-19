@@ -18,5 +18,4 @@ public class UnitTestHelper {
     }
     private static SecureRandom random = new SecureRandom();
 
-
 }
