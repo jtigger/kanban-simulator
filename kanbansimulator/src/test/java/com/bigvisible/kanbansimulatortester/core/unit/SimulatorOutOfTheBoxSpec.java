@@ -10,7 +10,7 @@ import com.bigvisible.kanbansimulator.SimulatorEngine;
 /**
  * Specifies the default characteristics and behavior of a {@link SimulatorEngine}.
  */
-public class OutOfTheBoxSimulatorSpec {
+public class SimulatorOutOfTheBoxSpec {
 
     @Test
     public void simulator_starts_with_all_capacities_set_to_one() throws Exception {

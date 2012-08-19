@@ -15,9 +15,9 @@ import com.bigvisible.kanbansimulator.SimulatorEngine;
 /**
  * Specifies how the Simulator accepts and applies configuration.
  * 
- * For details about how configuration propagates from one iteration to the next, see {@link IterationParameterTest}.
+ * For details about how configuration propagates from one iteration to the next, see {@link IterationParameterSpec}.
  */
-public class ConfiguringTheSimulatorSpec {
+public class SimulatorConfigurationSpec {
 
     @Test
     public void WHEN_configuration_is_specified_for_a_specific_iteration_THEN_the_simulator_applies_that_configuration_starting_at_that_iteration_and_no_sooner() throws Exception {
