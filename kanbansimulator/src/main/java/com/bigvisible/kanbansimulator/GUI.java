@@ -46,19 +46,19 @@ public class GUI extends JFrame {
         iterationsToRun.setName("iterationsToRun");
         iterationsToRun.setText("10");
 
-        String[] columnNames = { "Iteration", "BA", "Dev", "WebDev", "QA" };
+        String[] columnNames = { "Iteration", "Batch Size", "BA", "Dev", "WebDev", "QA" };
 
         Object[][] data = { 
-        		{ 1, 13, 12, 12, 10 }, 
-        		{ 2, 13, 12,  6, 10 }, 
-        		{ 3, 13, 12,  6, 10 }, 
-        		{ 4, 13, 12,  6, 10 },
-                { 5, 13, 12, 18, 10 }, 
-                { 6, 13, 12, 18, 10 }, 
-                { 7, 13,  8, 12,  8 }, 
-                { 8, 13,  8, 12,  8 },
-                { 9, 13,  8, 12,  8 }, 
-                { 10, 13, 8, 12,  8 },
+        		{ 1, 11, 13, 12, 12, 10 }, 
+        		{ 2, 11, 13, 12,  6, 10 }, 
+        		{ 3, 11, 13, 12,  6, 10 }, 
+        		{ 4, 11, 13, 12,  6, 10 },
+                { 5, 11, 13, 12, 18, 10 }, 
+                { 6, 11, 13, 12, 18, 10 }, 
+                { 7, 11, 13,  8, 12,  8 }, 
+                { 8, 11, 13,  8, 12,  8 },
+                { 9, 11, 13,  8, 12,  8 }, 
+                { 10, 11, 13, 8, 12,  8 },
 
         };
 
@@ -144,11 +144,13 @@ public class GUI extends JFrame {
                 Object[] cellsInRow = tableData[rowIdx];
 
                 int iteration = getIntegerFromCell(cellsInRow[0]);
-                int baCapacity = getIntegerFromCell(cellsInRow[1]);
-                int devCapacity = getIntegerFromCell(cellsInRow[2]);
-                int webDevCapacity = getIntegerFromCell(cellsInRow[3]);
-                int qaCapacity = getIntegerFromCell(cellsInRow[4]);
+                int batchSize = getIntegerFromCell(cellsInRow[1]);
+                int baCapacity = getIntegerFromCell(cellsInRow[2]);
+                int devCapacity = getIntegerFromCell(cellsInRow[3]);
+                int webDevCapacity = getIntegerFromCell(cellsInRow[4]);
+                int qaCapacity = getIntegerFromCell(cellsInRow[5]);
 
+                simulator.addParameter(startingAt(iteration).setBatchSize(batchSize));
                 simulator.addParameter(startingAt(iteration).forStep(named("BA").setCapacity(baCapacity)));
                 simulator.addParameter(startingAt(iteration).forStep(named("Dev").setCapacity(devCapacity)));
                 simulator.addParameter(startingAt(iteration).forStep(named("WebDev").setCapacity(webDevCapacity)));

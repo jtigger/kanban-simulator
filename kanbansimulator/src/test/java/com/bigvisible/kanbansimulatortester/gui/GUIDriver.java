@@ -150,15 +150,23 @@ public class GUIDriver implements Simulator {
                 currentIteration = iterationParameter.getIteration();
             }
         }
-        Integer columnIndex = workflowStepNameToColumnIndex.get(iterationParameter.getWorkflowStepName());
-        if (columnIndex == null) {
-            throw new RuntimeException(
-                    "Could not find column in JTable that matches workflow step name of iteration parameter."
-                            + String.format("where workflow step name = \"%s\" and the JTable column names are: %s",
-                                    iterationParameter.getWorkflowStepName(), tableColumnNames));
+        Integer columnIndex = null;
+        Integer cellValue = null;
+        if(iterationParameter.hasWorkflowConfiguration()) {
+            columnIndex = workflowStepNameToColumnIndex.get(iterationParameter.getWorkflowStepName());
+            if (columnIndex == null) {
+                throw new RuntimeException(
+                        "Could not find column in JTable that matches workflow step name of iteration parameter."
+                                + String.format("where workflow step name = \"%s\" and the JTable column names are: %s",
+                                        iterationParameter.getWorkflowStepName(), tableColumnNames));
+            }
+            cellValue = iterationParameter.getCapacity();
+        } else {
+            columnIndex = workflowStepNameToColumnIndex.get("Batch Size");
+            cellValue = iterationParameter.getBatchSize();
         }
 
-        tableFixture.enterValue(row(rowIndex).column(columnIndex), "" + iterationParameter.getCapacity());
+        tableFixture.enterValue(row(rowIndex).column(columnIndex), "" + cellValue);
     }
 
     private Map<String, Integer> getWorkflowStepNameToColumnIndexMappings(JTableFixture tableFixture) {
