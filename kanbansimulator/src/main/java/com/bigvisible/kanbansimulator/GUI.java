@@ -21,9 +21,10 @@ import javax.swing.JTextField;
 import javax.swing.table.TableModel;
 
 import org.jfree.chart.ChartFactory;
-import org.jfree.chart.ChartFrame;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
+import org.jfree.chart.plot.PlotOrientation;
+import org.jfree.data.category.DefaultCategoryDataset;
 import org.jfree.data.general.DefaultPieDataset;
 
 
@@ -202,18 +203,55 @@ public class GUI extends JFrame {
         return tableData;
     }
     
+    
     private JFreeChart generateChart() {
-        // create a dataset...
-        DefaultPieDataset dataset = new DefaultPieDataset();
-        dataset.setValue("Category 1", 43.2);
-        dataset.setValue("Category 2", 27.9);
-        dataset.setValue("Category 3", 79.5);
-        // create a chart...
-        JFreeChart chart = ChartFactory.createPieChart("Sample Pie Chart", dataset, true, // legend?
-                true, // tooltips?
-                false // URLs?
-                );
+        JFreeChart chart;
+        DefaultCategoryDataset dataset = new DefaultCategoryDataset();
+        dataset.addValue(10, "Done", "1");
+        dataset.addValue(17, "Done", "2");
+        dataset.addValue(23, "Done", "3");
+        dataset.addValue(29, "Done", "4");
+        dataset.addValue(39, "Done", "5");
+        dataset.addValue(49, "Done", "6");
+        dataset.addValue(57, "Done", "7");
+        dataset.addValue(65, "Done", "8");
+        dataset.addValue(73, "Done", "9");
+        dataset.addValue(81, "Done", "10");
+
+        dataset.addValue(1, "QA", "1");
+        dataset.addValue(0, "QA", "2");
+        dataset.addValue(0, "QA", "3");
+        dataset.addValue(0, "QA", "4");
+        dataset.addValue(8, "QA", "5");
+        dataset.addValue(16, "QA", "6");
+        dataset.addValue(17, "QA", "7");
+        dataset.addValue(17, "QA", "8");
+        dataset.addValue(15, "QA", "9");
+        dataset.addValue(7, "QA", "10");
+
+        dataset.addValue(0, "Web Dev", "1");
+        dataset.addValue(5, "Web Dev", "2");
+        dataset.addValue(10, "Web Dev", "3");
+        dataset.addValue(15, "Web Dev", "4");
+        dataset.addValue(8, "Web Dev", "5");
+        dataset.addValue(1, "Web Dev", "6");
+        dataset.addValue(0, "Web Dev", "7");
+        dataset.addValue(0, "Web Dev", "8");
+        dataset.addValue(0, "Web Dev", "9");
+        dataset.addValue(0, "Web Dev", "10");
+
+        dataset.addValue(0, "Dev", "1");
+        dataset.addValue(0, "Dev", "2");
+        dataset.addValue(0, "Dev", "3");
+        dataset.addValue(0, "Dev", "4");
+        dataset.addValue(0, "Dev", "5");
+        dataset.addValue(0, "Dev", "6");
+        dataset.addValue(3, "Dev", "7");
+        dataset.addValue(6, "Dev", "8");
+        dataset.addValue(0, "Dev", "9");
+        dataset.addValue(0, "Dev", "10");
         
+        chart = ChartFactory.createStackedAreaChart("Cummulative Flow Diagram", "Iteration", "Stories", dataset, PlotOrientation.VERTICAL, false, true, false);
         return chart;
     }
 
