@@ -1,7 +1,7 @@
 package com.bigvisible.kanbansimulator;
 
 import static com.bigvisible.kanbansimulator.IterationParameter.startingAt;
-import static com.bigvisible.kanbansimulator.IterationParameter.WorkflowStepParameter.*;
+import static com.bigvisible.kanbansimulator.IterationParameter.WorkflowStepParameter.named;
 
 import java.awt.Container;
 import java.awt.event.ActionEvent;
@@ -19,6 +19,12 @@ import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.table.TableModel;
+
+import org.jfree.chart.ChartFactory;
+import org.jfree.chart.ChartFrame;
+import org.jfree.chart.ChartPanel;
+import org.jfree.chart.JFreeChart;
+import org.jfree.data.general.DefaultPieDataset;
 
 
 public class GUI extends JFrame {
@@ -109,6 +115,9 @@ public class GUI extends JFrame {
         
         add(outputTextArea);
         
+        JPanel cfdPanel = new ChartPanel(generateChart());
+        add(cfdPanel);
+        
         add(statusLabel);
 
         addWindowListener(this.new GUIWindowListener());
@@ -191,6 +200,21 @@ public class GUI extends JFrame {
             for (int j = 0; j < nCol; j++)
                 tableData[i][j] = dtm.getValueAt(i, j);
         return tableData;
+    }
+    
+    private JFreeChart generateChart() {
+        // create a dataset...
+        DefaultPieDataset dataset = new DefaultPieDataset();
+        dataset.setValue("Category 1", 43.2);
+        dataset.setValue("Category 2", 27.9);
+        dataset.setValue("Category 3", 79.5);
+        // create a chart...
+        JFreeChart chart = ChartFactory.createPieChart("Sample Pie Chart", dataset, true, // legend?
+                true, // tooltips?
+                false // URLs?
+                );
+        
+        return chart;
     }
 
 }
