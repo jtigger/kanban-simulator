@@ -8,6 +8,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.util.List;
 
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
@@ -15,6 +16,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JTabbedPane;
 import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
@@ -25,7 +27,6 @@ import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.data.category.DefaultCategoryDataset;
-import org.jfree.data.general.DefaultPieDataset;
 
 
 public class GUI extends JFrame {
@@ -41,6 +42,7 @@ public class GUI extends JFrame {
     private JScrollPane scrollPane;
     private JButton runButton = new JButton("Run");
     private JLabel statusLabel;
+    private DefaultCategoryDataset dataset;
 
     public GUI() {
         setTitle("Kanban Simulator (\"Tom-U-later\")");
@@ -114,11 +116,16 @@ public class GUI extends JFrame {
         add(runButtonPanel);
         runButtonPanel.add(runButton);
         
-        add(outputTextArea);
-        
-        JPanel cfdPanel = new ChartPanel(generateChart());
-        add(cfdPanel);
-        
+        JFreeChart chart;
+        dataset = new DefaultCategoryDataset();
+        chart = ChartFactory.createStackedAreaChart("Cummulative Flow Diagram", "Iteration", "Stories", dataset, PlotOrientation.VERTICAL, true, true, false);
+        JPanel cfdPanel = new ChartPanel(chart);
+
+        JTabbedPane outputTabs = new JTabbedPane();
+        add(outputTabs);
+        outputTabs.addTab("Cummulative Flow Diagram", cfdPanel);
+        outputTabs.addTab("Raw Output", outputTextArea);
+
         add(statusLabel);
 
         addWindowListener(this.new GUIWindowListener());
@@ -168,6 +175,7 @@ public class GUI extends JFrame {
             }
 
             simulator.run(null);
+            setDataSetForCFD(simulator.results(), dataset);
 
             StringBuffer output = new StringBuffer();
             for (IterationResult iterationResult : simulator.results()) {
@@ -204,55 +212,21 @@ public class GUI extends JFrame {
     }
     
     
-    private JFreeChart generateChart() {
-        JFreeChart chart;
-        DefaultCategoryDataset dataset = new DefaultCategoryDataset();
-        dataset.addValue(10, "Done", "1");
-        dataset.addValue(17, "Done", "2");
-        dataset.addValue(23, "Done", "3");
-        dataset.addValue(29, "Done", "4");
-        dataset.addValue(39, "Done", "5");
-        dataset.addValue(49, "Done", "6");
-        dataset.addValue(57, "Done", "7");
-        dataset.addValue(65, "Done", "8");
-        dataset.addValue(73, "Done", "9");
-        dataset.addValue(81, "Done", "10");
-
-        dataset.addValue(1, "QA", "1");
-        dataset.addValue(0, "QA", "2");
-        dataset.addValue(0, "QA", "3");
-        dataset.addValue(0, "QA", "4");
-        dataset.addValue(8, "QA", "5");
-        dataset.addValue(16, "QA", "6");
-        dataset.addValue(17, "QA", "7");
-        dataset.addValue(17, "QA", "8");
-        dataset.addValue(15, "QA", "9");
-        dataset.addValue(7, "QA", "10");
-
-        dataset.addValue(0, "Web Dev", "1");
-        dataset.addValue(5, "Web Dev", "2");
-        dataset.addValue(10, "Web Dev", "3");
-        dataset.addValue(15, "Web Dev", "4");
-        dataset.addValue(8, "Web Dev", "5");
-        dataset.addValue(1, "Web Dev", "6");
-        dataset.addValue(0, "Web Dev", "7");
-        dataset.addValue(0, "Web Dev", "8");
-        dataset.addValue(0, "Web Dev", "9");
-        dataset.addValue(0, "Web Dev", "10");
-
-        dataset.addValue(0, "Dev", "1");
-        dataset.addValue(0, "Dev", "2");
-        dataset.addValue(0, "Dev", "3");
-        dataset.addValue(0, "Dev", "4");
-        dataset.addValue(0, "Dev", "5");
-        dataset.addValue(0, "Dev", "6");
-        dataset.addValue(3, "Dev", "7");
-        dataset.addValue(6, "Dev", "8");
-        dataset.addValue(0, "Dev", "9");
-        dataset.addValue(0, "Dev", "10");
+    private void setDataSetForCFD(List<IterationResult> results, DefaultCategoryDataset dataset) {
+        dataset.clear();
+        dataset.addValue(0, "Done", "0");
+        dataset.addValue(0, "QA", "0");
+        dataset.addValue(0, "WebDev", "0");
+        dataset.addValue(0, "Dev", "0");
+        dataset.addValue(0, "BA", "0");
         
-        chart = ChartFactory.createStackedAreaChart("Cummulative Flow Diagram", "Iteration", "Stories", dataset, PlotOrientation.VERTICAL, false, true, false);
-        return chart;
+        for (IterationResult iterationResult : results) {
+            dataset.addValue(iterationResult.getTotalCompleted(), "Done", ""+iterationResult.getIterationNumber());
+            dataset.addValue(iterationResult.getQueued("QA"), "QA", ""+iterationResult.getIterationNumber());
+            dataset.addValue(iterationResult.getQueued("WebDev"), "WebDev", ""+iterationResult.getIterationNumber());
+            dataset.addValue(iterationResult.getQueued("Dev"), "Dev", ""+iterationResult.getIterationNumber());
+            dataset.addValue(iterationResult.getQueued("BA"), "BA", ""+iterationResult.getIterationNumber());
+        }
     }
 
 }
