@@ -6,7 +6,7 @@ import java.util.Map;
 public class IterationParameter {
 
     private int iteration;
-    private int batchSize;
+    private Integer batchSize;
     private WorkflowStepParameter workflowStepParameter = new WorkflowStepParameter();
     private Map<String, WorkflowStepParameter> stepNameToParameter = new HashMap<String, WorkflowStepParameter>();
 
@@ -43,12 +43,12 @@ public class IterationParameter {
         return newParameter;
     }
 
-    public IterationParameter setBatchSize(int batchSize) {
+    public IterationParameter setBatchSize(Integer batchSize) {
         this.batchSize = batchSize;
         return this;
     }
 
-    public int getBatchSize() {
+    public Integer getBatchSize() {
         return batchSize;
     }
 

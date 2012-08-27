@@ -59,15 +59,15 @@ public class GUI extends JFrame {
 
         Object[][] data = { 
         		{ 1, 11, 13, 12, 12, 10 }, 
-        		{ 2, 11, 13, 12,  6, 10 }, 
-        		{ 3, 11, 13, 12,  6, 10 }, 
-        		{ 4, 11, 13, 12,  6, 10 },
-                { 5, 11, 13, 12, 18, 10 }, 
-                { 6, 11, 13, 12, 18, 10 }, 
-                { 7, 11, 13,  8, 12,  8 }, 
-                { 8, 11, 13,  8, 12,  8 },
-                { 9, 11, 13,  8, 12,  8 }, 
-                { 10, 11, 13, 8, 12,  8 },
+        		{ 2, "", "", "",  6, "" }, 
+        		{ 3, "", "", "", "", "" }, 
+        		{ 4, "", "", "", "", "" },
+                { 5, "", "", "", 18, "" }, 
+                { 6, "", "", "", "", "" }, 
+                { 7, "", "",  8, 12,  8 }, 
+                { 8, "", "", "", "", "" },
+                { 9, "", "", "", "", "" }, 
+                { 10, "", "","", "", "" },
 
         };
 
@@ -171,12 +171,12 @@ public class GUI extends JFrame {
             for (int rowIdx = 0; rowIdx < tableData.length; rowIdx++) {
                 Object[] cellsInRow = tableData[rowIdx];
 
-                int iteration = getIntegerFromCell(cellsInRow[0]);
-                int batchSize = getIntegerFromCell(cellsInRow[1]);
-                int baCapacity = getIntegerFromCell(cellsInRow[2]);
-                int devCapacity = getIntegerFromCell(cellsInRow[3]);
-                int webDevCapacity = getIntegerFromCell(cellsInRow[4]);
-                int qaCapacity = getIntegerFromCell(cellsInRow[5]);
+                Integer iteration = getIntegerFromCell(cellsInRow[0]);
+                Integer batchSize = getIntegerFromCell(cellsInRow[1]);
+                Integer baCapacity = getIntegerFromCell(cellsInRow[2]);
+                Integer devCapacity = getIntegerFromCell(cellsInRow[3]);
+                Integer webDevCapacity = getIntegerFromCell(cellsInRow[4]);
+                Integer qaCapacity = getIntegerFromCell(cellsInRow[5]);
 
                 simulator.addParameter(startingAt(iteration).setBatchSize(batchSize));
                 simulator.addParameter(startingAt(iteration).forStep(named("BA").setCapacity(baCapacity)));
@@ -195,12 +195,16 @@ public class GUI extends JFrame {
             outputTextArea.setText(output.toString());
         }
 
-        private int getIntegerFromCell(Object cell) {
-            int value;
+        private Integer getIntegerFromCell(Object cell) {
+            Integer value;
             if (cell instanceof Integer) {
                 value = (Integer) cell;
             } else if (cell instanceof String) {
-                value = Integer.parseInt((String) cell);
+                if ("".equals(cell)) {
+                    value = null;
+                } else {
+                    value = Integer.parseInt((String) cell);
+                }
             } else {
                 throw new RuntimeException("Cell in iteration parameter table must be either Integer or String."
                         + String.format("Type is %s; expected", cell.getClass().getName()));

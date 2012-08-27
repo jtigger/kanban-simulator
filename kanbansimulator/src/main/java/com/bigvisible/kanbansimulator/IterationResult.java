@@ -178,7 +178,9 @@ public class IterationResult {
                     step.setCapacity(iterationParameter.getCapacity());
                 }
             } else {
-                setBatchSize(iterationParameter.getBatchSize());
+                if(iterationParameter.getBatchSize() != null) {
+                  setBatchSize(iterationParameter.getBatchSize());
+                }
             }
         }
     }

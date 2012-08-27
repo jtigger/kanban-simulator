@@ -94,4 +94,19 @@ public class SimulatorConfigurationSpec {
         
         assertEquals(expectedStoriesPutInPlayForIteration2, storiesPutInPlayForIteration2);
     }
+    
+    @Test
+    public void WHEN_batch_size_is_configured_to_be_null_THEN_that_configuration_is_ignored() throws Exception {
+        Simulator stimulator = new SimulatorEngine();
+        stimulator.setNumberOfIterationsToRun(2);
+        stimulator.addParameter(startingAt(1).setBatchSize(10));
+        stimulator.addParameter(startingAt(2).setBatchSize(null));
+        
+        stimulator.run(null);
+        
+        IterationResult secondIteration = stimulator.results().get(1);
+        
+        assertEquals(10, secondIteration.getBatchSize());
+
+    }
 }
