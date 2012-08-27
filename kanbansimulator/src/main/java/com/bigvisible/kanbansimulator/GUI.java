@@ -42,7 +42,7 @@ public class GUI extends JFrame {
     private JScrollPane scrollPane;
     private JButton runButton = new JButton("Run");
     private JLabel statusLabel;
-    private DefaultCategoryDataset dataset;
+    private DefaultCategoryDataset cfdData;
 
     public GUI() {
         setTitle("Kanban Simulator (\"Tom-U-later\")");
@@ -117,8 +117,8 @@ public class GUI extends JFrame {
         runButtonPanel.add(runButton);
         
         JFreeChart chart;
-        dataset = new DefaultCategoryDataset();
-        chart = ChartFactory.createStackedAreaChart("Cummulative Flow Diagram", "Iteration", "Stories", dataset, PlotOrientation.VERTICAL, true, true, false);
+        cfdData = new DefaultCategoryDataset();
+        chart = ChartFactory.createStackedAreaChart("Cummulative Flow Diagram", "Iteration", "Stories", cfdData, PlotOrientation.VERTICAL, true, true, false);
         JPanel cfdPanel = new ChartPanel(chart);
 
         JTabbedPane outputTabs = new JTabbedPane();
@@ -151,6 +151,17 @@ public class GUI extends JFrame {
         public void actionPerformed(ActionEvent e) {
             // TODO: do this in a worker thread, not on the Event Thread!!
             SimulatorEngine simulator = new SimulatorEngine();
+            configureSimulator(simulator);
+
+            simulator.run(null);
+            
+            pushSimulationResultsIntoCFD(simulator.results(), cfdData);
+            outputSimulationResultsAsCSV(simulator);
+
+            statusLabel.setText("Done");
+        }
+
+        private void configureSimulator(SimulatorEngine simulator) {
             simulator.addStories(Integer.parseInt(storiesInBacklog.getText()));
             simulator.setBatchSize(Integer.parseInt(batchSize.getText()));
             simulator.setNumberOfIterationsToRun(Integer.parseInt(iterationsToRun.getText()));
@@ -173,18 +184,15 @@ public class GUI extends JFrame {
                 simulator.addParameter(startingAt(iteration).forStep(named("WebDev").setCapacity(webDevCapacity)));
                 simulator.addParameter(startingAt(iteration).forStep(named("QA").setCapacity(qaCapacity)));
             }
+        }
 
-            simulator.run(null);
-            setDataSetForCFD(simulator.results(), dataset);
-
+        private void outputSimulationResultsAsCSV(SimulatorEngine simulator) {
             StringBuffer output = new StringBuffer();
             for (IterationResult iterationResult : simulator.results()) {
                 output.append(iterationResult.toCSVString());
                 output.append("\n");
             }
             outputTextArea.setText(output.toString());
-
-            statusLabel.setText("Done");
         }
 
         private int getIntegerFromCell(Object cell) {
@@ -212,8 +220,9 @@ public class GUI extends JFrame {
     }
     
     
-    private void setDataSetForCFD(List<IterationResult> results, DefaultCategoryDataset dataset) {
+    private void pushSimulationResultsIntoCFD(List<IterationResult> results, DefaultCategoryDataset dataset) {
         dataset.clear();
+
         dataset.addValue(0, "Done", "0");
         dataset.addValue(0, "QA", "0");
         dataset.addValue(0, "WebDev", "0");
