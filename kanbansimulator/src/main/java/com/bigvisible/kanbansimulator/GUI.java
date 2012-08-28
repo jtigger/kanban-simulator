@@ -4,10 +4,13 @@ import static com.bigvisible.kanbansimulator.IterationParameter.startingAt;
 import static com.bigvisible.kanbansimulator.IterationParameter.WorkflowStepParameter.named;
 
 import java.awt.Container;
+import java.awt.Frame;
+import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import java.util.List;
 
 import javax.swing.BoxLayout;
@@ -33,6 +36,8 @@ public class GUI extends JFrame {
     private static final long serialVersionUID = -1045195339415169014L;
     private static GUI instance;
 
+    private JFrame outputWindow;
+    
     private JTextField batchSize = new JTextField();
     private JTextField storiesInBacklog = new JTextField();
     private JTextArea outputTextArea = new JTextArea();
@@ -45,6 +50,8 @@ public class GUI extends JFrame {
     private DefaultCategoryDataset cfdData;
 
     public GUI() {
+        outputWindow = new JFrame();
+        
         setTitle("Kanban Simulator (\"Tom-U-later\")");
         storiesInBacklog.setName("storiesInBacklog");
         storiesInBacklog.setText("88");
@@ -116,20 +123,32 @@ public class GUI extends JFrame {
         add(runButtonPanel);
         runButtonPanel.add(runButton);
         
+        
+        Container outputPane = outputWindow.getContentPane();
+        outputPane.setLayout(new BoxLayout(outputPane, BoxLayout.Y_AXIS));
+        
         JFreeChart chart;
         cfdData = new DefaultCategoryDataset();
         chart = ChartFactory.createStackedAreaChart("Cummulative Flow Diagram", "Iteration", "Stories", cfdData, PlotOrientation.VERTICAL, true, true, false);
         JPanel cfdPanel = new ChartPanel(chart);
 
         JTabbedPane outputTabs = new JTabbedPane();
-        add(outputTabs);
+        outputWindow.add(outputTabs);
         outputTabs.addTab("Cummulative Flow Diagram", cfdPanel);
         outputTabs.addTab("Raw Output", outputTextArea);
 
         add(statusLabel);
 
-        addWindowListener(this.new GUIWindowListener());
-        setSize(500, 950);
+        WindowListener windowListener = this.new GUIWindowListener();
+        addWindowListener(windowListener);
+        outputWindow.addWindowListener(windowListener);
+        setSize(500, 370);
+        outputWindow.setSize(700,500);
+        
+        Point outputWindowLocation = getLocation();
+        outputWindowLocation.translate(getWidth(),0);
+        
+        outputWindow.setLocation(outputWindowLocation);
     }
 
     /**
@@ -139,6 +158,14 @@ public class GUI extends JFrame {
         instance = new GUI();
         instance.setVisible(true);
     }
+    
+
+    @Override
+    public void setVisible(boolean shouldBeVisible) {
+        super.setVisible(shouldBeVisible);
+        outputWindow.setVisible(shouldBeVisible);
+    }
+
 
     private class GUIWindowListener extends WindowAdapter {
         @Override
@@ -240,6 +267,10 @@ public class GUI extends JFrame {
             dataset.addValue(iterationResult.getQueued("Dev"), "Dev", ""+iterationResult.getIterationNumber());
             dataset.addValue(iterationResult.getQueued("BA"), "BA", ""+iterationResult.getIterationNumber());
         }
+    }
+
+    public Frame outputWindow() {
+        return outputWindow;
     }
 
 }

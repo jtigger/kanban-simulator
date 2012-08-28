@@ -29,6 +29,7 @@ import com.bigvisible.kanbansimulator.Simulator;
 
 public class GUIDriver implements Simulator {
     private FrameFixture mainWindowFixture;
+    private FrameFixture outputWindowFixture;
     private List<IterationResult> iterationResults = new LinkedList<IterationResult>();
 
     public void start() {
@@ -52,7 +53,7 @@ public class GUIDriver implements Simulator {
         runButtonFixture.click();
         waitForSimulatorToFinish();
 
-        JTextComponentFixture outputTextBoxFixture = mainWindowFixture.textBox("outputTextArea");
+        JTextComponentFixture outputTextBoxFixture = outputWindowFixture.textBox("outputTextArea");
 
         String[] lines = outputTextBoxFixture.text().split("\n");
 
