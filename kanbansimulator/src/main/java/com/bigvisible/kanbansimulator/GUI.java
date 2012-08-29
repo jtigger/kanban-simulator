@@ -37,7 +37,8 @@ public class GUI extends JFrame {
     private static GUI instance;
 
     private JFrame outputWindow;
-    
+
+    private JTextField scenarioName = new JTextField();
     private JTextField batchSize = new JTextField();
     private JTextField storiesInBacklog = new JTextField();
     private JTextArea outputTextArea = new JTextArea();
@@ -48,11 +49,16 @@ public class GUI extends JFrame {
     private JButton runButton = new JButton("Run");
     private JLabel statusLabel;
     private DefaultCategoryDataset cfdData;
+    private JFreeChart cummulativeFlowDiagram;
 
     public GUI() {
         outputWindow = new JFrame();
         
         setTitle("Kanban Simulator (\"Tom-U-later\")");
+        
+        scenarioName.setName("scenarioName");
+        scenarioName.setText("(scenario description here)");
+        
         storiesInBacklog.setName("storiesInBacklog");
         storiesInBacklog.setText("88");
 
@@ -100,6 +106,12 @@ public class GUI extends JFrame {
         iterationParameterPanel.add(table.getTableHeader());
         iterationParameterPanel.add(scrollPane);
         
+        JPanel scenarioNamePanel = new JPanel();
+        add(scenarioNamePanel);
+        scenarioNamePanel.add(new JLabel("Scenario Name:"));
+        scenarioNamePanel.add(scenarioName);
+        scenarioName.setColumns(30);
+        
         JPanel batchSizePanel = new JPanel();
         add(batchSizePanel);
         batchSizePanel.add(new JLabel("Batch Size:"));
@@ -127,10 +139,9 @@ public class GUI extends JFrame {
         Container outputPane = outputWindow.getContentPane();
         outputPane.setLayout(new BoxLayout(outputPane, BoxLayout.Y_AXIS));
         
-        JFreeChart chart;
         cfdData = new DefaultCategoryDataset();
-        chart = ChartFactory.createStackedAreaChart("Cummulative Flow Diagram", "Iteration", "Stories", cfdData, PlotOrientation.VERTICAL, true, true, false);
-        JPanel cfdPanel = new ChartPanel(chart);
+        cummulativeFlowDiagram = ChartFactory.createStackedAreaChart("Cummulative Flow Diagram", "Iteration", "Stories", cfdData, PlotOrientation.VERTICAL, true, true, false);
+        JPanel cfdPanel = new ChartPanel(cummulativeFlowDiagram);
 
         JTabbedPane outputTabs = new JTabbedPane();
         outputWindow.add(outputTabs);
@@ -142,7 +153,7 @@ public class GUI extends JFrame {
         WindowListener windowListener = this.new GUIWindowListener();
         addWindowListener(windowListener);
         outputWindow.addWindowListener(windowListener);
-        setSize(500, 370);
+        setSize(500, 390);
         outputWindow.setSize(700,500);
         
         Point outputWindowLocation = getLocation();
@@ -181,7 +192,10 @@ public class GUI extends JFrame {
             configureSimulator(simulator);
 
             simulator.run(null);
-            
+
+            cummulativeFlowDiagram.setTitle(scenarioName.getText());
+            setTitle(scenarioName.getText());
+            outputWindow.setTitle("Results: " + scenarioName.getText());
             pushSimulationResultsIntoCFD(simulator.results(), cfdData);
             outputSimulationResultsAsCSV(simulator);
 
