@@ -283,7 +283,7 @@ public class GUI extends JFrame {
         }
     }
 
-    public Frame outputWindow() {
+    public JFrame outputWindow() {
         return outputWindow;
     }
 

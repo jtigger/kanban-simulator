@@ -11,6 +11,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import javax.swing.JFrame;
 import javax.swing.table.TableColumn;
 
 import org.fest.swing.edt.GuiActionRunner;
@@ -33,13 +34,15 @@ public class GUIDriver implements Simulator {
     private List<IterationResult> iterationResults = new LinkedList<IterationResult>();
 
     public void start() {
-        GUI mainWindow = GuiActionRunner.execute(new GuiQuery<GUI>() {
+        final GUI mainWindow = GuiActionRunner.execute(new GuiQuery<GUI>() {
             protected GUI executeInEDT() {
                 return new GUI();
             }
         });
         mainWindowFixture = new FrameFixture(mainWindow);
         mainWindowFixture.show();
+        
+        outputWindowFixture = new FrameFixture(mainWindowFixture.robot, mainWindow.outputWindow());
     }
 
     public void finish() {
@@ -53,6 +56,7 @@ public class GUIDriver implements Simulator {
         runButtonFixture.click();
         waitForSimulatorToFinish();
 
+        outputWindowFixture.tabbedPane().selectTab("Raw Output");
         JTextComponentFixture outputTextBoxFixture = outputWindowFixture.textBox("outputTextArea");
 
         String[] lines = outputTextBoxFixture.text().split("\n");
