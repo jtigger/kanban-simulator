@@ -39,7 +39,6 @@ public class GUI extends JFrame {
     private JFrame outputWindow;
 
     private JTextField scenarioName = new JTextField();
-    private JTextField batchSize = new JTextField();
     private JTextField storiesInBacklog = new JTextField();
     private JTextArea outputTextArea = new JTextArea();
     private JTextField iterationsToRun = new JTextField();
@@ -62,28 +61,23 @@ public class GUI extends JFrame {
         storiesInBacklog.setName("storiesInBacklog");
         storiesInBacklog.setText("88");
 
-        batchSize.setName("batchSize");
-        batchSize.setText("11");
-        
         iterationsToRun.setName("iterationsToRun");
         iterationsToRun.setText("10");
 
         String[] columnNames = { "Iteration", "Batch Size", "BA", "Dev", "WebDev", "QA" };
-
         Object[][] data = { 
         		{ 1, 11, 13, 12, 12, 10 }, 
-        		{ 2, "", "", "",  6, "" }, 
+        		{ 2, "", "", "",  7, "" }, 
         		{ 3, "", "", "", "", "" }, 
         		{ 4, "", "", "", "", "" },
-                { 5, "", "", "", 18, "" }, 
+                { 5, "", "", "", 16, "" }, 
                 { 6, "", "", "", "", "" }, 
-                { 7, "", "",  8, 12,  8 }, 
+                { 7, "", "",  7, 12,  7 }, 
                 { 8, "", "", "", "", "" },
                 { 9, "", "", "", "", "" }, 
                 { 10, "", "","", "", "" },
 
         };
-
         table = new JTable(data, columnNames);
 
         scrollPane = new JScrollPane(table);
@@ -101,40 +95,29 @@ public class GUI extends JFrame {
         Container pane = getContentPane();
         pane.setLayout(new BoxLayout(pane, BoxLayout.Y_AXIS));
 
-        JPanel iterationParameterPanel = new JPanel();
-        add(iterationParameterPanel);
-        iterationParameterPanel.add(table.getTableHeader());
-        iterationParameterPanel.add(scrollPane);
-        
         JPanel scenarioNamePanel = new JPanel();
-        add(scenarioNamePanel);
         scenarioNamePanel.add(new JLabel("Scenario Name:"));
         scenarioNamePanel.add(scenarioName);
         scenarioName.setColumns(30);
         
-        JPanel batchSizePanel = new JPanel();
-        add(batchSizePanel);
-        batchSizePanel.add(new JLabel("Batch Size:"));
-        batchSizePanel.add(batchSize);
-        batchSize.setColumns(2);
-
         JPanel storiesInBacklogPanel = new JPanel();
-        add(storiesInBacklogPanel);
         storiesInBacklogPanel.add(new JLabel("Backlog:"));
         storiesInBacklogPanel.add(storiesInBacklog);
         storiesInBacklog.setColumns(2);
-
         
         JPanel iterationsToRunPanel = new JPanel();
-        add(iterationsToRunPanel);
         iterationsToRunPanel.add(new JLabel("Iterations To Run:"));
         iterationsToRunPanel.add(iterationsToRun);
         iterationsToRun.setColumns(2);
         
+        JPanel iterationParameterPanel = new JPanel();
+        iterationParameterPanel.add(table.getTableHeader());
+        iterationParameterPanel.add(scrollPane);
+        
         JPanel runButtonPanel = new JPanel();
-        add(runButtonPanel);
         runButtonPanel.add(runButton);
         
+
         
         Container outputPane = outputWindow.getContentPane();
         outputPane.setLayout(new BoxLayout(outputPane, BoxLayout.Y_AXIS));
@@ -144,15 +127,23 @@ public class GUI extends JFrame {
         JPanel cfdPanel = new ChartPanel(cummulativeFlowDiagram);
 
         JTabbedPane outputTabs = new JTabbedPane();
-        outputWindow.add(outputTabs);
-        outputTabs.addTab("Cummulative Flow Diagram", cfdPanel);
-        outputTabs.addTab("Raw Output", outputTextArea);
 
-        add(statusLabel);
 
         WindowListener windowListener = this.new GUIWindowListener();
         addWindowListener(windowListener);
         outputWindow.addWindowListener(windowListener);
+
+        add(scenarioNamePanel);
+        add(storiesInBacklogPanel);
+        add(iterationsToRunPanel);
+        add(iterationParameterPanel);
+        add(runButtonPanel);
+        add(statusLabel);
+
+        outputWindow.add(outputTabs);
+        outputTabs.addTab("Cummulative Flow Diagram", cfdPanel);
+        outputTabs.addTab("Raw Output", outputTextArea);
+
         setSize(500, 390);
         outputWindow.setSize(700,500);
         
@@ -204,7 +195,6 @@ public class GUI extends JFrame {
 
         private void configureSimulator(SimulatorEngine simulator) {
             simulator.addStories(Integer.parseInt(storiesInBacklog.getText()));
-            simulator.setBatchSize(Integer.parseInt(batchSize.getText()));
             simulator.setNumberOfIterationsToRun(Integer.parseInt(iterationsToRun.getText()));
 
             Object[][] tableData = getTableData(table);

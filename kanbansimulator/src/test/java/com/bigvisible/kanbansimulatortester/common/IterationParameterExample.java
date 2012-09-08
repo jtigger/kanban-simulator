@@ -3,12 +3,10 @@
 package com.bigvisible.kanbansimulatortester.common;
 
 public class IterationParameterExample {
-    public int iteration;
-    public int bACapacity;
-    public int devCapacity;
-    public int webDevCapacity;
-    public int qACapacity;
-    public int batchSize;
-    
-    // Adding a comment to test branching
+    public Integer iteration;
+    public Integer bACapacity;
+    public Integer devCapacity;
+    public Integer webDevCapacity;
+    public Integer qACapacity;
+    public Integer batchSize;
 }

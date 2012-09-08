@@ -171,7 +171,10 @@ public class GUIDriver implements Simulator {
             cellValue = iterationParameter.getBatchSize();
         }
 
-        tableFixture.enterValue(row(rowIndex).column(columnIndex), "" + cellValue);
+        // TODO: not quite right... should clear out the value if not already clear
+        if(cellValue != null) {
+          tableFixture.enterValue(row(rowIndex).column(columnIndex), "" + cellValue);
+        }
     }
 
     private Map<String, Integer> getWorkflowStepNameToColumnIndexMappings(JTableFixture tableFixture) {
