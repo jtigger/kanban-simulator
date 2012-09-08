@@ -6,6 +6,7 @@ import org.junit.runners.Suite.SuiteClasses;
 
 import com.bigvisible.kanbansimulator.IterationParameter;
 import com.bigvisible.kanbansimulatortester.core.unit.IterationParameterSpec;
+import com.bigvisible.kanbansimulatortester.core.unit.IterationResultConfigurationSpec;
 import com.bigvisible.kanbansimulatortester.core.unit.IterationResultSerializationSpec;
 import com.bigvisible.kanbansimulatortester.core.unit.SimulatorOutOfTheBoxSpec;
 import com.bigvisible.kanbansimulatortester.core.unit.SimulatorConfigurationSpec;
@@ -13,9 +14,14 @@ import com.bigvisible.kanbansimulatortester.core.unit.IterationResultCreatingNex
 import com.bigvisible.kanbansimulatortester.core.unit.IterationResultSimulatesRunningAnIterationSpec;
 
 @RunWith(Suite.class)
-@SuiteClasses({ IterationResultSimulatesRunningAnIterationSpec.class,
-        IterationResultCreatingNextIterationResultSpec.class,
-        IterationResultSerializationSpec.class,
-        SimulatorConfigurationSpec.class, IterationParameterSpec.class, SimulatorOutOfTheBoxSpec.class })
+@SuiteClasses({
+    IterationParameterSpec.class,
+    IterationResultConfigurationSpec.class,
+    IterationResultCreatingNextIterationResultSpec.class,
+    IterationResultSimulatesRunningAnIterationSpec.class,
+    IterationResultSerializationSpec.class,
+    SimulatorConfigurationSpec.class,
+    SimulatorOutOfTheBoxSpec.class
+        })
 public class AllUnitTests {
 }

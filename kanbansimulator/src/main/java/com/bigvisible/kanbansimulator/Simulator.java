@@ -29,4 +29,6 @@ public interface Simulator {
 
     public abstract int getIterationsRun();
 
+    public abstract void removeWorkflowStep(String workflowStepName);
+
 }

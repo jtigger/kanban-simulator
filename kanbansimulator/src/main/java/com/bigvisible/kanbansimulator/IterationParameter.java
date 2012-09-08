@@ -3,6 +3,8 @@ package com.bigvisible.kanbansimulator;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.bigvisible.kanbansimulator.IterationParameter.WorkflowStepParameter;
+
 public class IterationParameter {
 
     private int iteration;
@@ -61,6 +63,7 @@ public class IterationParameter {
     {
         private Integer capacity;
         private String workflowStepName;
+        private boolean remove = false;
         
         static public WorkflowStepParameter named(String workflowStepName) {
             WorkflowStepParameter workflowStepParameter = new WorkflowStepParameter();
@@ -82,10 +85,19 @@ public class IterationParameter {
             return this;
         }
 
+        public WorkflowStepParameter remove() {
+            remove = true;
+            return this;
+        }
+
     }
 
     public WorkflowStepParameter getParameterForStep(String workflowStepName) {
         return stepNameToParameter.get(workflowStepName);
+    }
+
+    public boolean isToRemove() {
+        return workflowStepParameter.remove;
     }
 
 }

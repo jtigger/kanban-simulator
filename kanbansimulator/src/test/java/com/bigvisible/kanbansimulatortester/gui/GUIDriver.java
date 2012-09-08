@@ -11,7 +11,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-import javax.swing.JFrame;
 import javax.swing.table.TableColumn;
 
 import org.fest.swing.edt.GuiActionRunner;
@@ -112,23 +111,15 @@ public class GUIDriver implements Simulator {
     }
 
     public void setBusinessAnalystCapacity(int businessAnalystCapacity) {
-        // TODO Auto-generated method stub
-
     }
 
     public void setDevelopmentCapacity(int developmentCapacity) {
-        // TODO Auto-generated method stub
-
     }
 
     public void setWebDevelopmentCapacity(int webDevelopmentCapacity) {
-        // TODO Auto-generated method stub
-
     }
 
     public void setQualityAssuranceCapacity(int qualityAssuranceCapacity) {
-        // TODO Auto-generated method stub
-
     }
 
     public void setNumberOfIterationsToRun(int numberOfIterationsToRun) {
@@ -171,7 +162,7 @@ public class GUIDriver implements Simulator {
             cellValue = iterationParameter.getBatchSize();
         }
 
-        // TODO: not quite right... should clear out the value if not already clear
+        // TODO-NEXT: not quite right... should clear out the value if not already clear
         if(cellValue != null) {
           tableFixture.enterValue(row(rowIndex).column(columnIndex), "" + cellValue);
         }
@@ -206,13 +197,14 @@ public class GUIDriver implements Simulator {
     }
 
     public int getStoriesCompleted() {
-        // TODO Auto-generated method stub
         return 0;
     }
 
     public int getIterationsRun() {
-        // TODO Auto-generated method stub
         return 0;
+    }
+
+    public void removeWorkflowStep(String workflowStepName) {
     }
 
 }

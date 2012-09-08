@@ -178,7 +178,7 @@ public class GUI extends JFrame {
 
     private class StartSimulationActionListener implements ActionListener {
         public void actionPerformed(ActionEvent e) {
-            // TODO: do this in a worker thread, not on the Event Thread!!
+            // TODO-SOMEDAY: do this in a worker thread, not on the Event Thread!!
             SimulatorEngine simulator = new SimulatorEngine();
             configureSimulator(simulator);
 

@@ -61,7 +61,7 @@ public class SimulatorConfigurationSpec {
     
     @Test
     public void WHEN_the_batch_size_is_configured_at_a_given_iteration_THEN_the_amount_put_into_play_matches_that_batch_size() throws Exception {
-        // TODO: this test specifies the behavior of an IterationResult, not the simulator itself.  Move and modify.
+        // TODO-NEXT: this test specifies the behavior of an IterationResult, not the simulator itself.  Move and modify.
         Simulator stimulator = new SimulatorEngine();
         stimulator.addStories(20);
         stimulator.setBatchSize(1);
@@ -76,7 +76,7 @@ public class SimulatorConfigurationSpec {
     
     @Test
     public void WHEN_batch_size_exceeds_number_of_stories_available_to_play_THEN_only_the_number_of_stories_available_are_actually_put_into_play() throws Exception {
-        // TODO: this test specifies the behavior of an IterationResult, not the simulator itself.  Move and modify.
+        // TODO-NEXT: this test specifies the behavior of an IterationResult, not the simulator itself.  Move and modify.
         int totalStories = 10;
         int storiesPutInPlayForIteration1 = 1;
         int expectedStoriesPutInPlayForIteration2 = totalStories - storiesPutInPlayForIteration1;

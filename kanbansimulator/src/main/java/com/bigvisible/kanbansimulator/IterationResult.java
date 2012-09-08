@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -174,8 +175,12 @@ public class IterationResult {
                             "Attempted to configure workflow step \"%s\" when the defined steps are: [%s]",
                             iterationParameter.getWorkflowStepName(), getStepDescriptions()));
                 }
-                if (iterationParameter.getCapacity() != null) {
-                    step.setCapacity(iterationParameter.getCapacity());
+                if (iterationParameter.isToRemove()) {
+                    steps.remove(step);
+                } else {
+                    if (iterationParameter.getCapacity() != null) {
+                        step.setCapacity(iterationParameter.getCapacity());
+                    }
                 }
             } else {
                 if(iterationParameter.getBatchSize() != null) {
@@ -186,6 +191,8 @@ public class IterationResult {
     }
 
     private static class WorkflowStep {
+        
+        // TODO-NOW: rename WorkflowStep.description to WorkflowStep.name
         private String description;
         private int capacity;
         private int completed;
@@ -245,5 +252,15 @@ public class IterationResult {
             delim = ", ";
         }
         return definedStepNames.toString();
+    }
+
+    public List<String> workflowStepNames() {
+        List<String> workflowStepNames = new LinkedList<String>();
+        
+        for (WorkflowStep step : steps) {
+            workflowStepNames.add(step.getDescription());
+        }
+       
+        return workflowStepNames;
     }
 }
