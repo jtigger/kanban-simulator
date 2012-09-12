@@ -72,29 +72,7 @@ public class SimulatorConfigurationSpec {
         
         assertEquals(10, stimulator.results().get(1).getBatchSize());
     }
-    
-    
-    @Test
-    public void WHEN_batch_size_exceeds_number_of_stories_available_to_play_THEN_only_the_number_of_stories_available_are_actually_put_into_play() throws Exception {
-        // TODO-NEXT: this test specifies the behavior of an IterationResult, not the simulator itself.  Move and modify.
-        int totalStories = 10;
-        int storiesPutInPlayForIteration1 = 1;
-        int expectedStoriesPutInPlayForIteration2 = totalStories - storiesPutInPlayForIteration1;
-        int batchSizeForIteration2 = expectedStoriesPutInPlayForIteration2 + 1;  // i.e. batchSize > putInPlay
         
-        Simulator stimulator = new SimulatorEngine();
-        stimulator.addStories(totalStories);
-        stimulator.setBatchSize(storiesPutInPlayForIteration1);
-        
-        stimulator.addParameter(startingAt(2).setBatchSize(batchSizeForIteration2));
-        
-        stimulator.run(null);
-        
-        int storiesPutInPlayForIteration2 = stimulator.results().get(1).getPutIntoPlay();
-        
-        assertEquals(expectedStoriesPutInPlayForIteration2, storiesPutInPlayForIteration2);
-    }
-    
     @Test
     public void WHEN_batch_size_is_configured_to_be_null_THEN_that_configuration_is_ignored() throws Exception {
         Simulator stimulator = new SimulatorEngine();
