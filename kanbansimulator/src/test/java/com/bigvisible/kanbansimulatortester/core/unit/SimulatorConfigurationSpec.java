@@ -58,21 +58,7 @@ public class SimulatorConfigurationSpec {
         stimulator.addParameter(startingAt(1).forStep(named("InvalidWorkflowStepName").setCapacity(10)));
         stimulator.run(null);
     }
-    
-    @Test
-    public void WHEN_the_batch_size_is_configured_at_a_given_iteration_THEN_the_amount_put_into_play_matches_that_batch_size() throws Exception {
-        // TODO-NEXT: this test specifies the behavior of an IterationResult, not the simulator itself.  Move and modify.
-        Simulator stimulator = new SimulatorEngine();
-        stimulator.addStories(20);
-        stimulator.setBatchSize(1);
-        
-        stimulator.addParameter(startingAt(2).setBatchSize(10));
-        
-        stimulator.run(null);
-        
-        assertEquals(10, stimulator.results().get(1).getBatchSize());
-    }
-        
+            
     @Test
     public void WHEN_batch_size_is_configured_to_be_null_THEN_that_configuration_is_ignored() throws Exception {
         Simulator stimulator = new SimulatorEngine();

@@ -27,4 +27,17 @@ public class IterationResultConfigurationSpec {
         
         assertThat("WebDev", not(isIn(iteration.workflowStepNames())));
     }
+    
+    @Test
+    public void GIVEN_configuration_sets_batch_size_WHEN_the_iteration_is_configured_THEN_the_batch_size_of_the_iteration_is_that_value() throws Exception {
+        IterationResult iteration = new IterationResult();
+        List<IterationParameter> params = new LinkedList<IterationParameter>();
+        
+        int configuredBatchSize = UnitTestHelper.anyReasonableNumber();
+        
+        params.add(startingAt(1).setBatchSize(configuredBatchSize));
+        iteration.configure(params);
+        
+        assertThat(iteration.getBatchSize(), is(configuredBatchSize));
+    }
 }
