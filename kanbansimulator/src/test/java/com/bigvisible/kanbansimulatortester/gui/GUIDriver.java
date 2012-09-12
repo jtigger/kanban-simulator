@@ -13,11 +13,13 @@ import java.util.Map;
 
 import javax.swing.table.TableColumn;
 
+import org.fest.swing.data.TableCell;
 import org.fest.swing.edt.GuiActionRunner;
 import org.fest.swing.edt.GuiQuery;
 import org.fest.swing.fixture.FrameFixture;
 import org.fest.swing.fixture.JButtonFixture;
 import org.fest.swing.fixture.JLabelFixture;
+import org.fest.swing.fixture.JTableCellFixture;
 import org.fest.swing.fixture.JTableFixture;
 import org.fest.swing.fixture.JTableHeaderFixture;
 import org.fest.swing.fixture.JTextComponentFixture;
@@ -147,7 +149,7 @@ public class GUIDriver implements Simulator {
             }
         }
         Integer columnIndex = null;
-        Integer cellValue = null;
+        String cellValue = null;
         if(iterationParameter.hasWorkflowConfiguration()) {
             columnIndex = workflowStepNameToColumnIndex.get(iterationParameter.getWorkflowStepName());
             if (columnIndex == null) {
@@ -156,16 +158,22 @@ public class GUIDriver implements Simulator {
                                 + String.format("where workflow step name = \"%s\" and the JTable column names are: %s",
                                         iterationParameter.getWorkflowStepName(), tableColumnNames));
             }
-            cellValue = iterationParameter.getCapacity();
+            cellValue = nullSafeToString(iterationParameter.getCapacity());
         } else {
             columnIndex = workflowStepNameToColumnIndex.get("Batch Size");
-            cellValue = iterationParameter.getBatchSize();
+            cellValue = nullSafeToString(iterationParameter.getBatchSize());
         }
 
-        // TODO-NEXT: not quite right... should clear out the value if not already clear
-        if(cellValue != null) {
-          tableFixture.enterValue(row(rowIndex).column(columnIndex), "" + cellValue);
+        if (cellValue != null) {
+            JTableCellFixture cell = tableFixture.cell(TableCell.row(rowIndex).column(columnIndex));
+            if (!cellValue.equals(cell.value())) {
+                tableFixture.enterValue(row(rowIndex).column(columnIndex), cellValue);
+            }
         }
+    }
+
+    private String nullSafeToString(Integer integer) {
+        return (integer == null) ? null : integer.toString();
     }
 
     private Map<String, Integer> getWorkflowStepNameToColumnIndexMappings(JTableFixture tableFixture) {
