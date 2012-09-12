@@ -29,10 +29,4 @@ public class IterationParameterSpec {
         assertNotNull("Expected to find parameter for \"First Step\" in IterationParameter, but not found.", iterationParameter.getParameterForStep("First Step"));
         assertNotNull("Expected to find parameter for \"Second Step\" in IterationParameter, but not found.",iterationParameter.getParameterForStep("Second Step"));
     }
-    
-    // TODO-NEXT: GIVEN_a_IterationParameter_with_a_WorkflowStepParameter_configured_WHEN_a_WorkflowStepParameter_is_set_for_the_same_WorkflowStep_THEN_the_new_parameter_replaces_the_old_one
-    public void GIVEN_a_IterationParameter_with_a_WorkflowStepParameter_configured_WHEN_a_WorkflowStepParameter_is_set_for_the_same_WorkflowStep_THEN_the_new_parameter_replaces_the_old_one()
-    {
-        
-    }
 }
