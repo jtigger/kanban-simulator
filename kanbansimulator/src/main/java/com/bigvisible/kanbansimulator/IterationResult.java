@@ -49,7 +49,7 @@ public class IterationResult {
         nextIteration.batchSize = batchSize;
         for (WorkflowStep step : steps) {
             WorkflowStep sameStepInNextIteration = 
-                    nextIteration.getStep(step.getDescription());
+                    nextIteration.getStep(step.getName());
 
             sameStepInNextIteration.setCapacity(step.getCapacity());
             sameStepInNextIteration.setQueued(step.getQueued());
@@ -200,22 +200,21 @@ public class IterationResult {
 
     private static class WorkflowStep {
         
-        // TODO-NOW: rename WorkflowStep.description to WorkflowStep.name
-        private String description;
+        private String name;
         private int capacity;
         private int completed;
         private int queued;
     
         public WorkflowStep(String description) {
-            setDescription(description);
+            setName(description);
         }
     
-        public String getDescription() {
-            return description;
+        public String getName() {
+            return name;
         }
     
-        public void setDescription(String description) {
-            this.description = description;
+        public void setName(String name) {
+            this.name = name;
         }
     
         public int getCapacity() {
@@ -245,7 +244,7 @@ public class IterationResult {
 
     private WorkflowStep getStep(String description) {
         for (WorkflowStep step : steps) {
-            if (step.getDescription().equalsIgnoreCase(description)) {
+            if (step.getName().equalsIgnoreCase(description)) {
                 return step;
             }
         }
@@ -256,7 +255,7 @@ public class IterationResult {
         StringBuffer definedStepNames = new StringBuffer();
         String delim = "";
         for (WorkflowStep definedStep : steps) {
-            definedStepNames.append(delim).append(definedStep.getDescription());
+            definedStepNames.append(delim).append(definedStep.getName());
             delim = ", ";
         }
         return definedStepNames.toString();
@@ -266,7 +265,7 @@ public class IterationResult {
         List<String> workflowStepNames = new LinkedList<String>();
         
         for (WorkflowStep step : steps) {
-            workflowStepNames.add(step.getDescription());
+            workflowStepNames.add(step.getName());
         }
        
         return workflowStepNames;
