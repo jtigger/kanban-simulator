@@ -11,11 +11,11 @@ I know this is done when...
     Background: (This background defines the constants in the simulation)
     Given the backlog starts with 88 stories
       
-#    Scenario: Removing a workflow step without adjusting capacity
-#      Given I remove the workflow step named "Web Dev"
-#      When the simulator completes a run
-#      Then the results do not contain values for "Web Dev"
-#       But the results do contain values for "BA, Dev, QA"
+    Scenario: Removing a workflow step without adjusting capacity
+      Given I remove the workflow step named "WebDev"
+      When the simulator completes a run
+      Then the results do not contain values for "WebDev"
+       But the results do contain values for "BA, Dev, QA"
 
 # TBD...     
 #    Scenario: Increased Productivity Illustrated

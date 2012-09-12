@@ -157,7 +157,7 @@ public class SimulatorEngine implements Simulator {
 	}
 
     public void removeWorkflowStep(String workflowStepName) {
-//        addParameter(startingAt(1).forStep(named(workflowStepName)).remove());
+        addParameter(startingAt(1).forStep(named(workflowStepName).remove()));
     }
 
 }

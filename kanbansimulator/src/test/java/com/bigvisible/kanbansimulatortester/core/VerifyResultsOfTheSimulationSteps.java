@@ -26,7 +26,7 @@ public class VerifyResultsOfTheSimulationSteps extends StepDefinitionForSimulato
     
     @Then("^the results do not contain values for \"([^\"]*)\"$")
     public void the_results_do_not_contain_values_for(String workflowStepName) {
-        assertThat(workflowStepName, isIn(getStimulator().results().get(0).workflowStepNames()));
+        assertThat(workflowStepName, not(isIn(getStimulator().results().get(0).workflowStepNames())));
     }
     
     @Then("^the results do contain values for \"([^\"]*)\"$")

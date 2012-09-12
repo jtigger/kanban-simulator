@@ -1,6 +1,7 @@
 package com.bigvisible.kanbansimulatortester.core.unit;
 
 import java.security.SecureRandom;
+import java.util.List;
 
 public class UnitTestHelper {
 
@@ -18,4 +19,7 @@ public class UnitTestHelper {
     }
     private static SecureRandom random = new SecureRandom();
 
+    public static String[] toArray(List<String> list) {
+        return list.toArray(new String[list.size()]);
+    }
 }

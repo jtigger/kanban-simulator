@@ -1,10 +1,12 @@
 package com.bigvisible.kanbansimulatortester.core.unit;
 
-import static org.hamcrest.Matchers.is;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.Matchers.*;
+import static org.junit.Assert.*;
+import static org.junit.matchers.JUnitMatchers.both;
+import static com.bigvisible.kanbansimulatortester.core.unit.UnitTestHelper.toArray;
 
-import org.fest.assertions.Fail;
+import java.util.List;
+
 import org.junit.Before;
 import org.junit.Test;
 
@@ -32,6 +34,17 @@ public class IterationResultCreatingNextIterationResultSpec {
 
         assertThat("New IterationResult's IterationNumber should be one greater than the previous.",
                 nextIteration.getIterationNumber(), is(iterationNumber + 1));
+    }
+    
+    @Test
+    public void WHEN_an_IterationResult_creates_the_next_iteration_THEN_the_new_IterationResults_workflow_matches()
+            throws Exception {
+        iterationResult = new IterationResult("step1", "step2", "step3");
+
+        IterationResult nextIteration = iterationResult.nextIteration();
+
+        assertThat(nextIteration.workflowStepNames(), hasItems(toArray(iterationResult.workflowStepNames())));
+        assertThat(iterationResult.workflowStepNames(), hasItems(toArray(nextIteration.workflowStepNames())));
     }
 
     @Test

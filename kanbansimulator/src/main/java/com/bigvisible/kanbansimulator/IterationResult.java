@@ -17,13 +17,20 @@ public class IterationResult {
     private List<WorkflowStep> steps;
 
     public IterationResult() {
-        steps = new LinkedList<WorkflowStep>();
-        steps.add(new WorkflowStep("BA"));
-        steps.add(new WorkflowStep("Dev"));
-        steps.add(new WorkflowStep("WebDev"));
-        steps.add(new WorkflowStep("QA"));
+        this("BA", "Dev", "WebDev", "QA");
     }
-
+    
+    public IterationResult(List<String> workflowStepNames) {
+        this(workflowStepNames.toArray(new String[workflowStepNames.size()]));
+    }
+    
+    public IterationResult(String... workflowStepNames ) {
+        steps = new LinkedList<WorkflowStep>();
+        for (String workflowStepName : workflowStepNames) {
+            steps.add(new WorkflowStep(workflowStepName));
+        }
+    }
+    
     public void run(int storiesAvailableToPlay) {
         putIntoPlay = Math.min(storiesAvailableToPlay, batchSize);
         int outputOfPreviousStep = putIntoPlay;
@@ -37,11 +44,12 @@ public class IterationResult {
     }
 
     public IterationResult nextIteration() {
-        IterationResult nextIteration = new IterationResult();
+        IterationResult nextIteration = new IterationResult(workflowStepNames());
         nextIteration.iterationNumber = iterationNumber + 1;
         nextIteration.batchSize = batchSize;
         for (WorkflowStep step : steps) {
-            WorkflowStep sameStepInNextIteration = nextIteration.getStep(step.getDescription());
+            WorkflowStep sameStepInNextIteration = 
+                    nextIteration.getStep(step.getDescription());
 
             sameStepInNextIteration.setCapacity(step.getCapacity());
             sameStepInNextIteration.setQueued(step.getQueued());
