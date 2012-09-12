@@ -31,6 +31,34 @@ public class IterationResult {
         }
     }
     
+    public void configure(List<IterationParameter> iterationParameters) {
+        if (iterationParameters == null) {
+            return;
+        }
+        
+        for (IterationParameter iterationParameter : iterationParameters) {
+            if (iterationParameter.hasWorkflowConfiguration()) {
+                WorkflowStep step = getStep(iterationParameter.getWorkflowStepName());
+                if (step == null) {
+                    throw new InvalidSimulatorConfiguration(String.format(
+                            "Attempted to configure workflow step \"%s\" when the defined steps are: [%s]",
+                            iterationParameter.getWorkflowStepName(), getStepDescriptions()));
+                }
+                if (iterationParameter.isToRemove()) {
+                    steps.remove(step);
+                } else {
+                    if (iterationParameter.getCapacity() != null) {
+                        step.setCapacity(iterationParameter.getCapacity());
+                    }
+                }
+            } else {
+                if(iterationParameter.getBatchSize() != null) {
+                  setBatchSize(iterationParameter.getBatchSize());
+                }
+            }
+        }
+    }
+
     public void run(int storiesAvailableToPlay) {
         putIntoPlay = Math.min(storiesAvailableToPlay, batchSize);
         int outputOfPreviousStep = putIntoPlay;
@@ -168,34 +196,6 @@ public class IterationResult {
         } while (nextLine != null);
 
         return iterationResults;
-    }
-
-    public void configure(List<IterationParameter> iterationParameters) {
-        if (iterationParameters == null) {
-            return;
-        }
-        
-        for (IterationParameter iterationParameter : iterationParameters) {
-            if (iterationParameter.hasWorkflowConfiguration()) {
-                WorkflowStep step = getStep(iterationParameter.getWorkflowStepName());
-                if (step == null) {
-                    throw new InvalidSimulatorConfiguration(String.format(
-                            "Attempted to configure workflow step \"%s\" when the defined steps are: [%s]",
-                            iterationParameter.getWorkflowStepName(), getStepDescriptions()));
-                }
-                if (iterationParameter.isToRemove()) {
-                    steps.remove(step);
-                } else {
-                    if (iterationParameter.getCapacity() != null) {
-                        step.setCapacity(iterationParameter.getCapacity());
-                    }
-                }
-            } else {
-                if(iterationParameter.getBatchSize() != null) {
-                  setBatchSize(iterationParameter.getBatchSize());
-                }
-            }
-        }
     }
 
     private static class WorkflowStep {
