@@ -60,12 +60,15 @@ public class IterationResultConfigurationSpec {
     
     @Test
     public void GIVEN_configuration_says_to_remove_a_workflow_step_WHEN_the_iteration_is_configured_THEN_the_iteration_does_not_have_that_workflow_step() throws Exception {
+        String someWorkflowStep = "WebDev";
+
         IterationResult iteration = new IterationResult();
         List<IterationParameter> params = new LinkedList<IterationParameter>();
-        params.add(startingAt(1).forStep(named("WebDev").remove()));
+        
+        params.add(startingAt(1).forStep(named(someWorkflowStep).remove()));
         
         iteration.configure(params);
         
-        assertThat("WebDev", not(isIn(iteration.workflowStepNames())));
+        assertThat(someWorkflowStep, not(isIn(iteration.workflowStepNames())));
     }
 }
