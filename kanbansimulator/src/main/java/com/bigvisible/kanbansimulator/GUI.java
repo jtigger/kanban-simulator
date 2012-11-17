@@ -4,7 +4,6 @@ import static com.bigvisible.kanbansimulator.IterationParameter.startingAt;
 import static com.bigvisible.kanbansimulator.IterationParameter.WorkflowStepParameter.named;
 
 import java.awt.Container;
-import java.awt.Frame;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -25,6 +24,7 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.table.TableModel;
 
+import org.apache.commons.lang3.StringUtils;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
@@ -69,12 +69,12 @@ public class GUI extends JFrame {
         		{ 1, 11, 13, 12, 12, 10 }, 
         		{ 2, "", "", "",  7, "" }, 
         		{ 3, "", "", "", "", "" }, 
-        		{ 4, "", "", "", "", "" },
+        		{ 4, "10", "", "", "", "" },
                 { 5, "", "", "", 16, "" }, 
                 { 6, "", "", "", "", "" }, 
                 { 7, "", "",  7, 12,  7 }, 
                 { 8, "", "", "", "", "" },
-                { 9, "", "", "", "", "" }, 
+                { 9, "11", "", "", "", "" }, 
                 { 10, "", "","", "", "" },
 
         };
@@ -231,7 +231,7 @@ public class GUI extends JFrame {
             if (cell instanceof Integer) {
                 value = (Integer) cell;
             } else if (cell instanceof String) {
-                if ("".equals(cell)) {
+                if (StringUtils.isBlank((String)cell)) {
                     value = null;
                 } else {
                     value = Integer.parseInt((String) cell);

@@ -42,7 +42,7 @@ public class GUIDriver implements Simulator {
         });
         mainWindowFixture = new FrameFixture(mainWindow);
         mainWindowFixture.show();
-        
+
         outputWindowFixture = new FrameFixture(mainWindowFixture.robot, mainWindow.outputWindow());
     }
 
@@ -93,8 +93,10 @@ public class GUIDriver implements Simulator {
             long currentTime = System.currentTimeMillis();
             long beenWaiting = currentTime - startTime;
             if (beenWaiting > 5000) {
-                throw new RuntimeException(String.format("Timed-out while waiting for simulator to finish.  Waiting for status = \"%s\".  Current status is \"%s\".",
-                        "Done", simulatorStatus));
+                throw new RuntimeException(
+                        String.format(
+                                "Timed-out while waiting for simulator to finish.  Waiting for status = \"%s\".  Current status is \"%s\".",
+                                "Done", simulatorStatus));
             }
             simulatorStatus = simulatorStatus();
         }
@@ -126,8 +128,8 @@ public class GUIDriver implements Simulator {
 
     public void setNumberOfIterationsToRun(int numberOfIterationsToRun) {
         JTextComponentFixture iterationsToRunFixture = mainWindowFixture.textBox("iterationsToRun");
-        
-        iterationsToRunFixture.setText(""+numberOfIterationsToRun);
+
+        iterationsToRunFixture.setText("" + numberOfIterationsToRun);
     }
 
     private Integer currentIteration;
@@ -149,31 +151,33 @@ public class GUIDriver implements Simulator {
             }
         }
         Integer columnIndex = null;
-        String cellValue = null;
-        if(iterationParameter.hasWorkflowConfiguration()) {
+        String desiredCellValue = null;
+        if (iterationParameter.hasWorkflowConfiguration()) {
             columnIndex = workflowStepNameToColumnIndex.get(iterationParameter.getWorkflowStepName());
             if (columnIndex == null) {
                 throw new RuntimeException(
                         "Could not find column in JTable that matches workflow step name of iteration parameter."
-                                + String.format("where workflow step name = \"%s\" and the JTable column names are: %s",
+                                + String.format(
+                                        "where workflow step name = \"%s\" and the JTable column names are: %s",
                                         iterationParameter.getWorkflowStepName(), tableColumnNames));
             }
-            cellValue = nullSafeToString(iterationParameter.getCapacity());
+            desiredCellValue = nullSafeToString(iterationParameter.getCapacity());
         } else {
             columnIndex = workflowStepNameToColumnIndex.get("Batch Size");
-            cellValue = nullSafeToString(iterationParameter.getBatchSize());
+            desiredCellValue = nullSafeToString(iterationParameter.getBatchSize());
         }
 
-        if (cellValue != null) {
-            JTableCellFixture cell = tableFixture.cell(TableCell.row(rowIndex).column(columnIndex));
-            if (!cellValue.equals(cell.value())) {
-                tableFixture.enterValue(row(rowIndex).column(columnIndex), cellValue);
+        JTableCellFixture cell = tableFixture.cell(TableCell.row(rowIndex).column(columnIndex));
+        if (!desiredCellValue.equals(cell.value())) {
+            if(desiredCellValue.equals("")) {
+                desiredCellValue = " ";  // FEST requires that you specify a non-empty string.
             }
+            tableFixture.enterValue(row(rowIndex).column(columnIndex), desiredCellValue);
         }
     }
 
     private String nullSafeToString(Integer integer) {
-        return (integer == null) ? null : integer.toString();
+        return (integer == null) ? "" : integer.toString();
     }
 
     private Map<String, Integer> getWorkflowStepNameToColumnIndexMappings(JTableFixture tableFixture) {
