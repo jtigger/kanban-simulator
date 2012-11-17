@@ -117,8 +117,6 @@ public class GUI extends JFrame {
         JPanel runButtonPanel = new JPanel();
         runButtonPanel.add(runButton);
         
-
-        
         Container outputPane = outputWindow.getContentPane();
         outputPane.setLayout(new BoxLayout(outputPane, BoxLayout.Y_AXIS));
         
@@ -228,6 +226,7 @@ public class GUI extends JFrame {
 
         private Integer getIntegerFromCell(Object cell) {
             Integer value;
+            if(cell == null) return null;
             if (cell instanceof Integer) {
                 value = (Integer) cell;
             } else if (cell instanceof String) {
