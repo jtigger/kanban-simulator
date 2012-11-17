@@ -9,7 +9,6 @@ import com.bigvisible.kanbansimulatortester.common.IterationResultExample;
 import com.bigvisible.kanbansimulatortester.common.StepDefinitionForSimulatorSpecification;
 
 import cucumber.annotation.en.Then;
-import cucumber.runtime.PendingException;
 
 public class VerifyResultsOfTheSimulationSteps extends StepDefinitionForSimulatorSpecification {
     @Then("^the simulator will have generated the following results:$")
@@ -19,8 +18,7 @@ public class VerifyResultsOfTheSimulationSteps extends StepDefinitionForSimulato
                 .asExample(getStimulator().results());
 
         for (IterationResultExample iterationResultExample : results) {
-            assertThat("... while looking for an example in the list of actual results ... (i.e. swap actual and expected in this message)",
-                    iterationResultExample, isIn(actualResults));
+            assertThat(actualResults, hasItem(iterationResultExample));
         }
     }
     
