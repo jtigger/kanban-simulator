@@ -10,10 +10,12 @@ import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import java.util.LinkedList;
 import java.util.List;
 
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -40,6 +42,9 @@ public class GUI extends JFrame {
 
     private JTextField scenarioName = new JTextField();
     private JTextField storiesInBacklog = new JTextField();
+    private JComboBox workflowStepComboBox = new JComboBox();
+    private JButton removeWorkflowStepButton = new JButton("Remove");
+    private List<String> workflowSteps = new LinkedList<String>();
     private JTextArea outputTextArea = new JTextArea();
     private JTextField iterationsToRun = new JTextField();
 
@@ -64,6 +69,7 @@ public class GUI extends JFrame {
         iterationsToRun.setName("iterationsToRun");
         iterationsToRun.setText("10");
 
+        // TODO-NEXT: Factor-out workflow step handling.
         String[] columnNames = { "Iteration", "Batch Size", "BA", "Dev", "WebDev", "QA" };
         Object[][] data = { 
         		{ 1, 11, 13, 12, 12, 10 }, 
@@ -110,6 +116,23 @@ public class GUI extends JFrame {
         iterationsToRunPanel.add(iterationsToRun);
         iterationsToRun.setColumns(2);
         
+        JPanel workflowStepConfigPanel = new JPanel();
+        workflowStepConfigPanel.add(new JLabel("Workflow Steps:"));
+        workflowSteps.add("BA");
+        workflowSteps.add("Dev");
+        workflowSteps.add("WebDev");
+        workflowSteps.add("QA");
+        for (String workflowStep : workflowSteps) {
+            workflowStepComboBox.addItem(workflowStep);
+        }
+        workflowStepConfigPanel.add(workflowStepComboBox);
+        removeWorkflowStepButton.addActionListener(this.new RemoveWorkflowStepListener());
+        workflowStepConfigPanel.add(removeWorkflowStepButton);
+        removeWorkflowStepButton.setEnabled(false);
+        workflowStepComboBox.setEnabled(false);
+        
+        
+        
         JPanel iterationParameterPanel = new JPanel();
         iterationParameterPanel.add(table.getTableHeader());
         iterationParameterPanel.add(scrollPane);
@@ -134,6 +157,7 @@ public class GUI extends JFrame {
         add(scenarioNamePanel);
         add(storiesInBacklogPanel);
         add(iterationsToRunPanel);
+        add(workflowStepConfigPanel);
         add(iterationParameterPanel);
         add(runButtonPanel);
         add(statusLabel);
@@ -171,6 +195,14 @@ public class GUI extends JFrame {
         @Override
         public void windowClosing(WindowEvent event) {
             System.exit(0);
+        }
+    }
+    
+    private class RemoveWorkflowStepListener implements ActionListener {
+        public void actionPerformed(ActionEvent e) {
+            String workflowStepToRemove = (String) workflowStepComboBox.getSelectedItem();
+            workflowSteps.remove(workflowStepToRemove);
+            workflowStepComboBox.removeItem(workflowStepToRemove);
         }
     }
 
