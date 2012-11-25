@@ -8,6 +8,23 @@
 		<cucumber.version>1.0.6</cucumber.version>
 		<springframework.version>3.1.1.RELEASE</springframework.version>
 	</properties>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<configuration>
+					<includes>
+						<include>**/AllUnitTests.java</include>
+                        <include>**/AllFunctionalSpecs.java</include>
+					</includes>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+
+
 	<!-- Find dependencies at -->
 	<dependencies>
 		<!-- Cucumber -->
@@ -58,7 +75,7 @@
 			<version>${springframework.version}</version>
 			<scope>test</scope>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-lang3</artifactId>
@@ -67,16 +84,16 @@
 
 		<!-- JUnit (with fluent API, Hamcrest) -->
 		<dependency>
-		  <groupId>junit</groupId>
-		  <artifactId>junit-dep</artifactId>
-		  <version>4.10</version>
-		  <scope>test</scope>
-		  <exclusions>
-		      <exclusion>
-		          <groupId>org.hamcrest</groupId>
-		          <artifactId>hamcrest-core</artifactId>
-		      </exclusion>
-		  </exclusions>
+			<groupId>junit</groupId>
+			<artifactId>junit-dep</artifactId>
+			<version>4.10</version>
+			<scope>test</scope>
+			<exclusions>
+				<exclusion>
+					<groupId>org.hamcrest</groupId>
+					<artifactId>hamcrest-core</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>org.hamcrest</groupId>
@@ -91,7 +108,7 @@
 			<artifactId>fest-swing</artifactId>
 			<version>1.2.1</version>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>jfree</groupId>
 			<artifactId>jfreechart</artifactId>
