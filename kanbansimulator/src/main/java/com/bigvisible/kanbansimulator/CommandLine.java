@@ -5,13 +5,13 @@ import java.io.PrintWriter;
 
 public class CommandLine {
 
-	private static int NUM_OF_STORIES = 0;
-	private static int BA_CAPACITY = 1;
-	private static int DEV_CAPACITY = 2;
-	private static int WEBDEV_CAPACITY = 3;
-	private static int QA_CAPACITY = 4;
-	private static int BATCH_SIZE = 5;
-	private static int NUM_OF_ITERATIONS = 6;
+	private static final int NUM_OF_STORIES = 0;
+	private static final int BA_CAPACITY = 1;
+	private static final int DEV_CAPACITY = 2;
+	private static final int WEBDEV_CAPACITY = 3;
+	private static final int QA_CAPACITY = 4;
+	private static final int BATCH_SIZE = 5;
+	private static final int NUM_OF_ITERATIONS = 6;
 
 	private static OutputStream out = System.out;
 
