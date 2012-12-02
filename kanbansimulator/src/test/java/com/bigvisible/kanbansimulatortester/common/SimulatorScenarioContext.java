@@ -5,7 +5,7 @@ import java.io.OutputStream;
 
 import com.bigvisible.kanbansimulator.Simulator;
 import com.bigvisible.kanbansimulator.SimulatorEngine;
-import com.bigvisible.kanbansimulatortester.gui.GUIDriver;
+import com.bigvisible.kanbansimulatortester.app.GUIDriver;
 
 
 public class SimulatorScenarioContext {

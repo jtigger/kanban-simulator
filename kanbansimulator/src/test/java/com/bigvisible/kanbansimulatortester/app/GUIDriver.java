@@ -1,4 +1,4 @@
-package com.bigvisible.kanbansimulatortester.gui;
+package com.bigvisible.kanbansimulatortester.app;
 
 import static org.fest.swing.data.TableCell.row;
 
@@ -24,10 +24,10 @@ import org.fest.swing.fixture.JTableFixture;
 import org.fest.swing.fixture.JTableHeaderFixture;
 import org.fest.swing.fixture.JTextComponentFixture;
 
-import com.bigvisible.kanbansimulator.GUI;
 import com.bigvisible.kanbansimulator.IterationParameter;
 import com.bigvisible.kanbansimulator.IterationResult;
 import com.bigvisible.kanbansimulator.Simulator;
+import com.bigvisible.kanbansimulator.app.GUI;
 
 public class GUIDriver implements Simulator {
     private FrameFixture mainWindowFixture;

@@ -1,4 +1,4 @@
-package com.bigvisible.kanbansimulator;
+package com.bigvisible.kanbansimulator.app;
 
 import static com.bigvisible.kanbansimulator.IterationParameter.startingAt;
 import static com.bigvisible.kanbansimulator.IterationParameter.WorkflowStepParameter.named;
@@ -32,6 +32,9 @@ import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.data.category.DefaultCategoryDataset;
+
+import com.bigvisible.kanbansimulator.IterationResult;
+import com.bigvisible.kanbansimulator.SimulatorEngine;
 
 
 public class GUI extends JFrame {

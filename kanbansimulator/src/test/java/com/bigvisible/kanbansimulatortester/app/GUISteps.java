@@ -1,4 +1,4 @@
-package com.bigvisible.kanbansimulatortester.gui;
+package com.bigvisible.kanbansimulatortester.app;
 
 import com.bigvisible.kanbansimulatortester.common.StepDefinitionForSimulatorSpecification;
 
