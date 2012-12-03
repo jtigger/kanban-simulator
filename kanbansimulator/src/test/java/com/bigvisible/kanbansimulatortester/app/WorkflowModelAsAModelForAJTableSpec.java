@@ -10,6 +10,7 @@ import java.util.List;
 import javax.swing.JTable;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
+import javax.swing.table.TableModel;
 
 import org.junit.Test;
 
@@ -22,7 +23,7 @@ import com.bigvisible.kanbansimulator.app.WorkflowModel;
 public class WorkflowModelAsAModelForAJTableSpec {
 
     @Test
-    public void by_default_a_WorkflowModel_has_a_Swing_TableColumn_named_iteration() throws Exception {
+    public void by_default_a_WorkflowModel_has_a_TableColumn_named_iteration() throws Exception {
         WorkflowModel workflowModel = new WorkflowModel();
         String iterationColumnIdentifier = "Iteration";
         List<String> columnIdentifiers = collectColumnIdentifiers(workflowModel);
@@ -30,7 +31,7 @@ public class WorkflowModelAsAModelForAJTableSpec {
     }
 
     @Test
-    public void by_default_a_WorkflowModel_has_a_Swing_TableColumn_named_batch_size() throws Exception {
+    public void by_default_a_WorkflowModel_has_a_TableColumn_named_batch_size() throws Exception {
         WorkflowModel workflowModel = new WorkflowModel();
         String iterationColumnIdentifier = "Batch Size";
         List<String> columnIdentifiers = collectColumnIdentifiers(workflowModel);
@@ -38,7 +39,7 @@ public class WorkflowModelAsAModelForAJTableSpec {
     }
     
     @Test
-    public void WHEN_told_to_add_a_workflow_step_THEN_the_iteration_paramater_table_has_a_Swing_TableColumn_of_the_same_name() throws Exception {
+    public void WHEN_told_to_add_a_workflow_step_THEN_the_iteration_paramater_table_has_a_TableColumn_of_the_same_name() throws Exception {
         WorkflowModel workflowModel = new WorkflowModel();
         String newWorkflowStepName = "BA";
 
@@ -48,7 +49,7 @@ public class WorkflowModelAsAModelForAJTableSpec {
     }
     
     @Test
-    public void WHEN_told_to_remove_an_existing_workflow_step_THEN_the_iteration_parameter_JTable_no_longer_has_the_corresponding_TableColumn() throws Exception {
+    public void WHEN_told_to_remove_an_existing_workflow_step_THEN_the_TableColumnModel_no_longer_has_the_corresponding_TableColumn() throws Exception {
         WorkflowModel workflowModel = new WorkflowModel();
         String newWorkflowStepName = "BA";
         workflowModel.addStep(newWorkflowStepName);
@@ -56,6 +57,29 @@ public class WorkflowModelAsAModelForAJTableSpec {
         workflowModel.removeStep(newWorkflowStepName);
         List<String> columnIdentifiers = collectColumnIdentifiers(workflowModel);
         assertThat(columnIdentifiers, not(hasItem(newWorkflowStepName)));
+    }
+    
+    @Test
+    public void by_default_a_WorkflowModel_has_a_Swing_TableModel() throws Exception {
+        WorkflowModel workflowModel = new WorkflowModel();
+        
+        TableModel tableModel = workflowModel.getIterationParameterTableModel();
+        
+        assertThat(tableModel.getColumnCount(), is(2));
+    }
+    
+    @Test
+    public void the_IterationParameter_table_model_stores_nothing_but_Integers() throws Exception {
+        WorkflowModel workflowModel = new WorkflowModel();
+        
+        for (int columnIndex = 0; columnIndex < workflowModel.getIterationParameterTableModel().getColumnCount(); columnIndex++) {
+            assertEquals(workflowModel.getIterationParameterTableModel().getColumnClass(columnIndex), Integer.class);
+        }
+    }
+    
+    @Test
+    public void WHEN_told_to_set_iteration_parameter_data_en_mass_THEN_the_corresponding_data_in_the_TableModel_matches() throws Exception {
+        
     }
     
     private List<String> collectColumnIdentifiers(WorkflowModel workflowModel) {
