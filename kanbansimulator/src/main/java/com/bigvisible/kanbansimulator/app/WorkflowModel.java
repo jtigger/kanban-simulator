@@ -1,10 +1,15 @@
 package com.bigvisible.kanbansimulator.app;
 
+import java.util.LinkedList;
+import java.util.List;
+
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.DefaultTableColumnModel;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableModel;
+
+import com.bigvisible.kanbansimulator.IterationParameter;
 
 public class WorkflowModel {
     private DefaultTableColumnModel columnModel = new DefaultTableColumnModel();
@@ -33,6 +38,10 @@ public class WorkflowModel {
         columnModel.removeColumn(workflowStepColumn);
     }
     
+    public void addIteration() {
+        tableModel.addRow();
+    }
+
     private void addColumnWithIdentifier(String columnIdentifier) {
         TableColumn newColumn = new TableColumn();
         newColumn.setIdentifier(columnIdentifier);
@@ -41,9 +50,16 @@ public class WorkflowModel {
     
     @SuppressWarnings("serial")
     private class IterationParameterTableModel extends AbstractTableModel {
+        private class IterationParameterRow {
+            Integer iteration;
+            Integer batchSize;
+            List<IterationParameter> iterationParameters;
+        }
+        
+        private List<IterationParameterRow> rows = new LinkedList<IterationParameterRow>();
 
         public int getRowCount() {
-            return 0;
+            return rows.size();
         }
 
         public int getColumnCount() {
@@ -67,6 +83,11 @@ public class WorkflowModel {
         @Override
         public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
         }
+        
+        public void addRow() {
+            IterationParameterRow row = new IterationParameterRow();
+            row.iteration = rows.size()+1;
+            rows.add(row);
+        }
     }
-
 }
