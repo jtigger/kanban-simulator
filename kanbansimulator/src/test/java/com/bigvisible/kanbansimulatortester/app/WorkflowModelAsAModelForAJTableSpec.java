@@ -124,9 +124,19 @@ public class WorkflowModelAsAModelForAJTableSpec {
         assertThat(iterationParameter.getBatchSize(), is(expectedBatchSize));
     }
 
-    @Ignore(value="Not yet implemented")
     @Test
     public void WHEN_a_null_value_is_set_in_the_table_for_batch_size_AND_the_WorkflowModel_is_asked_for_simulator_configuration_THEN_there_is_no_corresponding_IterationParameter() throws Exception {
+        int firstBatchSizeValue = 5;
+
+        WorkflowModel workflowModel = new WorkflowModel();
+        workflowModel.addIteration();
+        
+        workflowModel.getIterationParameterTableModel().setValueAt(firstBatchSizeValue, 0, 1);
+        workflowModel.getIterationParameterTableModel().setValueAt(null, 0, 1);
+        
+        int numberOfIterationParameters = workflowModel.getIterationParameters().size();
+        
+        assertThat(numberOfIterationParameters, is(0));
     }
 
     @Ignore(value="Not yet implemented")

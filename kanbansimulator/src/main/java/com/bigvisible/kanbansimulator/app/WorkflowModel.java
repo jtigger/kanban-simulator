@@ -94,28 +94,37 @@ public class WorkflowModel {
         @Override
         public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
             IterationParameterRow row = rows.get(rowIndex);
+            List<IterationParameter> existingParameters = row.iterationParameters;
 
             boolean isSettingBatchSize = (columnIndex == 1);
+            
             IterationParameter newParameter = null;
 
             if (isSettingBatchSize) {
-                int batchSize = (Integer) aValue;
+                Integer batchSize = (Integer) aValue;
                 newParameter = IterationParameter.startingAt(row.iteration).setBatchSize(batchSize);
             }
 
             if (newParameter != null) {
-                Iterator<IterationParameter> iterationParametersItr = row.iterationParameters.iterator();
-                while(iterationParametersItr.hasNext()) {
-                    IterationParameter existingParameter = iterationParametersItr.next();
-                    // TODO-TODAY: figure out how to fold batch size and capacity settings in the IterationParameter 
-                    if(!existingParameter.hasWorkflowConfiguration() && !newParameter.hasWorkflowConfiguration()) {
-                        iterationParametersItr.remove();
-                    }
+                removeIterationParameterIfExists(newParameter, existingParameters);
+                if (aValue != null) {
+                    existingParameters.add(newParameter);
                 }
-                row.iterationParameters.add(newParameter);
-            }
 
-            fireTableCellUpdated(rowIndex, columnIndex);
+                fireTableCellUpdated(rowIndex, columnIndex);
+            }
+        }
+
+        private void removeIterationParameterIfExists(IterationParameter iterationParameter,
+                List<IterationParameter> iterationParameters) {
+            Iterator<IterationParameter> iterationParametersItr = iterationParameters.iterator();
+            while (iterationParametersItr.hasNext()) {
+                IterationParameter existingParameter = iterationParametersItr.next();
+                // TODO-TODAY: figure out how to fold batch size and capacity settings in the IterationParameter
+                if (!existingParameter.hasWorkflowConfiguration() && !iterationParameter.hasWorkflowConfiguration()) {
+                    iterationParametersItr.remove();
+                }
+            }
         }
 
         public void addRow() {
