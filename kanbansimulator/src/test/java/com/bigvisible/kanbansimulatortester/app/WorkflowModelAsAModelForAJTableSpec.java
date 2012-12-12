@@ -30,7 +30,7 @@ public class WorkflowModelAsAModelForAJTableSpec {
         
         TableModel tableModel = workflowModel.getIterationParameterTableModel();
         
-        assertThat(tableModel.getColumnCount(), is(2));
+        assertNotNull(tableModel);
     }
 
     @Test
@@ -88,11 +88,6 @@ public class WorkflowModelAsAModelForAJTableSpec {
       assertThat(numRowsAfterAddingIteration, is(numRowsBeforeAddingIteration+1));
     }
     
-    @Ignore(value="Not yet implemented")
-    @Test
-    public void attempts_to_set_a_value_for_any_row_in_the_Iteration_column_is_ignored() throws Exception {
-    }
-    
     @Test
     public void WHEN_a_value_is_set_in_the_table_for_batch_size_AND_the_WorkflowModel_is_asked_for_simulator_configuration_THEN_a_corresponding_IterationParameter_is_included() throws Exception {
         int expectedBatchSize = 10;
@@ -107,6 +102,38 @@ public class WorkflowModelAsAModelForAJTableSpec {
         
         assertThat(iterationParameter.getBatchSize(), is(expectedBatchSize));
     }
+    
+    @Test
+    public void GIVEN_an_IterationParameter_for_batch_size_exists_in_a_given_iteration_WHEN_the_WorkflowModel_is_asked_for_the_corresponding_cell_value_THEN_that_batch_size_value_is_returned() throws Exception {
+        int expectedBatchSize = 10;
+        
+        WorkflowModel workflowModel = new WorkflowModel();
+        workflowModel.addIteration();
+        workflowModel.getIterationParameterTableModel().setValueAt(expectedBatchSize, 0, 1);
+
+        Integer actualBatchSize = (Integer) workflowModel.getIterationParameterTableModel().getValueAt(0, 1);
+        
+        assertThat(actualBatchSize, is(expectedBatchSize));
+    }
+
+    @Test
+    public void GIVEN_an_iteration_exists_WHEN_the_WorkflowModel_is_asked_for_the_corresponding_cell_value_of_the_Iteration_column_THEN_that_iteration_number_is_returned() throws Exception {
+        int expectedIterationNumber = 1;
+        
+        WorkflowModel workflowModel = new WorkflowModel();
+        workflowModel.addIteration();
+
+        Integer actualIterationNumber = (Integer) workflowModel.getIterationParameterTableModel().getValueAt(0, 0);
+        
+        assertThat(actualIterationNumber, is(expectedIterationNumber));
+    }
+
+
+    @Ignore("NEXT!")
+    @Test
+    public void GIVEN_an_IterationParameter_for_capacity_exists_in_a_given_iteration_WHEN_the_WorkflowModel_is_asked_for_the_corresponding_cell_value_THEN_that_capacity_value_is_returned() throws Exception {
+    }
+
 
     @Test
     public void GIVEN_an_IterationParameter_for_batch_size_exists_in_a_given_iteration_WHEN_a_value_is_set_in_the_table_for_batch_size_for_that_iteration_AND_the_WorkflowModel_is_asked_for_simulator_configuration_THEN_the_corresponding_IterationParameter_has_only_the_new_value() throws Exception {
@@ -139,14 +166,21 @@ public class WorkflowModelAsAModelForAJTableSpec {
         assertThat(numberOfIterationParameters, is(0));
     }
 
-    @Ignore(value="Not yet implemented")
-    @Test(expected=ArrayIndexOutOfBoundsException.class)
-    public void WHEN_a_value_is_set_for_an_iteration_later_than_the_known_latest_iteration_THEN_WorkflowModel_throws_an_ArrayOutOfBoundsException() throws Exception {
-    }
-
-    @Ignore(value="Not yet implemented")
     @Test
-    public void WHEN_a_null_value_is_set_in_the_table_for_a_WorkflowStep_capacity_AND_the_WorkflowModel_is_asked_for_simulator_configuration_THEN_there_is_no_corresponding_IterationParameter() throws Exception {
+    public void WHEN_a_value_is_set_in_the_table_for_a_WorkflowStep_capacity_AND_the_WorkflowModel_is_asked_for_simulator_configuration_THEN_a_corresponding_IterationParameter_is_included() throws Exception {
+        int expectedWorkflowStepCapacity = 5;
+        String expectedWorkflowStepName = "BA";
+        
+        WorkflowModel workflowModel = new WorkflowModel();
+        workflowModel.addStep(expectedWorkflowStepName);
+        workflowModel.addIteration();
+
+        workflowModel.getIterationParameterTableModel().setValueAt(expectedWorkflowStepCapacity, 0, 2);
+        
+        IterationParameter iterationParameter = workflowModel.getIterationParameters().get(0);
+        
+        assertThat(iterationParameter.getWorkflowStepName(), is(expectedWorkflowStepName));
+        assertThat(iterationParameter.getCapacity(), is(expectedWorkflowStepCapacity));
     }
     
     @Ignore(value="Not yet implemented")
@@ -154,13 +188,11 @@ public class WorkflowModelAsAModelForAJTableSpec {
     public void GIVEN_an_IterationParameter_for_a_WorkflowStep_capacity_exists_in_a_given_iteration_WHEN_a_value_is_set_in_the_table_for_that_WorkflowStep_capacity_in_that_iteration_AND_the_WorkflowModel_is_asked_for_simulator_configuration_THEN_the_corresponding_IterationParameter_has_only_the_new_value() throws Exception {
     }
 
-
     @Ignore(value="Not yet implemented")
     @Test
-    public void WHEN_a_value_is_set_in_the_table_for_a_WorkflowStep_capacity_AND_the_WorkflowModel_is_asked_for_simulator_configuration_THEN_a_corresponding_IterationParameter_is_included() throws Exception {
-        
+    public void WHEN_a_null_value_is_set_in_the_table_for_a_WorkflowStep_capacity_AND_the_WorkflowModel_is_asked_for_simulator_configuration_THEN_there_is_no_corresponding_IterationParameter() throws Exception {
     }
-
+    
     @Ignore(value="Not yet implemented")
     @Test
     public void WHEN_told_to_set_iteration_parameter_data_en_mass_THEN_the_corresponding_data_in_the_TableModel_matches() throws Exception {
@@ -173,6 +205,18 @@ public class WorkflowModelAsAModelForAJTableSpec {
         // need to define how it is "rejected"; throw an exception?  ignore the create?
     }
     
+    @Ignore(value="Not yet implemented")
+    @Test
+    public void attempts_to_set_a_value_for_any_row_in_the_Iteration_column_is_ignored() throws Exception {
+    }
+
+    @Test(expected=IndexOutOfBoundsException.class)
+    public void WHEN_a_value_is_set_for_an_iteration_later_than_the_known_latest_iteration_THEN_WorkflowModel_throws_an_IndexOutOfBoundsException() throws Exception {
+        WorkflowModel workflowModel = new WorkflowModel();
+        
+        workflowModel.getIterationParameterTableModel().setValueAt(null, 0, 1);
+    }
+
     private List<String> collectColumnIdentifiers(WorkflowModel workflowModel) {
         TableColumnModel columnModel = workflowModel.getIterationParameterTableColumnModel();
         List<TableColumn> listOfColumns = Collections.list(columnModel.getColumns());

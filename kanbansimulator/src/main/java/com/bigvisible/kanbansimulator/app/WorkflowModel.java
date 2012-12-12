@@ -1,8 +1,10 @@
 package com.bigvisible.kanbansimulator.app;
 
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.DefaultTableColumnModel;
@@ -10,16 +12,22 @@ import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableModel;
 
+import org.fest.swing.hierarchy.ExistingHierarchy;
+
 import com.bigvisible.kanbansimulator.IterationParameter;
+import com.bigvisible.kanbansimulator.IterationParameter.WorkflowStepParameter;
 
 public class WorkflowModel {
     private DefaultTableColumnModel columnModel = new DefaultTableColumnModel();
     private IterationParameterTableModel tableModel = new IterationParameterTableModel();
     private List<String> workflowStepNames = new LinkedList<String>();
+    
+    public static final String COLUMN_ID_ITERATION = "Iteration";
+    public static final String COLUMN_ID_BATCH_SIZE = "Batch Size";
 
     public WorkflowModel() {
-        addColumnWithIdentifier("Iteration");
-        addColumnWithIdentifier("Batch Size");
+        addColumnWithIdentifier(COLUMN_ID_ITERATION);
+        addColumnWithIdentifier(COLUMN_ID_BATCH_SIZE);
     }
 
     public TableColumnModel getIterationParameterTableColumnModel() {
@@ -48,7 +56,7 @@ public class WorkflowModel {
     public List<IterationParameter> getIterationParameters() {
         List<IterationParameter> allIterationParameters = new LinkedList<IterationParameter>();
         for (IterationParameterTableModel.IterationParameterRow row : tableModel.rows) {
-            allIterationParameters.addAll(row.iterationParameters);
+            allIterationParameters.addAll(row.columnIdentifierToIterationParameter.values());
         }
         return allIterationParameters;
     }
@@ -56,6 +64,7 @@ public class WorkflowModel {
     private void addColumnWithIdentifier(String columnIdentifier) {
         TableColumn newColumn = new TableColumn();
         newColumn.setIdentifier(columnIdentifier);
+        newColumn.setHeaderValue(columnIdentifier);
         columnModel.addColumn(newColumn);
     }
 
@@ -63,8 +72,7 @@ public class WorkflowModel {
     private class IterationParameterTableModel extends AbstractTableModel {
         private class IterationParameterRow {
             Integer iteration;
-            Integer batchSize;
-            List<IterationParameter> iterationParameters = new LinkedList<IterationParameter>();
+            Map<String,IterationParameter> columnIdentifierToIterationParameter = new HashMap<String,IterationParameter>();
         }
 
         private List<IterationParameterRow> rows = new LinkedList<IterationParameterRow>();
@@ -88,42 +96,54 @@ public class WorkflowModel {
         }
 
         public Object getValueAt(int rowIndex, int columnIndex) {
-            return null;
+            Object value = null;
+            boolean isSettingBatchSize = (columnIndex == 1);
+
+            IterationParameterRow row = rows.get(rowIndex);
+
+            if (columnIndex == 0) {
+                value = row.iteration;
+            } else {
+                String columnIdentifier = (String) columnModel.getColumn(columnIndex).getIdentifier();
+                IterationParameter iterationParameter = row.columnIdentifierToIterationParameter.get(columnIdentifier);
+
+                if (isSettingBatchSize) {
+                    value = iterationParameter != null ? iterationParameter.getBatchSize() : null;
+                } else {
+                    value = iterationParameter != null ? iterationParameter.getCapacity() : null;
+                }
+            }
+            
+            return value;
         }
 
         @Override
         public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
             IterationParameterRow row = rows.get(rowIndex);
-            List<IterationParameter> existingParameters = row.iterationParameters;
 
             boolean isSettingBatchSize = (columnIndex == 1);
-            
+
             IterationParameter newParameter = null;
 
             if (isSettingBatchSize) {
                 Integer batchSize = (Integer) aValue;
                 newParameter = IterationParameter.startingAt(row.iteration).setBatchSize(batchSize);
+            } else {
+                Integer capacity = (Integer) aValue;
+                String workflowStepName = (String) columnModel.getColumn(columnIndex).getIdentifier();
+                newParameter = IterationParameter.startingAt(row.iteration).forStep(
+                        WorkflowStepParameter.named(workflowStepName).setCapacity(capacity));
             }
 
             if (newParameter != null) {
-                removeIterationParameterIfExists(newParameter, existingParameters);
+                String columnIdentifier = newParameter.hasWorkflowConfiguration() ? newParameter
+                        .getWorkflowStepName() : COLUMN_ID_BATCH_SIZE;
+                row.columnIdentifierToIterationParameter.remove(columnIdentifier);
                 if (aValue != null) {
-                    existingParameters.add(newParameter);
+                    row.columnIdentifierToIterationParameter.put(columnIdentifier, newParameter);
                 }
 
                 fireTableCellUpdated(rowIndex, columnIndex);
-            }
-        }
-
-        private void removeIterationParameterIfExists(IterationParameter iterationParameter,
-                List<IterationParameter> iterationParameters) {
-            Iterator<IterationParameter> iterationParametersItr = iterationParameters.iterator();
-            while (iterationParametersItr.hasNext()) {
-                IterationParameter existingParameter = iterationParametersItr.next();
-                // TODO-TODAY: figure out how to fold batch size and capacity settings in the IterationParameter
-                if (!existingParameter.hasWorkflowConfiguration() && !iterationParameter.hasWorkflowConfiguration()) {
-                    iterationParametersItr.remove();
-                }
             }
         }
 
