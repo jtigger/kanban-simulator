@@ -15,6 +15,7 @@ import javax.swing.table.TableModel;
 import org.junit.Ignore;
 import org.junit.Test;
 
+import com.bigvisible.kanbansimulator.IterationParameter;
 import com.bigvisible.kanbansimulator.app.WorkflowModel;
 
 /**
@@ -92,11 +93,57 @@ public class WorkflowModelAsAModelForAJTableSpec {
     public void attempts_to_set_a_value_for_any_row_in_the_Iteration_column_is_ignored() throws Exception {
     }
     
-    @Ignore(value="Not yet implemented")
     @Test
     public void WHEN_a_value_is_set_in_the_table_for_batch_size_AND_the_WorkflowModel_is_asked_for_simulator_configuration_THEN_a_corresponding_IterationParameter_is_included() throws Exception {
+        int expectedBatchSize = 10;
         
+        WorkflowModel workflowModel = new WorkflowModel();
+        workflowModel.addIteration();
+        
+        // TODO-TODAY: extract magic number for column indexes
+        workflowModel.getIterationParameterTableModel().setValueAt(expectedBatchSize, 0, 1);
+        
+        IterationParameter iterationParameter = workflowModel.getIterationParameters().get(0);
+        
+        assertThat(iterationParameter.getBatchSize(), is(expectedBatchSize));
     }
+
+    @Test
+    public void GIVEN_an_IterationParameter_for_batch_size_exists_in_a_given_iteration_WHEN_a_value_is_set_in_the_table_for_batch_size_for_that_iteration_AND_the_WorkflowModel_is_asked_for_simulator_configuration_THEN_the_corresponding_IterationParameter_has_only_the_new_value() throws Exception {
+        int expectedBatchSize = 10;
+        int firstBatchSizeValue = 5;
+
+        WorkflowModel workflowModel = new WorkflowModel();
+        workflowModel.addIteration();
+        
+        workflowModel.getIterationParameterTableModel().setValueAt(firstBatchSizeValue, 0, 1);
+        workflowModel.getIterationParameterTableModel().setValueAt(expectedBatchSize, 0, 1);
+        
+        IterationParameter iterationParameter = workflowModel.getIterationParameters().get(0);
+        
+        assertThat(iterationParameter.getBatchSize(), is(expectedBatchSize));
+    }
+
+    @Ignore(value="Not yet implemented")
+    @Test
+    public void WHEN_a_null_value_is_set_in_the_table_for_batch_size_AND_the_WorkflowModel_is_asked_for_simulator_configuration_THEN_there_is_no_corresponding_IterationParameter() throws Exception {
+    }
+
+    @Ignore(value="Not yet implemented")
+    @Test(expected=ArrayIndexOutOfBoundsException.class)
+    public void WHEN_a_value_is_set_for_an_iteration_later_than_the_known_latest_iteration_THEN_WorkflowModel_throws_an_ArrayOutOfBoundsException() throws Exception {
+    }
+
+    @Ignore(value="Not yet implemented")
+    @Test
+    public void WHEN_a_null_value_is_set_in_the_table_for_a_WorkflowStep_capacity_AND_the_WorkflowModel_is_asked_for_simulator_configuration_THEN_there_is_no_corresponding_IterationParameter() throws Exception {
+    }
+    
+    @Ignore(value="Not yet implemented")
+    @Test
+    public void GIVEN_an_IterationParameter_for_a_WorkflowStep_capacity_exists_in_a_given_iteration_WHEN_a_value_is_set_in_the_table_for_that_WorkflowStep_capacity_in_that_iteration_AND_the_WorkflowModel_is_asked_for_simulator_configuration_THEN_the_corresponding_IterationParameter_has_only_the_new_value() throws Exception {
+    }
+
 
     @Ignore(value="Not yet implemented")
     @Test
@@ -108,6 +155,12 @@ public class WorkflowModelAsAModelForAJTableSpec {
     @Test
     public void WHEN_told_to_set_iteration_parameter_data_en_mass_THEN_the_corresponding_data_in_the_TableModel_matches() throws Exception {
         
+    }
+    
+    @Ignore(value="Not yet implemented")
+    @Test
+    public void WHEN_told_to_add_a_workflow_step_AND_that_step_already_exists_THEN_that_request_is_rejected() throws Exception {
+        // need to define how it is "rejected"; throw an exception?  ignore the create?
     }
     
     private List<String> collectColumnIdentifiers(WorkflowModel workflowModel) {
